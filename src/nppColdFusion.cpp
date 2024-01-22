@@ -350,7 +350,7 @@ int SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 {
 
 	if (n < numWordLists) {
-		unsigned int wllength = strnlen_s(wl, 20480) + 1;
+		auto wllength = strnlen_s(wl, 20480) + 1;
 		char* loweredwl = new char[wllength];
 		strcpy_s(loweredwl, wllength, wl);
 		loweredwl = CharLowerA(loweredwl);
@@ -770,7 +770,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 							newFunc.pos = 0;
 							const bool argumentsChanged = currentCFFunction.arguments.Merge(argumentsNew, sc.currentPos);
 							const bool localsChanged = currentCFFunction.locals.Merge(localsNew, sc.currentPos);
-							const bool bracketsChanged = currentCFFunction.bracketDepths.Merge(bracketDepthsNew, sc.currentPos);
+							///const bool bracketsChanged = currentCFFunction.bracketDepths.Merge(bracketDepthsNew, sc.currentPos);
 							if (localsChanged) {
 								currentCFFunction.dirtyLocals = true;
 							}
@@ -852,7 +852,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 									if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0) || strcmp(s, "function") == 0) {
 										//break; //*************************************
 										/* Read Ahead to get name */
-										bool inName = false;
+										///bool inName = false;
 										int j = 0;
 										char sName[100];
 										for (int b = 2; b < max; b++) {
@@ -1288,13 +1288,13 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 				std::string currentTag = coldFusionTags.ValueAt(sc.currentPos);
 				//SparseState<std::string> rawSTNew(sc.currentPos);
 
-				int j = strnlen_s(status.currentCFTag, sizeof(status.currentCFTag));
+				auto j = strnlen_s(status.currentCFTag, sizeof(status.currentCFTag));
 				status.currentCFTag[j] = ' ';
 				status.currentCFTag[j + 1] = '\0';
 				if (strstr("cfabort cfajaximport cfajaxproxy cfapplet cfapplication cfargument cfassociate cfbreak cfcache cfcalendar cfchartdata cfchartseries cfcol cfcollection cfcontent cfcontinue cfcookie cfdbinfo cfdirectory cfdiv cfdump cfelse cfelseif cferror cfexchangecalendar cfexchangeconnection cfexchangecontact cfexchangefilter cfexchangemail cfexchangetask cfexit cffeed cffile cfflush cfftp cfgridcolumn cfgridrow cfgridupdate cfheader cfhtmlhead cfhttp cfhttpparam cfimage cfimport cfinclude cfindex cfinput cfinsert cfinvoke cfinvokeargument cfldap cflocation cflog cfloginuser cflogout cfmailparam cfmodule cfntauthenticate cfobject cfobjectcache cfparam cfpdf cfpdfformparam cfpdfparam cfpop cfpresenter cfprint cfprocessingdirective cfprocparam cfprocresult cfproperty cfqueryparam cfregistry cfreport cfreportparam cfrethrow cfreturn cfschedule cfsearch cfset cfsetting cfsilent cfslider cfsprydataset cfstoredproc cftextinput cfthrow cftrace cftreeitem cfupdate cfwddx cfzip cfzipparam ", status.currentCFTag) == NULL) {
 					if (status.tagOpening) {
 						if (!dostyling) {
-							int curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
+							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
 							status.openTagsPositions[status.currentopenTag] = curlen;
 							strcpy_s(&status.openTagsBuffer[curlen], sizeof(status.openTagsBuffer) - curlen, status.currentCFTag);
 							status.currentopenTag++;
@@ -1376,7 +1376,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 				if (strstr("meta link img area br hr input ", status.currentHTMLTag) == NULL) {
 					if (status.tagOpening) {
 						if (!dostyling) {
-							int curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
+							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
 							status.openTagsPositions[status.currentopenTag] = curlen;
 							strcpy_s(&status.openTagsBuffer[curlen], sizeof(status.openTagsBuffer) - curlen, status.currentHTMLTag);
 							status.currentopenTag++;

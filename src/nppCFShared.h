@@ -185,7 +185,7 @@ namespace nppColdFusion
 		}
 
 		bool isKeyword(char* keyword) {
-			int length = strnlen_s(keyword, 100);
+			auto length = strnlen_s(keyword, 100);
 			if (strstr(keyword, ".") != NULL || strstr(keyword, "'") != NULL) {
 				return false;
 			}
@@ -211,7 +211,7 @@ namespace nppColdFusion
 		}
 
 		bool isTag(char* tag) {
-			int length = strnlen_s(tag, 100);
+			auto length = strnlen_s(tag, 100);
 
 			if (length == 0 || strstr(tag, ".") != NULL || strstr(tag, "'") != NULL) {
 				return false;
@@ -823,7 +823,7 @@ namespace nppColdFusion
 		}
 
 		bool hasKeyword(char* keyword) {
-			int length = strnlen_s(keyword, 100);
+			auto length = strnlen_s(keyword, 100);
 			if (length > 1 && length < 40) {//*** maybe define constants
 				nppCFShared& ref = *nppCFShared::Instance();
 				return ref.coldfusionNS->isKeyword(keyword);
@@ -832,8 +832,8 @@ namespace nppColdFusion
 		}
 
 		bool hasOperator(char* operatorword) {
-			return false;//************
-			int length = strnlen_s(operatorword, 100);
+			//return false;//************
+			auto length = strnlen_s(operatorword, 100);
 			if (length > 7 || length == 1) {
 				return false;
 			}
@@ -853,7 +853,7 @@ namespace nppColdFusion
 
 		bool hasReservedWord(char* reservedword) {
 			//
-			int length = strnlen_s(reservedword, 100);
+			auto length = strnlen_s(reservedword, 100);
 			
 			if (length > 9 || length == 1) {
 				return false;

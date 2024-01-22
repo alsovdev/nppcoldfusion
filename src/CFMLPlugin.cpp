@@ -685,7 +685,7 @@ void CFMLPlugin::OnSciCharAdded( int ch )
 							}*/
 						}
 					}
-					int wordlength = strnlen_s( wordtooffer,100 );
+					auto wordlength = strnlen_s( wordtooffer,100 );
 					if ( wordlength > 0 ) {
 						wordtooffer[wordlength] = '>';
 						wordtooffer[wordlength + 1] = '\0';
@@ -917,8 +917,8 @@ void CFMLPlugin::wrapIn( const char * before, const char * after )
 
 	int startpos = sciMsgr.getSelectionStart();
 	int endpos = sciMsgr.getSelectionEnd();
-	int startlen = strnlen_s( before,100 );
-	int endlen = strnlen_s( after,100 );
+	auto startlen = strnlen_s( before,100 );
+	auto endlen = strnlen_s( after,100 );
 	sciMsgr.SendSciMsg( SCI_BEGINUNDOACTION );
 	sciMsgr.goToPos( endpos );
 	sciMsgr.SendSciMsg( SCI_ADDTEXT, endlen,( LPARAM ) after );

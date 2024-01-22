@@ -1516,3 +1516,15 @@ Linker->Input->Additional Dependencies
 Убрал из проекта sqlite3.h - норм
 Удалил совсем файл sqlite3.h - норм
 Попробовал удалить ..\src\Lexer\scintilla из инклюдов - сломалось
+
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppCFShared.h(188,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+int->auto
+Закомментил тут (nppCFShared.h)
+bool hasOperator(char* operatorword) {
+	//return false;//************
+	auto length = strnlen_s(operatorword, 100);
+	if (length > 7 || length == 1) {
+		return false;
+	}
+	char* copyvalue = new char[length + 10];
+	strcpy_s(copyvalue, 2, (const char*)" ");
