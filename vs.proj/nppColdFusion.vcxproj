@@ -188,6 +188,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
       <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>.\..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>

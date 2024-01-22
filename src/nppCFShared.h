@@ -69,347 +69,32 @@ namespace nppColdFusion
 		bool keywordsset;
 		bool tagsset;
 	public:
-		DBNamespace() {	}
-		DBNamespace(sqlite3* thedb) {
-			this->database = thedb;
-			this->keywordsset = false;
-			this->tagsset = false;
-		}
-		char* listAllTags() {
-			return listAllTags(false);
-		}
-		char* listAllTags(bool forautoc) {
-			char* copyvalue = NULL;
-
-			int length = 0;
-			if (this->ns > 0) {
-				int sqlitePrepare;
-				sqlite3_stmt* stmt;
-				char* sql = "\
-					SELECT '%s' || GROUP_CONCAT(b.name, '%s') || '%s' FROM ( \
-                    SELECT t.name FROM namespaces n \
-                    INNER JOIN namespacetags nt ON n.id = nt.namespaceid \
-                    INNER JOIN tags t ON nt.tagid = t.id \
-                    WHERE n.id = ? ORDER BY t.name \
-                ) AS b";
-
-				if (forautoc) {
-					sql = sqlite3_mprintf(sql, "", "?1 ", "?1");
-				}
-				else {
-					sql = sqlite3_mprintf(sql, " ", " ", " ");
-				}
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				sqlite3_bind_int(stmt, 1, this->ns);
-
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					const char* values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-					length = sqlite3_column_bytes(stmt, 0);
-					copyvalue = new char[length + 9];
-					strcpy_s(copyvalue, length + 1, values);
-					copyvalue[length] = '\0';
-
-				}
-				if (length == 0) {
-					::MessageBoxA(0, "ListAll tags length is 0 TRTRTR", "nppColdFusion Error", MB_OK);
-					return "";
-				}
-				sqlite3_finalize(stmt);
-			}
-
-			return copyvalue;
-
-		}
-		char* listAllKeywords() {
-			return listAllKeywords(false, false);
-		}
-		char* listAllKeywords(bool lowered) {
-			return listAllKeywords(lowered, false);
-		}
-		char* listAllKeywords(bool lowered, bool forautoc) {
-			char* copyvalue = NULL;
-			int length = 0;
-			if (this->ns > 0) {
-				int sqlitePrepare;
-				sqlite3_stmt* stmt;
-				char* sql = "\
-						SELECT '%s' || GROUP_CONCAT(b.name, '%s') || '%s', ' ' || LOWER(GROUP_CONCAT(b.name, ' ')) FROM ( \
-                   SELECT k.name FROM namespaces AS n \
-						INNER JOIN namespacekeywordsets AS nks ON n.id = nks.namespaceid \
-						INNER JOIN keywordsets AS ks ON nks.keywordsetid = ks.id \
-						INNER JOIN keywordsetkeywords AS ksk ON ks.id = ksk.keywordsetid \
-						INNER JOIN keywords AS k ON ksk.keywordid = k.id \
-						WHERE n.id = ? ORDER BY k.name \
-                ) AS b";
-
-				if (forautoc) {
-					sql = sqlite3_mprintf(sql, "", "?1 ", "?1");
-				}
-				else {
-					sql = sqlite3_mprintf(sql, " ", " ", " ");
-				}
-
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-
-				sqlite3_bind_int(stmt, 1, this->ns);
-				// Run the query with sqlite3_step
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					const char* values;
-					if (lowered) {
-						values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)); // The 0 here means we only take the first column returned. And it is the snippet as there is only one column
-						length = sqlite3_column_bytes(stmt, 1);
-					}
-					else {
-						values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)); // The 0 here means we only take the first column returned. And it is the snippet as there is only one column
-						length = sqlite3_column_bytes(stmt, 0);
-					}
-
-					/*strncpy(&copyvalue, values, length);
-					*(&copyvalue + length) = '=';
-					*(&copyvalue + length +1) = '\0';*/
-					copyvalue = new char[length + 5];
-					/*if (forautoc) {
-						strcpy_s( copyvalue,length, values );
-					} else {
-						strcpy_s( copyvalue,length +1, values );
-						}*/
-					strcpy_s(copyvalue, length + 1, values);
-					copyvalue[length] = '\0';
-					//copyvalue[length +1] = '\0';
-
-
-				}
-				sqlite3_finalize(stmt);
-			}
-			return copyvalue;
-		}
-
-		bool isKeyword(char* keyword) {
-			auto length = strnlen_s(keyword, 100);
-			if (strstr(keyword, ".") != NULL || strstr(keyword, "'") != NULL) {
-				return false;
-			}
-
-			if (this->ns > 0 && length > 0) {
-
-				char* copyvalue = new char[length + 4];
-
-				strcpy_s(copyvalue, length + 2, " ");
-				strcat_s(copyvalue, length + 2, keyword);
-				copyvalue[length + 1] = ' ';
-				copyvalue[length + 2] = '\0';
-				if (!this->keywordsset) {
-					this->allkeywords = this->listAllKeywords(true);
-					this->keywordsset = true;
-				}
-				return (strstr(this->allkeywords, copyvalue) != NULL);
-			}
-			return false;
-		}
+		DBNamespace() { }
+		DBNamespace(sqlite3* thedb);
+		char* listAllTags();
+		char* listAllTags(bool forautoc);
+		char* listAllKeywords();
+		char* listAllKeywords(bool lowered);
+		char* listAllKeywords(bool lowered, bool forautoc);
+			
+		bool isKeyword(char* keyword);
 		virtual bool isCustomTag(char* /* tag */) {
 			return false;
 		}
 
-		bool isTag(char* tag) {
-			auto length = strnlen_s(tag, 100);
-
-			if (length == 0 || strstr(tag, ".") != NULL || strstr(tag, "'") != NULL) {
-				return false;
-			}
-
-			if (this->ns > 0) {
-				if (this->isCustomTag(tag)) {
-					return true;
-				}
-
-				if (!this->tagsset) {
-					this->alltags = this->listAllTags();
-					this->tagsset = true;
-				}
-				return (strstr(this->alltags, tag) != NULL);
-			}
-			return false;
-		}
-
-		char* listTagAttributes(char* tag) {
-			return listTagAttributes(tag, false, false, false);
-		}
-		char* listTagAttributes(char* tag, bool forautoc) {
-			return listTagAttributes(tag, false, false, forautoc);
-		}
-		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText) {
-			return listTagAttributes(tag, onlyrequired, hasFingerText, false);
-		}
-		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
-			char* copyvalue = NULL;
-			int length = 0;
-			if (this->ns > 0) {
-				int sqlitePrepare;
-				sqlite3_stmt* stmt;
-				char* sql = "\
-                SELECT GROUP_CONCAT(b.name, '%s%s ') || '%s%s' FROM ( \
-                    SELECT a.name FROM namespaces n \
-                    INNER JOIN namespacetags nt ON n.id = nt.namespaceid \
-                    INNER JOIN tags t ON nt.tagid = t.id \
-                    INNER JOIN tagattributes ta ON t.id = ta.tagid \
-                    INNER JOIN attributes a ON ta.attributeid = a.id \
-					WHERE n.id = ? AND t.name = ? AND (ta.required = 1 OR ta.required = ?) ORDER BY a.name \
-                ) AS b";
-				char* extra = "?1";
-
-				if (!forautoc) {
-					extra = "";
-				}
-
-				if (onlyrequired) {
-					if (hasFingerText) {
-						sql = sqlite3_mprintf(sql, "=\"$[![]!]\"", extra, "=\"$[![]!]\"", extra);
-					}
-					else {
-						sql = sqlite3_mprintf(sql, "=\"\"", extra, "=\"\"", extra);
-					}
-				}
-				else {
-					sql = sqlite3_mprintf(sql, "=", extra, "=", extra);
-				}
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				sqlite3_bind_int(stmt, 1, this->ns);
-				sqlite3_bind_text(stmt, 2, tag, -1, SQLITE_STATIC);
-				sqlite3_bind_int(stmt, 3, onlyrequired);
-				// Run the query with sqlite3_step
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					const char* values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)); // The 0 here means we only take the first column returned. And it is the snippet as there is only one column
-					length = sqlite3_column_bytes(stmt, 0);
-					/*strncpy(&copyvalue, values, length);
-					*(&copyvalue + length) = '=';
-					*(&copyvalue + length +1) = '\0';*/
-					if (length > 0) {
-						copyvalue = new char[length + 20];
-						strcpy_s(copyvalue, length + 1, values);
-						/*if ( onlyrequired ) {
-							if ( hasFingerText ) {
-								strcat_s( copyvalue, length + 20, "=\"$[![]!]\"$[![]!]" );
-							} else {
-								strcat_s( copyvalue, length + 20, "=\"\"" );
-							}
-
-
-						} else {
-							copyvalue[length] = '=';
-							copyvalue[length +1] = '\0';
-						}*/
-					}
-					sqlite3_finalize(stmt);
-					return copyvalue;
-				}
-			}
-			return NULL;
-		}
-
-		bool tagHasAttribute(char* tag, char* attribute) {
-			bool result = false;
-			int sqlitePrepare;
-			bool cached = false;
-			if (strstr(tag, ".") != NULL || strstr(tag, "'") != NULL) {
-				return false;
-			}
-
-			if (this->ns > 0) {
-				if (this->isCustomTag(tag)) {
-					return true;
-				}
-				sqlite3_stmt* stmt;
-				char* sql = sqlite3_mprintf("SELECT value FROM memcache.cache WHERE name = '%d|tha|%s|%s'", this->ns, tag, attribute);
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				int res = sqlite3_step(stmt);
-				sqlite3_free(sql);
-				if (SQLITE_ROW == res) {
-					const char* values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-					result = 0 == strcmp(values, "1");
-					cached = true;
-				}
-				res = sqlite3_finalize(stmt);
-				if (cached == false) {
-					sqlite3_stmt* stmt;
-					char* sql = "\
-							SELECT t.name as tagname, a.name as attributename \
-							FROM namespaces AS n \
-							INNER JOIN namespacetags AS nt ON n.id = nt.namespaceid \
-							INNER JOIN tags AS t ON nt.tagid = t.id \
-							INNER JOIN tagattributes AS ta on t.[id] = ta.tagid \
-							INNER JOIN attributes AS a ON ta.[attributeid] = a.id \
-							WHERE n.id = ? AND t.name = ? AND a.name = ? ORDER BY t.name, a.name";
-					sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-					sqlite3_bind_int(stmt, 1, this->ns);
-					sqlite3_bind_text(stmt, 2, tag, -1, SQLITE_STATIC);
-					sqlite3_bind_text(stmt, 3, attribute, -1, SQLITE_STATIC);
-
-					// Run the query with sqlite3_step
-
-					if (SQLITE_ROW == sqlite3_step(stmt)) {
-						result = true;
-					}
-
-					sqlite3_finalize(stmt);
-
-					sql = sqlite3_mprintf("INSERT INTO memcache.cache (name, value) VALUES ('%d|tha|%s|%s',%d)", this->ns, tag, attribute, result);
-
-					sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-					res = sqlite3_step(stmt);
-					if (SQLITE_ROW == res) {
-
-					}
-					sqlite3_finalize(stmt);
-					return tagHasAttribute(tag, attribute);
-				}
-			}
-			return result;
-		}
-		char* listAttributeValues(char* tag, char* attribute) {
-			char* copyvalue = NULL;
-			if (this->ns > 0) {
-				int sqlitePrepare;
-				sqlite3_stmt* stmt;
-				char* sql = "\
-						SELECT GROUP_CONCAT(o.value, '\" ') FROM namespaces AS n \
-						INNER JOIN namespacetags AS nt ON n.id = nt.namespaceid \
-						INNER JOIN tags AS t ON nt.tagid = t.id \
-						INNER JOIN tagattributes AS ta ON t.id = ta.tagid \
-						INNER JOIN attributes AS a ON ta.attributeid = a.id \
-						INNER JOIN types AS ty ON ty.id = a.typeid \
-						INNER JOIN typeoptions AS tyo ON ty.id = tyo.typeid \
-						INNER JOIN options AS o ON tyo.optionid = o.id \
-						WHERE n.id = ? AND t.name = ? AND a.name = ?  ORDER BY o.value";
-
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				sqlite3_bind_int(stmt, 1, this->ns);
-				sqlite3_bind_text(stmt, 2, tag, -1, SQLITE_STATIC);
-				sqlite3_bind_text(stmt, 3, attribute, -1, SQLITE_STATIC);
-				// Run the query with sqlite3_step
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					const char* values = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)); // The 0 here means we only take the first column returned. And it is the snippet as there is only one column
-					int length = sqlite3_column_bytes(stmt, 0);
-					if (length > 0) {
-						copyvalue = new char[length + 5];
-						//strcpy_s( copyvalue, length +1, values );
-						strcpy_s(copyvalue, static_cast<rsize_t>(length) + 1, values);//***
-						copyvalue[length] = '"';
-						copyvalue[length + 1] = '\0';
-					}
-					sqlite3_finalize(stmt);
-					return copyvalue;
-				}
-			}
-			return 0;
-		}
+		bool isTag(char* tag);
+		char* listTagAttributes(char* tag);
+		char* listTagAttributes(char* tag, bool forautoc);
+		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText);
+		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText, bool forautoc);
+		bool tagHasAttribute(char* tag, char* attribute);
+		char* listAttributeValues(char* tag, char* attribute);
 	};
 
 	class CFNamespace : public DBNamespace
 	{
 	public:
-		CFNamespace() {
-
-		}
+		CFNamespace() {	}
 		CFNamespace(sqlite3* thedb) : DBNamespace(thedb) {
 			this->ns = 1;
 		}
@@ -490,12 +175,7 @@ namespace nppColdFusion
 		docLinks doclinks;
 		lexLinks lexlinks;
 	public:
-		static nppCFShared* Instance() {
-			if (pinstance == 0) {
-				pinstance = new nppCFShared();
-			}
-			return pinstance;
-		}
+		static nppCFShared* Instance();
 
 		sqlite3* database;
 
@@ -517,182 +197,20 @@ namespace nppColdFusion
 		bool alwaysCompleteReqAttributes;
 		bool completeCFsqltype;
 
-		unsigned int registerLexer(LexerColdFusion* thisLexer) {
-			lexers.push_back(thisLexer);
-			return lexers.size() - 1;
-		}
+		unsigned int registerLexer(LexerColdFusion* thisLexer); ///
 
-		bool linkDocToLexer(unsigned int const& lexID, unsigned int const& docID) {
-			doclinks.insert(docLinks::value_type(docID, lexID));
-			//lexlinks.insert(lexLinks::value_type(lexID, docID));
-			return true;
-		}
+		bool linkDocToLexer(unsigned int const& lexID, unsigned int const& docID);
 
-		LexerColdFusion* getLexerForDoc(unsigned int const& docID) {
-			docLinks::iterator iter = doclinks.find(docID);
-			if (iter != doclinks.end()) {
-				return lexers[iter->second];
-			}
-			return NULL;
-		}
+		LexerColdFusion* getLexerForDoc(unsigned int const& docID);
 
-		bool unregisterLexer(unsigned int const& lexID, unsigned int const& docID) {
-			lexers.push_back(NULL);
-			std::swap(lexers[lexID], lexers[lexers.size() - 1]);
-			doclinks.erase(docID);
-			lexers.erase(lexers.begin() + lexers.size() - 1);
-			while (lexers.size() > 0 && lexers[lexers.size() - 1] == NULL) {
-				lexers.erase(lexers.begin() + lexers.size() - 1);
-			}
-			return true;
-		}
+		bool unregisterLexer(unsigned int const& lexID, unsigned int const& docID);
 
-		void setDB(char* dbfile) {
-			integrateWithFingerText = true;
-			completeCFsqltype = false;
-			alwaysCompleteReqAttributes = false;
-			nppReady = false;
-			int rc;
-			rc = sqlite3_open(dbfile, &this->database);
-			if (rc) {
-				sqlite3_close(this->database);
-			}
+		void setDB(char* dbfile);
 
-			char* userdb;
-			userdb = new char[strnlen_s(dbfile, 512) + 6];
-			strcpy_s(userdb, strnlen_s(dbfile, 512) + 1, dbfile);
-			strcpy_s(userdb + (strnlen_s(dbfile, 512) - 3), 9, "user.db3");
-			int sqlitePrepare;
-			sqlite3_stmt* stmt;
-
-			char* sql = sqlite3_mprintf("ATTACH DATABASE '%s' AS usercfg;", userdb);
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			sqlite3_step(stmt);
-			sqlite3_free(sql);
-
-			sqlite3_finalize(stmt);
-
-			sql = "CREATE TABLE IF NOT EXISTS usercfg.settings (id INT, \
-													name UNIQUE COLLATE NOCASE, \
-													value TEXT);";
-
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			int a = sqlite3_step(stmt);
-			if (SQLITE_DONE == a) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-
-
-			sql = "SELECT name FROM usercfg.settings";
-
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-
-			while (SQLITE_ROW == sqlite3_step(stmt)) {
-				const char* value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)); // The 0 here means we only take the first column returned. And it is the snippet as there is only one column
-				int length = sqlite3_column_bytes(stmt, 0);
-				if (length > 0) {
-					if (strstr(value, "integrateWithFingerText") != 0) {
-						integrateWithFingerText = false;
-						continue;
-					}
-					if (strstr(value, "alwaysCompleteReqAttributes") != 0) {
-						alwaysCompleteReqAttributes = true;
-						continue;
-					}
-					if (strstr(value, "completeCFsqltype") != 0) {
-						completeCFsqltype = true;
-						continue;
-					}
-				}
-
-			}
-			sqlite3_finalize(stmt);
-
-			sql = "ATTACH DATABASE ':memory:' AS memcache;";
-
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			a = sqlite3_step(stmt);
-			if (SQLITE_DONE == a) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-			sql = "CREATE TABLE memcache.cache (createdat DATETIME, \
-													name UNIQUE COLLATE NOCASE, \
-													value TEXT);";
-
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			a = sqlite3_step(stmt);
-			if (SQLITE_DONE == a) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-
-			coldfusionNS = new CFNamespace(this->database);
-			htmlNS = new HTMLNamespace(this->database);
-			sqlNS = new SQLNamespace(this->database);
-			javascriptNS = new JSNamespace(this->database);
-			cssNS = new CSSNamespace(this->database);
-		}
-
-		void cleanupDB() {
-
-			int sqlitePrepare;
-			sqlite3_stmt* stmt;
-			char* sql = "DETACH DATABASE memcache;";
-
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			if (SQLITE_ROW == sqlite3_step(stmt)) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-
-			sql = "DELETE FROM usercfg.settings";
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			if (SQLITE_ROW == sqlite3_step(stmt)) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-
-			if (!integrateWithFingerText) {
-				sql = "INSERT INTO usercfg.settings (name) VALUES (\"integrateWithFingerText\")";
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					// Shouldn't do anything here.
-				}
-				sqlite3_finalize(stmt);
-			}
-			if (alwaysCompleteReqAttributes) {
-				sql = "INSERT INTO usercfg.settings (name) VALUES (\"alwaysCompleteReqAttributes\")";
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					// Shouldn't do anything here.
-				}
-				sqlite3_finalize(stmt);
-			}
-			if (completeCFsqltype) {
-				sql = "INSERT INTO usercfg.settings (name) VALUES (\"completeCFsqltype\")";
-				sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-				if (SQLITE_ROW == sqlite3_step(stmt)) {
-					// Shouldn't do anything here.
-				}
-				sqlite3_finalize(stmt);
-			}
-
-
-			sql = "DETACH DATABASE usercfg";
-			sqlitePrepare = sqlite3_prepare_v2(this->database, sql, -1, &stmt, NULL);
-			if (SQLITE_ROW == sqlite3_step(stmt)) {
-				// Shouldn't do anything here.
-			}
-			sqlite3_finalize(stmt);
-			sqlite3_close(database);
-		}
+		void cleanupDB();
 
 	protected:
-
 		nppCFShared() {}
-
 		nppCFShared(const nppCFShared&);
 		nppCFShared& operator= (const nppCFShared&);
 
@@ -727,9 +245,7 @@ namespace nppColdFusion
 
 		boost::shared_ptr<WordList> keywords;
 
-		int getKeywordState() const {
-			return this->keywordstate;
-		}
+		int getKeywordState() const;
 
 		virtual bool hasKeyword(char* /*s*/) {
 			return false;//this->keywords->InList(s);
@@ -743,19 +259,11 @@ namespace nppColdFusion
 			return false;//this->keywords->InList(s);
 		}
 
-		void updatefromlinestate(int linestate) {
-			this->inBlock = (linestate >> this->bitshift) & this->bitmask;
-		}
+		void updatefromlinestate(int linestate);
 
-		void updatelinestate(int& linestate) const {
-			linestate = (linestate & ~(this->bitmask << this->bitshift) | (this->inBlock & this->bitmask) << this->bitshift);
-		}
+		void updatelinestate(int& linestate) const;
 
-		void updateWordList(WordList& wl) {
-			this->keywords.reset(&wl);
-
-		}
-
+		void updateWordList(WordList& wl);
 
 		BlockType() {
 			inBlock = 0;
@@ -764,7 +272,6 @@ namespace nppColdFusion
 			allowscommentblock = true;
 			keywordstate = Styles::_DEFAULT;
 			boost::shared_ptr<WordList> keywords(new WordList);
-
 		}
 		virtual ~BlockType() {
 			//delete keywords;
@@ -779,14 +286,8 @@ namespace nppColdFusion
 			bitshift = 19;
 			keywordstate = Styles::CSS_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc) {
-			return sc.state != Styles::CF_VALUE && sc.GetRelative(-1) != '#' && sc.GetRelative(-1) != '.';
-
-		}
-		bool hasKeyword(char* keyword) {
-			nppCFShared& ref = *nppCFShared::Instance();
-			return ref.cssNS->isKeyword(keyword);
-		}
+		bool validateforkeyword(StyleContext sc);
+		bool hasKeyword(char* keyword);
 	};
 
 	class JSBlock : public BlockType
@@ -796,14 +297,8 @@ namespace nppColdFusion
 			bitshift = 18;
 			keywordstate = Styles::JS_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc) {
-			return sc.state != Styles::CF_VALUE;
-		}
-
-		bool hasKeyword(char* keyword) {
-			nppCFShared& ref = *nppCFShared::Instance();
-			return ref.javascriptNS->isKeyword(keyword);
-		}
+		bool validateforkeyword(StyleContext sc);
+		bool hasKeyword(char* keyword);
 	};
 
 	class CFScriptBlock : public BlockType
@@ -813,63 +308,15 @@ namespace nppColdFusion
 			bitshift = 17;
 			keywordstate = Styles::CF_FUNCTION;
 		}
-		bool validateforkeyword(StyleContext sc, bool inCFSet) {
-			return validateforkeyword(sc);
-		}
+		bool validateforkeyword(StyleContext sc, bool inCFSet);
 
-		bool validateforkeyword(StyleContext sc) {
-			return sc.state != Styles::CF_VALUE && sc.state != Styles::_COMMENT && sc.state != Styles::_COMMENTBLOCK && sc.state != Styles::_SINGLESTRING && sc.state != Styles::_DOUBLESTRING;
+		bool validateforkeyword(StyleContext sc);
 
-		}
+		bool hasKeyword(char* keyword);
 
-		bool hasKeyword(char* keyword) {
-			auto length = strnlen_s(keyword, 100);
-			if (length > 1 && length < 40) {//*** maybe define constants
-				nppCFShared& ref = *nppCFShared::Instance();
-				return ref.coldfusionNS->isKeyword(keyword);
-			}
-			return false;
-		}
+		bool hasOperator(char* operatorword);
 
-		bool hasOperator(char* operatorword) {
-			//return false;//************
-			auto length = strnlen_s(operatorword, 100);
-			if (length > 7 || length == 1) {
-				return false;
-			}
-			char* copyvalue = new char[length + 10];
-			strcpy_s(copyvalue, 2, (const char*)" ");
-
-			strcat_s(copyvalue, length + 2, operatorword);
-			copyvalue[length + 1] = ' ';
-			copyvalue[length + 2] = '\0';
-
-			char* operators = " lt le lte gt ge gte is eq neq equal not contains does contain than greater or less to and xor eqv imp mod ";
-			if (length > 1 && length < 40) {
-				return (strstr(operators, copyvalue) != NULL);
-			}
-			return false;
-		}
-
-		bool hasReservedWord(char* reservedword) {
-			//
-			auto length = strnlen_s(reservedword, 100);
-			
-			if (length > 9 || length == 1) {
-				return false;
-			} 
-
-			char* copyvalue = new char[length + 10];
-			strcpy_s(copyvalue, 2, (const char*)" ");
-
-			strcat_s(copyvalue, length + 2, reservedword);
-			copyvalue[length + 1] = ' ';
-			copyvalue[length + 2] = '\0';
-
-			char* rwords = " component property function break if else switch case catch continue default do for in return try var while ";
-			//return false;  //*************************
-			return (strstr(rwords, copyvalue) != NULL);
-		}
+		bool hasReservedWord(const char* reservedword);
 	};
 
 
@@ -880,16 +327,13 @@ namespace nppColdFusion
 			bitshift = 16;
 			keywordstate = Styles::SQL_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc) {
-			return sc.state != Styles::CF_VALUE;
-		}
-		bool hasKeyword(char* keyword) {
-			nppCFShared& ref = *nppCFShared::Instance();
-			return ref.sqlNS->isKeyword(keyword);
-		}
+		bool validateforkeyword(StyleContext sc);
+		bool hasKeyword(char* keyword);
 	};
+
+
 	/* XPM */
-	static char* tags_red[] = {
+	static const char* tags_red[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 32 1 ",
 		"  c #DB4040",
@@ -944,7 +388,7 @@ namespace nppColdFusion
 	};
 
 	/* XPM */
-	static char* tags_blue[] = {
+	static const char* tags_blue[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 34 1 ",
 		"  c #3977D9",
@@ -1001,7 +445,7 @@ namespace nppColdFusion
 	};
 
 	/* XPM */
-	static char* cf_func[] = {
+	static const char* cf_func[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 61 1 ",
 		"  c #43A2C2",
@@ -1084,7 +528,7 @@ namespace nppColdFusion
 		"AAAAAAAAAAAAAAAA"
 	};
 	/* XPM */
-	static char* attr_blue[] = {
+	static const char* attr_blue[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 76 1 ",
 		"  c gray68",
@@ -1184,7 +628,7 @@ namespace nppColdFusion
 
 
 	/* XPM */
-	static char* attr_red[] = {
+	static const char* attr_red[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 77 1 ",
 		"  c gray68",
@@ -1284,7 +728,7 @@ namespace nppColdFusion
 	};
 
 	/* XPM */
-	static char* tag_green[] = {
+	static const char* tag_green[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 77 1 ",
 		"  c #89AE67",
@@ -1384,7 +828,7 @@ namespace nppColdFusion
 	};
 
 	/* XPM */
-	static char* shield[] = {
+	static const char* shield[] = {
 		/* columns rows colors chars-per-pixel */
 		"16 16 59 1 ",
 		"  c #D48F1D",

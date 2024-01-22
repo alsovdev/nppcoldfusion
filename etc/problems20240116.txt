@@ -1528,3 +1528,48 @@ bool hasOperator(char* operatorword) {
 	}
 	char* copyvalue = new char[length + 10];
 	strcpy_s(copyvalue, 2, (const char*)" ");
+	
+на c++ 17 обновилось без вопросов
+на c++ 20 error C2440: 'initializing': cannot convert from 'const char [12]' to 'char *'
+
+const char* sql = "\
+				SELECT '%s' || GROUP_CONCAT(b.name, '%s') || '%s' FROM ( \
+    SELECT t.name FROM namespaces n \
+    INNER JOIN namespacetags nt ON n.id = nt.namespaceid \
+    INNER JOIN tags t ON nt.tagid = t.id \
+    WHERE n.id = ? ORDER BY t.name \
+) AS b";
+
+sql = const_cast<char*>("CREATE TABLE memcache.cache (createdat DATETIME, \
+										name UNIQUE COLLATE NOCASE, \
+										value TEXT);");
+вот так, потому то sqlite, ему почему то надо char*
+
+	template <typename T>
+	class PublicSparseState : public SparseState<typename T> {
+	public:
+		PublicSparseState() {}
+		~PublicSparseState() {}
+		const stateVector getStates() { return states; }
+		void setPositionFirst(int positionFirst_) { positionFirst = positionFirst_; }
+	};
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.h(58,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+
+#include "SparseState.h" - хуже
+Устал 05:35
+
+Может быть, глюк связан с тем, что в заголовке много реализации? Зачем так сделано. 
+Разобрать? И после этого откомпилировать получившийся cpp
+
+
+warning C4458: declaration of 'keywords' hides class member
+
+Прочитал, что как правило реализация класса должна размещаться в заголовке. Это же капец. 
+
+Получается, что я часть методов (не сильно нагруженную смыслом) определяю в заголовке, а часть в cpp
+
+18:58
+Сбилдилось
+
+Вот почему плохо подсвечивался скрипт: слишком темный цвет выбран для AND OR etc, наверно XML не тот
+

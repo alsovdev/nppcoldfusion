@@ -40,7 +40,7 @@ public:
 	AutoCompleteStructure();
 	~AutoCompleteStructure();
 	int pos;
-	char * text;
+	const char * text; ///
 };
 
 class AutoCompleteBit : public AutoCompleteStructure

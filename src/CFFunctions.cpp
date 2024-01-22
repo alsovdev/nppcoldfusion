@@ -8085,7 +8085,7 @@ cffunction getfunction( const char * input )
 	return cffunction();
 
 }
-char * getTypeAsString( cftypes type )
+const char * getTypeAsString( cftypes type )
 {
 	switch ( type ) {
 	case T_ANY:

@@ -32,7 +32,7 @@ enum cftypes {
 class cfparameter
 {
 public:
-	char* name;
+	const char* name;
 	cftypes type;
 
 	cfparameter();
@@ -77,7 +77,7 @@ public:
 	cffunction();
 	~cffunction();
 public:
-	char* name;
+	const char* name;
 	cfparameter parameters[10];
 	bool parameterrequired[10];
 	cftypes returntype;
@@ -12404,7 +12404,7 @@ public:
 
 };
 cffunction getfunction(const char* input);
-char* getTypeAsString(cftypes type);
+const char* getTypeAsString(cftypes type);
 
 
 

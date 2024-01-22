@@ -26,6 +26,8 @@
 #define generic_strncpy_s strncpy_s
 #endif
 
+//#pragma once
+//#include "SparseState.h" ///
 #include "nppCFShared.h"
 #include <boost\algorithm\string\case_conv.hpp>
 namespace nppColdFusion
@@ -48,13 +50,15 @@ namespace nppColdFusion
 	class nppCFShared;
 	class Status;
 
+	
+	class CFBaseType; // forward declaration 
 	template <typename T>
 	class PublicSparseState : public SparseState<typename T> {
 	public:
 		PublicSparseState() {}
 		~PublicSparseState() {}
-		const stateVector getStates() { return states; }
-		void setPositionFirst(int positionFirst_) { positionFirst = positionFirst_; }
+		const SparseState<CFBaseType>::stateVector getStates() { return this->states; }
+		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
 	};
 
 
@@ -95,7 +99,7 @@ namespace nppColdFusion
 		PublicSparseState<CFBaseType> arguments;
 		PublicSparseState<CFBaseType> locals;
 		PublicSparseState<unsigned int> bracketDepths;
-		typedef PublicSparseState<CFBaseType>::stateVector stateVector;
+		typedef PublicSparseState<CFBaseType>::stateVector stateVector; ///
 		CFUserFunction();
 		CFUserFunction(unsigned int ipos);
 
@@ -109,7 +113,7 @@ namespace nppColdFusion
 			return (pos != other.pos) || (name != other.name) || (locals.size() != other.locals.size() || other.dirtyLocals) || (arguments.size() != other.arguments.size() || other.dirtyArguments);
 		}
 
-		const std::string getSortedList(PublicSparseState<CFBaseType>& list, char* append = "\0") {
+		const std::string getSortedList(PublicSparseState<CFBaseType>& list, const char* append = "\0") {
 			std::vector<std::string> tmp;
 			std::vector<std::string>::iterator it;
 			std::string sortedList;
@@ -128,14 +132,14 @@ namespace nppColdFusion
 			return sortedList;
 		}
 
-		std::string getLocalsSorted(char* append = "\0") {
+		std::string getLocalsSorted(const char* append = "\0") {
 			if (dirtyLocals || append[0] != '\0') {
 				sortedLocals.assign(getSortedList(locals, append));
 			}
 			return sortedLocals;
 		}
 
-		std::string getArgumentssSorted(char* append = "\0") {
+		std::string getArgumentssSorted(const char* append = "\0") {
 			if (dirtyArguments || append[0] != '\0') {
 				sortedArguments.assign(getSortedList(arguments, append));
 			}

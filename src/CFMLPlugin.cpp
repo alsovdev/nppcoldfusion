@@ -463,7 +463,7 @@ void CFMLPlugin::OnSciCharAdded( int ch )
 			}
 			previousword[j++] = '\0';
 			cffunction thisone = getfunction( previousword );
-			char * calltipstart;
+			const char * calltipstart;
 
 			if ( strcmp( thisone.name, "notafunction" ) != 0 ) {
 				calltipstart = getTypeAsString( thisone.returntype );
