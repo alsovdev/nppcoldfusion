@@ -1596,3 +1596,9 @@ public:
 	void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
 };
 
+Попробовал удалить .def
+1>LINK : fatal error LNK1104: cannot open file '../src/nppColdFusion_Plugin.def'
+Убрал ссылку на него - сбилдилось
+Надо бы все таргеты привести к единообразию. И лишнее может убрать
+
+? План апгрейда на ILexer5

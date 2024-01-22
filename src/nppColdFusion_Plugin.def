@@ -1,7 +1,0 @@
-LIBRARY	"nppColdFusion"
-
-EXPORTS
-	GetLexerCount = GetLexerCount
-	GetLexerName = GetLexerName
-	GetLexerStatusText = GetLexerStatusText
-	GetLexerFactory = GetLexerFactory

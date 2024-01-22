@@ -48,6 +48,15 @@
     <ClCompile Include="..\src\nppCFMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\LexerBase.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\PropSetSimple.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\WordList.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\nppColdFusion.h">
@@ -95,11 +104,17 @@
     <ClInclude Include="..\src\nppCFMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Lexer\lexlib\LexerBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lexer\lexlib\PropSetSimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lexer\lexlib\WordList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\nppColdFusion_Plugin.def">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="..\src\nppColdFusion.xml">
       <Filter>Extra Files</Filter>
     </None>

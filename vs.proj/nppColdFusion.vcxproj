@@ -134,7 +134,7 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|x64'">true</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">..\..\..\..\boost_1_58_0\;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">
@@ -157,7 +157,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\scintilla\win32\Unicode Debug\WordList;.\..\..\scintilla\win32\Unicode Debug\Accessor;.\..\..\scintilla\win32\Unicode Debug\LexerBase;.\..\..\scintilla\win32\Unicode Debug\PropSetSimple;.\..\..\scintilla\win32\Unicode Debug\StyleContext;.\..\..\sqlite3\sqlite3\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
@@ -191,10 +191,11 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -227,7 +228,7 @@
       <AdditionalOptions>/PD %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug\SciLexer.lib;D:\code\npp\scintilla\bin\scintilla.lib;D:\code\npp\scintilla\bin\SciLexer.lib;.\..\..\scintilla\win32\WordList;.\..\..\scintilla\win32\LexerBase;.\..\..\scintilla\win32\PropSetSimple;.\..\..\scintilla\win32\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -237,7 +238,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImportLibrary>.\..\bin\nppColdFusion.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>D:\code\npp\scintilla\win32\Unicode Debug;D:\code\npp\scintilla\bin;D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -262,7 +263,7 @@
       <AdditionalOptions>/PD %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug\SciLexer.lib;D:\code\npp\scintilla\bin\scintilla.lib;D:\code\npp\scintilla\bin\SciLexer.lib;.\..\..\scintilla\win32\WordList;.\..\..\scintilla\win32\LexerBase;.\..\..\scintilla\win32\PropSetSimple;.\..\..\scintilla\win32\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -271,7 +272,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImportLibrary>.\..\bin\nppColdFusion.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>D:\code\npp\scintilla\win32\Unicode Debug;D:\code\npp\scintilla\bin;D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -289,7 +290,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\scintilla\vcbuild\Release\WordList;.\..\..\scintilla\vcbuild\Release\Accessor;.\..\..\scintilla\vcbuild\Release\LexerBase;.\..\..\scintilla\vcbuild\Release\PropSetSimple;.\..\..\scintilla\vcbuild\Release\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -315,7 +316,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\scintilla\vcbuild\Release\WordList;.\..\..\scintilla\vcbuild\Release\Accessor;.\..\..\scintilla\vcbuild\Release\LexerBase;.\..\..\scintilla\vcbuild\Release\PropSetSimple;.\..\..\scintilla\vcbuild\Release\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -340,7 +341,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\scintilla\vcbuild\Debug\WordList;.\..\..\scintilla\vcbuild\Debug\Accessor;.\..\..\scintilla\vcbuild\Debug\LexerBase;.\..\..\scintilla\vcbuild\Debug\PropSetSimple;.\..\..\scintilla\vcbuild\Debug\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
@@ -364,7 +365,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>.\..\..\scintilla\vcbuild\Debug\WordList;.\..\..\scintilla\vcbuild\Debug\Accessor;.\..\..\scintilla\vcbuild\Debug\LexerBase;.\..\..\scintilla\vcbuild\Debug\PropSetSimple;.\..\..\scintilla\vcbuild\Debug\StyleContext;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\sqlite3\sqlite3\x64\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>../src/nppColdFusion_Plugin.def</ModuleDefinitionFile>
@@ -413,7 +414,6 @@
     <None Include="..\src\nppColdFusion.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="..\src\nppColdFusion_Plugin.def" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
