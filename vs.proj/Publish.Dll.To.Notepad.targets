@@ -1,0 +1,57 @@
+<!-- 
+	This file is set to be imported automatically by the application inside NWScript-Lexer.vcxproj XML file. 
+	It is just to facilitate debugging. If you don't want to publish to notepad automatically, just edit the vcxproj file
+	and remove the Import reference in the end of file. -->
+
+<Project
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="NotepadPlugin.DllExport.MSBuild.DllExportTask"
+             AssemblyFile="NotepadPlugin.DllExport.MSBuild.dll"/>
+  <Target Name="AfterBuild">
+    <PropertyGroup>
+      <!-- LibToolPath is optional - it's needed to debug C++, but you can still debug the C# code without it
+			If you don't have the C++ toolchain installed this is missing, but then you can't' debug C++ anyway -->
+      <LibToolPath Condition="Exists('$(DevEnvDir)\..\..\VC\bin')">$(DevEnvDir)\..\..\VC\bin</LibToolPath>
+      <CopyRetryCount>0</CopyRetryCount>
+    </PropertyGroup>
+	<!-- $(MSBuildProgramFiles32) points to the 32 bit program files dir.
+		On 32 bit windows usually C:\Program Files\
+		On 64 bit windows usually C:\Program Files (x86)\
+		$(ProgramW6432) points to the 64bit Program Files (on 32 bit windows it is blank) -->
+	<!-- 32bit section-->
+	<Message Text="   Creating directory -&gt; $(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\" 
+				Condition="Exists('$(MSBuildProgramFiles32)\Notepad++\plugins\') AND !Exists('$(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\') 
+					AND '$(Platform)'=='x86'" 
+				Importance="high" />
+	<MakeDir Directories="$(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\" 
+				Condition="Exists('$(MSBuildProgramFiles32)\Notepad++\plugins\') AND !Exists('$(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\') 
+					AND '$(Platform)'=='x86'" 
+				ContinueOnError="ErrorAndStop" />
+	<Message Text="Copying $(TargetFileName) -&gt; $(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\" 
+				Condition="'$(Platform)'=='x86'" 
+				Importance="high" />
+	<Copy SourceFiles="$(TargetPath)" 
+			DestinationFolder="$(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\" 
+			Condition="Exists('$(MSBuildProgramFiles32)\Notepad++\plugins\$(TargetName)\') AND '$(Platform)'=='x86'" 
+			Retries="0"
+			ContinueOnError="ErrorAndStop"/>
+	  
+	<!-- 64bit section-->
+	<Message Text="   Creating directory -&gt; $(ProgramW6432)\Notepad++\plugins\$(TargetName)\" 
+				Condition="Exists('$(ProgramW6432)\Notepad++\plugins\') AND !Exists('$(ProgramW6432)\Notepad++\plugins\$(TargetName)\') 
+						AND '$(Platform)'=='x64' AND '$(ProgramW6432)'!=''" 
+				Importance="high" />
+	<MakeDir Directories="$(ProgramW6432)\Notepad++\plugins\$(TargetName)\" 
+				Condition="Exists('$(ProgramW6432)\Notepad++\plugins\') AND !Exists('$(ProgramW6432)\Notepad++\plugins\$(TargetName)\') 
+						AND '$(Platform)'=='x64' AND '$(ProgramW6432)'!=''" 
+				ContinueOnError="ErrorAndStop" />
+	<Message Text="Copying $(TargetFileName) -&gt; $(ProgramW6432)\Notepad++\plugins\$(TargetName)\" 
+				Condition="'$(Platform)'=='x64' AND '$(ProgramW6432)'!=''" 
+				Importance="high" />
+	<Copy SourceFiles="$(TargetPath)" 
+			DestinationFolder="$(ProgramW6432)\Notepad++\plugins\$(TargetName)\" 
+			Condition="Exists('$(ProgramW6432)\Notepad++\plugins\$(TargetName)\') AND '$(Platform)'=='x64' AND '$(ProgramW6432)'!=''" 
+			Retries="0"
+			ContinueOnError="ErrorAndStop"/>
+  </Target>
+</Project>

@@ -1,0 +1,184 @@
+12:47 09.05.2023
+https://community.notepad-plus-plus.org/topic/17677/coldfusion-lexer-and-npp-after-7-5-9/2
+https://sourceforge.net/p/notepad-plus/discussion/482781/thread/12a641df/
+
+Какой компилятор использовать? Посмотрим, что скажет VSCode. vcbuild.vcxproj
+Несовместимость с актуальными плагинами NPP (адаптировать к плагинной системе)
+Динамически слинкованный SQLite (слинковать статически или заменить в коде)
+Зависание на скриптах
+Еще нужно сделать автозакрытие тегов
+32 64
+ANSI/UNICODE
+<!--- ---> в контекстном меню
+
+Скомпилировать исходники как угодно
+Найти пример для актуального плагина нпп
+
+поставил студию 19, открыл vcprojx, не обновлять
+Серьезность	Код	Описание	Проект	Файл	Строка	Состояние подавления
+Ошибка	MSB8020	Не удается найти средства сборки для Visual Studio 2010 (набор инструментов платформы = "v100"). Чтобы выполнить сборку с использованием средств сборки v100 установите средства сборки Visual Studio 2010.  Кроме того, можно выполнить обновление до текущей версии средств Visual Studio, перейдя в меню "Проект" или щелкнув решение правой кнопкой мыши и выбрав "Обновить решение...".	nppColdFusion	C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets	439
+рискнуть проапгрейдиться? 
+Проект -> перенацелить (почему у меня не английский по умолчанию)
+
+Запуститься с NPP 7.5.9- 32bit portable (+собранный оригинальный плагин) - ОК 7.5.6 Требует SQLite.dll
+Скомпилировать плагин
+Проверить, что работает
+Варианты дальше
+	Статическая линковка SQLite - проверить на 7.6 (до перехода на новый протокол плагинов)
+	Новый протокол плагинов	
+	64 bit
+
+Переместил исходники 7.5.6 уровнем выше. NPP сорцы увиделись
+Не находит SciLexer.vcproj. Качнул, ничего не понимая https://groups.google.com/g/scite-interest/c/pPqRHYWAEDc
+SciLexer увиделся, зато NPP сбой загрузки. Перезагрузить проект с зависимостями не получается
+Переоткрыл сольюшен - норм
+Решил добавить английский к студии. По ходу, тупанул и поставил вторую студию до кучи. Лишнего вагон наставил. Еще 2 студии 2022... И сейчас место на C закончится. И фрагментация MBR уже в гости к нам. Теперь удалил студию - не ту. Перепутал с Build Tools, выглядит похоже. VS 2022 снес и Build Tools. Опа, теперь ставится только 2022
+Проекты сказал не обновлять (при открытии)
+Переключился на английский
+D:\code\npp\PowerEditor\visual.net\notepadPlus.vcxproj : error  : Cannot load project: project does not contain requested configuration ANSI Debug|Win32. Please verify that .sln file is valid and uses only existing project configurations.
+
+
+D:\code\npp\scintilla\vcbuild\SciLexer.vcxproj : warning  : The build tools for Visual Studio 2013 (v120) cannot be found. To build using the Visual Studio 2022 (v143) build tools, either click the Project menu or right-click the solution, and then select "Retarget Solution". Install Visual Studio 2013 (v120) to build using the Visual Studio 2013 (v120) build tools.
+
+D:\code\npp\scintilla\vcbuild\SciLexer.vcxproj : warning  : Wildcards and/or some other MSBuild constructs used in project item definitions are not supported in VC projects. They can lead to unexpected behavior, instability or performance degradation in the Visual Studio IDE. Please refer to https://aka.ms/cpp/projectwildcards for supported options.
+
+D:\code\npp\SQLite3\SQLite3\SQLite3.vcxproj : error  : The project file could not be loaded. Could not find a part of the path 'D:\code\npp\SQLite3\SQLite3\SQLite3.vcxproj'.  D:\code\npp\SQLite3\SQLite3\SQLite3.vcxproj
+
+SQLite должен быть в сорцах NPP или nppCF. Но не нашел
+Переключил на юникод win32 - стало норм, кроме SQLite, который у меня пустой
+Но при билде все в ошибках
+Алсо D:\code\npp\scintilla\vcbuild\SciLexer.vcxproj : warning  : Wildcards and/or some other MSBuild constructs used in project item definitions are not supported in VC projects. They can lead to unexpected behavior, instability or performance degradation in the Visual Studio IDE. Please refer to https://aka.ms/cpp/projectwildcards for supported options.
+Какое-то нереальное количество ошибок в SQLite3. А зачем мне вообще исходники? Я же длл использую
+
+GetHangulOfHanja не находит, а почему? cxx HanjaDic.cxx на месте. Попробовал добавить в AdditionalIncludeDirectories
+не помогло
+ScintillaWin.obj : error LNK2019: unresolved external symbol "int __cdecl HanjaDict::GetHangulOfHanja(unsigned short *)" (?GetHangulOfHanja@HanjaDict@@YAHPAG@Z) referenced in function __catch$?CTWndProc@ScintillaWin@@CGJPAUHWND__@@IIJ@Z$0
+1>D:\code\npp\nppcoldfusion\vcbuild\solution\Debug\SciLexer.dll : fatal error LNK1120: 1 unresolved externals
+win32/SciLexer.vcxproj
+Нет precompiledheaders.h от notepad-plus
+сказал билдить - не помогло
+atlbase.h: No such file or directory
+https://stackoverflow.com/questions/3898287/c-include-atlbase-h-is-not-found
+в инсталлере ATL библиотека для v143
+вот тут оно, почему не видно?
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.36.32532\atlmfc\include
+
+пробую скомпилить NPP
+Ругаемся на версию билд тулз/ Пункта Retarget нет ни на проекте ни на сольюшене
+General->Platform toolset
+error C2220: the following warning is treated as an error
+warning C4996: 'GetVersionExW': was declared deprecated
+https://stackoverflow.com/questions/22303824/warning-c4996-getversionexw-was-declared-deprecated - это не то, что меня волнует. Мне бы сбилдиться. 
+Properties->C/C++->Treat Warnings as Errors: No (/WX-)
+1>Done building project "notepadPlus.vcxproj".
+========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
+========== Rebuild started at 2:10 PM and took 55,241 seconds ==========
+
+Upgrading project 'Notepad++'...
+	Configuration 'Unicode Debug|Win32': cannot upgrade as this platform is not supported by this Visual Studio version.
+	Configuration 'Unicode Debug|x64': no platform toolset upgrade required. Platform Toolset is 'v143'.
+	Configuration 'Unicode Release|Win32': changing Platform Toolset to 'v143' (was 'v142').
+	Configuration 'Unicode Release|x64': cannot upgrade as this platform is not supported by this Visual Studio version.
+
+Попробовал снова собрать: та же ошибка. В свойствах старое.
+1>Done building project "notepadPlus.vcxproj".
+========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
+========== Rebuild started at 2:16 PM and took 01:20,156 minutes ==========
+#include <boost/shared_ptr.hpp>
+3>D:\code\npp\nppcoldfusion\src\nppLexCommon.h(39,10): fatal  error C1083: Cannot open include file: 'boost/shared_ptr.hpp': No such file or directory
+Добавил boost_1_46_1 в Additional Include Directories согласно https://www.boost.org/doc/libs/1_82_0/more/getting_started/windows.html#build-from-the-visual-studio-ide, эта ругань пропала
+*** это только Unicode Debug
+5:52 22.05.2023
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SciLexer", "..\..\..\scintilla\win32\SciLexer.vcxproj", тут правильно
+попытка сбилдить лексер
+1>D:\code\npp\scintilla\win32\SciLexer.vcxproj(143,5): error : This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is ..\..\PowerEditor\visual.net\packages\boost.1.58.0.0\build\native\boost.targets.
+а началось это, когда я переключился на проект в win32, там рядом был packages.config
+Кто-то из проектов ссылается на boost прямо
+судя по всему, scintilla и не соберется студией? А может, и не надо?
+Убрал из сборки
+error C2248: 'SparseState<T>::stateVector': cannot access private typedef declared in class 'SparseState<T>'
+похоже, баг студии?
+https://developercommunity.visualstudio.com/t/bug-in-access-checking-on-explicit-instantiation-o/262398
+
+закончилось тем, что не можем найти obj из scintilla
+
+13:34 24.05.2023 подумав о несовместимости со стандартными либам, заменил 
+освежились
+retarget solution 
+ничего не понимая переименовал Scintilla win32 Unicode Debug в build
+Дошли до 3>LINK : fatal error LNK1104: cannot open file '.\..\..\sqlite3.obj'
+вот откуда пути лезут <AdditionalDependencies>.\..\..\scintilla\win32\build\WordList;.\..\..\scintilla\win32\build\Accessor;.\..\..\scintilla\win32\build\LexerBase;.\..\..\scintilla\win32\build\PropSetSimple;.\..\..\scintilla\win32\build\StyleContext;.\..\..\sqlite3\sqlite3\Debug\sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+https://stackoverflow.com/questions/14714877/mismatch-detected-for-runtimelibrary
+3>nppColdFusion.obj : error LNK2001: unresolved external symbol "public: virtual void __stdcall LexerBase::Release(void)" (?Release@LexerBase@@UAGXXZ) sci не собрался... пытаться собрать?
+возможно, связано с бустом https://community.notepad-plus-plus.org/topic/17605/error-build-scilexer-dll-with-boost
+
+?https://otvet.mail.ru/question/214643732
+nmake BOOSTPATH=D:\code\npp\boost_1_58_0\ BOOSTREGEXLIBPATH=C:\tmp\boostregexLib\x64\ -f scintilla.mak  -
+та же ругань, что и в VS
+1_46_1 то же
+
+10:52 25.05.2023
+Прочел, что boostregex давно в std
+Убрал
+scintilla.mak
+#!INCLUDE ../boostregex/nppSpecifics.mak
+Developer command prompt
+D:\code\npp\scintilla\win32>nmake -f scintilla.mak
+сбилдилось в текущую директорию. *** пофиксить, но пока просто кинул в ./build
+
+error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in WordList.obj
+попробую собрать из студии
+закомментил 	
+Line 125:     <ClCompile Include="..\boostregex\*.cxx" />
+Line 132:     <ClInclude Include="..\boostregex\*.h" />
+
+1>Document.obj : error LNK2019: unresolved external symbol "class Scintilla::RegexSearchBase * __cdecl Scintilla::CreateRegexSearch(class Scintilla::CharClassify *)" (?CreateRegexSearch@Scintilla@@YAPAVRegexSearchBase@1@PAVCharClassify@1@@Z) referenced in function __catch$?AddData@Document@Scintilla@@UAGHPADH@Z$1
+1>D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug\SciLexer.dll : fatal error LNK1120: 1 unresolved externals
+
+#include <boost/regex.hpp> так студия не ругается
+LINK : fatal error LNK1104: cannot open file 'libboost_regex-vc140-mt-gd-1_58.lib' может быть, мы почти у цели
+Вот тут есть D:\code\npp\nppcoldfusion\vcbuild\solution\packages\boost_regex-vc120.1.58.0.0\lib\native\address-model-32\lib
+boost_regex-vc120-mt-gd-1_58.lib 
+Обмануть, переименовать?
+#INCLUDE <regex>
+опять
+Document.obj : error LNK2019: unresolved external symbol "class Scintilla::RegexSearchBase * __cdecl Scintilla::CreateRegexSearch(class Scintilla::CharClassify *)" (?CreateRegexSearch@Scintilla@@YAPAVRegexSearchBase@1@PAVCharClassify@1@@Z) referenced in function __catch$?AddData@Document@Scintilla@@UAGHPADH@Z$1
+#include <boost/regex.hpp> и подложил переименованную либу
+ругань та же убрал ..\..\lib
+1LINK  fatal error LNK1104 cannot open file 'libboost_regex-vc140-mt-gd-1_58.lib'
+а с ..\..\lib; по-другому... ну хоть либу видим
+#include <boost/regex.hpp> убрал
+теперь  error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in WordList.obj
+опять 25
+https://learn.microsoft.com/en-us/cpp/build/reference/md-mt-ld-use-run-time-library?view=msvc-170
+Попробовал в scintilla.mak
+CXXDEBUG=-Od -MDd -DDEBUG
+CXXNDEBUG=-O1 -MD -DNDEBUG -GL
+вернулись к
+1>Document.obj : error LNK2019: unresolved external symbol "class Scintilla::RegexSearchBase * __cdecl Scintilla::CreateRegexSearch(class Scintilla::CharClassify *)" (?CreateRegexSearch@Scintilla@@YAPAVRegexSearchBase@1@PAVCharClassify@1@@Z) referenced in function __catch$?AddData@Document@Scintilla@@UAGHPADH@Z$1
+1>D:\code\npp\nppcoldfusion\vcbuild\solution\Unicode Debug\SciLexer.dll : fatal error LNK1120: 1 unresolved externals
+nmake BOOSTPATH=D:\code\npp\boost_1_58_0\ BOOSTREGEXLIBPATH=C:\tmp\boostregexLib\x64\ -f scintilla.mak DEBUG=1
+собралось
+пересборка сольюшена
+4>nppColdFusion.obj : error LNK2019: unresolved external symbol "public: __thiscall WordList::WordList(bool)" (??0WordList@@QAE@_N@Z) referenced in function "public: __thiscall nppColdFusion::BlockType::BlockType(void)" (??0BlockType@nppColdFusion@@QAE@XZ) ...
+*** на будущее https://github.com/jacobslusser/ScintillaNET/issues/457 x64
+
+D:\code\npp\boost_1_58_0>bootstrap.bat
+Building Boost.Build engine
+cl : Command line warning D9035 : option 'GZ' has been deprecated and will be removed in a future release
+cl : Command line warning D9036 : use 'RTC1' instead of 'GZ'
+cl : Command line warning D9002 : ignoring unknown option '/MLd'
+появился bjam.exe
+
+что то не получается сбилдить буст. И есть сомнение, что я вообще занимаюсь не ерундой, раз он в стандарнтных либах. И там еще msvc-12
+14:32 05.06.2023
+Еще вариант. Закомментировать все зависимости, чтобы только сбилдилось и заработало.
+поменял scilexer на static
+12:12 06.06.2023
+добавил  scintilla/src (там есть заголовки) как пишут тут https://stackoverflow.com/questions/23882112/how-to-add-static-libraries-to-a-visual-studio-project
+Не находит теперь зависимости win32\build - но они указаны руками. Пока просто копирнул из Unicode Debug
+Configuration manager
+Снова вернулись туда же
+Creating library ..\..\PowerEditor\bin\plugins\nppColdFusion.lib and object ..\..\PowerEditor\bin\plugins\nppColdFusion.exp
+4>nppColdFusion.obj : error LNK2019: unresolved external symbol "public: __thiscall WordList::WordList(bool)" (??0WordList@@QAE@_N@Z) referenced in function "public: __thiscall nppColdFusion::BlockType::BlockType(void)" (??0BlockType@nppColdFusion@@QAE@XZ)
+D:\code\npp\scintilla\bin добавил в Linker Linker->General->Additional Library Directories 

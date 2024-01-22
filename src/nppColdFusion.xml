@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<NotepadPlus>
+    <Languages>
+        <!-- name must be the same as the one in the language menu. -->
+        <!-- ext here is the default one. -->
+        <!-- Comments are the comment that is used from the context menu when you tell np++ to comment a line. -->
+        <Language name="ColdFusion" ext="cfm cfc cfml">
+            <Keywords name="0"></Keywords>
+            <Keywords name="1"></Keywords>
+            <Keywords name="2"></Keywords>
+            <Keywords name="3"></Keywords>
+            <Keywords name="4">active after before first first-child first-letter first-line focus hover lang left link right visited</Keywords>
+            <Keywords name="5"></Keywords>
+            <Keywords name="6"></Keywords>
+			<Keywords name="7"></Keywords>
+        </Language>
+    </Languages>
+    <LexerStyles>
+        <!-- name must be the same as the Language name above. -->
+        <!-- desc is what shows up in the styler configuator. -->
+        <!-- ext is the "user defined" one. -->
+        <!-- excluded is whether is shows up in the language menu. (Can be changed in the settings by the user the normal way.) -->
+        <LexerType name="ColdFusion" desc="ColdFusion" excluded="no">
+            <WordsStyle name="DEFAULT" styleID="0" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
+            <WordsStyle name="TAG" styleID="1" fgColor="0000FF" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="0" />
+            <WordsStyle name="CFTAG" styleID="2" fgColor="804000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="1" />
+            <WordsStyle name="ATTRIBUTE" styleID="3" fgColor="0080C0" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="ATTRIBUTEUNKNOWN" styleID="4" fgColor="FF0000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="NUMBER" styleID="5" fgColor="FF8000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="DOUBLESTRING" styleID="6" fgColor="8000FF" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
+            <WordsStyle name="SINGLESTRING" styleID="7" fgColor="8000FF" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
+            <WordsStyle name="OPERATOR" styleID="8" fgColor="000080" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="" />
+            <WordsStyle name="COMMENT" styleID="9" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="COMMENTBLOCK" styleID="10" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="CFCOMMENT" styleID="12" fgColor="408080" bgColor="FFFFFF" fontName="" fontStyle="2" fontSize="" />
+            <WordsStyle name="CFVALUE" styleID="13" fgColor="FF8000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="CFFUNCTION" styleID="14" fgColor="808000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="2" />
+            <WordsStyle name="CFATTRIBUTE" styleID="15" fgColor="800080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="CFATTRIBUTEBAD" styleID="16" fgColor="FF0000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+            <WordsStyle name="LOCALVARS" styleID="17" fgColor="000000" bgColor="F2F2F2" fontName="" fontStyle="1" fontSize="" />
+            <WordsStyle name="SQLKEYWORDS" styleID="21" fgColor="0000FF" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="6" />
+            <WordsStyle name="JSKEYWORDS" styleID="22" fgColor="871F78" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="5" />
+            <WordsStyle name="CSSKEYWORDS" styleID="23" fgColor="871F78" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="7" />
+            <WordsStyle name="CFSRESERVED" styleID="19" fgColor="804000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
+          
+            
+        </LexerType>
+    </LexerStyles>
+</NotepadPlus>

@@ -1,0 +1,11 @@
+vs.proj/x64/
+vs.proj/.vs/
+vs.proj/packages
+*.sdf
+*.suo
+*.aps
+*.zip
+*.dll
+*.obj
+*.pdb
+
