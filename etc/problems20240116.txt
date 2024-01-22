@@ -1573,3 +1573,26 @@ warning C4458: declaration of 'keywords' hides class member
 
 Вот почему плохо подсвечивался скрипт: слишком темный цвет выбран для AND OR etc, наверно XML не тот
 
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.h(58,1): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+Ремонт:
+БЫЛО:
+template <typename T>
+	class PublicSparseState : public SparseState<typename T> { ///
+	public:
+		PublicSparseState() {}
+		~PublicSparseState() {}
+		const stateVector getStates() { return states; }
+		void setPositionFirst(int positionFirst_) { positionFirst = positionFirst_; }
+	};
+	
+СТАЛО:
+class CFBaseType; // forward declaration 
+template <typename T>
+class PublicSparseState : public SparseState<typename T> {
+public:
+	PublicSparseState() {}
+	~PublicSparseState() {}
+	const SparseState<CFBaseType>::stateVector getStates() { return this->states; }
+	void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
+};
+
