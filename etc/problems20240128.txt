@@ -40,3 +40,16 @@ For a local installation this is %AppData%\Notepad++\plugins\config and for a po
 вон что
 подложил в рут. Не ругается, но и не красит
 Перезапустил без файлов, срослось
+Закоммитил
+22:37 28.01.2024
+Попытка собрать релиз
+1>    LINK : fatal error LNK1181: cannot open input file 'x64\Unicode Release\CFFunctions.obj'
+А там CFFunctions.i
+import library .\..\bin\nppColdFusion.lib
+Unicode Debug
+/OUT:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.dll" /MANIFEST /NXCOMPAT /PDB:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.pdb" /DYNAMICBASE "..\..\sqlite3\sqlite3\x64\Debug\sqlite3" "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib" "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib" "odbc32.lib" "odbccp32.lib" /DEBUG /DLL /MACHINE:X64 /INCREMENTAL /PGD:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.pgd" /SUBSYSTEM:WINDOWS /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /ManifestFile:"x64\Unicode Debug\nppColdFusion.dll.intermediate.manifest" /LTCGOUT:"x64\Unicode Debug\nppColdFusion.iobj" /ERRORREPORT:PROMPT /ILK:"x64\Unicode Debug\nppColdFusion.ilk" /NOLOGO /TLBID:1 
+Unicode Release
+/OUT:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Release\nppColdFusion.dll" /MANIFEST /NXCOMPAT /PDB:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Release\nppColdFusion.pdb" /DYNAMICBASE "..\..\sqlite3\sqlite3\x64\Debug\sqlite3" "kernel32.lib" "user32.lib" "gdi32.lib" "winspool.lib" "comdlg32.lib" "advapi32.lib" "shell32.lib" "ole32.lib" "oleaut32.lib" "uuid.lib" "odbc32.lib" "odbccp32.lib" /DEBUG /DLL /MACHINE:X64 /OPT:REF /INCREMENTAL:NO /PGD:"D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Release\nppColdFusion.pgd" /SUBSYSTEM:WINDOWS /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /ManifestFile:"x64\Unicode Release\nppColdFusion.dll.intermediate.manifest" /LTCGOUT:"x64\Unicode Release\nppColdFusion.iobj" /OPT:ICF /ERRORREPORT:PROMPT /ILK:"x64\Unicode Release\nppColdFusion.ilk" /NOLOGO /TLBID:1 
+
+https://stackoverflow.com/questions/15872736/project-wont-link-in-release-mode-error-lnk1181
+С/С++ Preprocess to a file no - пошли генериться obj, но очень долго происходит
