@@ -22,8 +22,10 @@
 
 namespace nppColdFusion
 {
-static const generic_string PLUGIN_NAME = TEXT( "&ColdFusion Lexer" );
-static const std::string LEXER_NAME = "ColdFusion";
-static const generic_string LEXER_STATUS_TEXT = TEXT( "ColdFusion source file" );
+	//static const generic_string PLUGIN_NAME = TEXT( "&ColdFusion Lexer" );
+	static const generic_string PLUGIN_NAME = TEXT("nppColdFusion"); ///*** to get xml file by name? ***
+	//static const std::string PLUGIN_NAME = "nppColdFusion"; ///*** to get xml file by name? ***
+	static const std::string LEXER_NAME = "ColdFusion"; //exactly the same as Language.name and LexerType.name specified in nppColdFusion.xml
+	static const generic_string LEXER_STATUS_TEXT = TEXT("(NPP STATUS TEXT): ColdFusion source file ");
 }
 #endif

@@ -68,7 +68,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 
 				}
 				if (length == 0) {
-					::MessageBoxA(0, "ListAll tags length is 0 TRTRTR", "nppColdFusion Error", MB_OK);
+					::MessageBoxA(0, "DBNamespace::ListAllTags length is 0", "nppColdFusion Error", MB_OK);
 					return const_cast<char*>("");
 				}
 				sqlite3_finalize(stmt);
@@ -555,15 +555,14 @@ nppCFShared* nppCFShared::pinstance( 0 );
 			linestate = (linestate & ~(this->bitmask << this->bitshift) | (this->inBlock & this->bitmask) << this->bitshift);
 		}
 
-		void BlockType::updateWordList(WordList& wl) {
+		void BlockType::updateWordList(Lexilla::WordList& wl) {
 			this->keywords.reset(&wl);
-
 		}
 
 
 
 
-		bool CSSBlock::validateforkeyword(StyleContext sc) {
+		bool CSSBlock::validateforkeyword(Lexilla::StyleContext sc) {
 			return sc.state != Styles::CF_VALUE && sc.GetRelative(-1) != '#' && sc.GetRelative(-1) != '.';
 		}
 		bool CSSBlock::hasKeyword(char* keyword) {
@@ -572,7 +571,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 	
-		bool JSBlock::validateforkeyword(StyleContext sc) {
+		bool JSBlock::validateforkeyword(Lexilla::StyleContext sc) {
 			return sc.state != Styles::CF_VALUE;
 		}
 
@@ -582,10 +581,11 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 
-		bool CFScriptBlock::validateforkeyword(StyleContext sc, bool inCFSet) {
-			return validateforkeyword(sc);
+		bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+			///return validateforkeyword(sc);
+			return false; ///***
 		}
-		bool CFScriptBlock::validateforkeyword(StyleContext sc) {
+		bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc) {
 			return sc.state != Styles::CF_VALUE && sc.state != Styles::_COMMENT && sc.state != Styles::_COMMENTBLOCK && sc.state != Styles::_SINGLESTRING && sc.state != Styles::_DOUBLESTRING;
 		}
 		bool CFScriptBlock::hasKeyword(char* keyword) {
@@ -634,7 +634,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 
-		bool CFQueryBlock::validateforkeyword(StyleContext sc) {
+		bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext sc) {
 			return sc.state != Styles::CF_VALUE;
 		}
 		bool CFQueryBlock::hasKeyword(char* keyword) {

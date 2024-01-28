@@ -17,13 +17,16 @@
 
 
 #include "nppColdFusion.h"
+#include "DllEntry.h" ///*** 
 namespace sID = nppColdFusion::Styles;		//  All of the style state codes.
 namespace lex = nppColdFusion;				//  This lexer's namespace.
 
 using namespace nppColdFusion;
-const CharacterSet setTagContinue(CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
+const Lexilla::CharacterSet setTagContinue(Lexilla::CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
 
-
+static char* nppColdFusion::LexerName() {
+	return const_cast<char*>(LEXER_NAME.c_str());
+}
 
 LexerColdFusion::LexerColdFusion() {
 	cfs = nppCFShared::Instance();
@@ -48,13 +51,13 @@ static inline bool IsAWordChar(const int ch)
 }
 
 
-void SCI_METHOD LexerColdFusion::Lex(unsigned int startPos, int length, int initStyle, IDocument* pAccess)
+void SCI_METHOD LexerColdFusion::Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, Scintilla::IDocument* pAccess)
 {
 	try {
 
 		cfs->currentdoc = pAccess;
 
-		LexAccessor astyler(pAccess);
+		Lexilla::LexAccessor astyler(pAccess);
 		bool closingcomment = false;
 		if (startPos == 0) {
 			hasDeterminedType = false;
@@ -105,7 +108,7 @@ void SCI_METHOD LexerColdFusion::Lex(unsigned int startPos, int length, int init
 					}
 					else {
 						if (IsAWordChar(ch)) {
-							s[wordlength] = MakeLowerCase(ch);
+							s[wordlength] = Lexilla::MakeLowerCase(ch); ///
 							if (s[wordlength] == component[wordlength]) {
 								wordlength++;
 								if (wordlength >= 9) {
@@ -133,7 +136,7 @@ void SCI_METHOD LexerColdFusion::Lex(unsigned int startPos, int length, int init
 
 							}
 						}
-						else if (IsASpace(ch)) {
+						else if (Lexilla::IsASpace(ch)) {
 							/* it's OK to have spaces */
 						}
 						else {
@@ -162,10 +165,10 @@ void SCI_METHOD LexerColdFusion::Lex(unsigned int startPos, int length, int init
 		pAccess->SetErrorStatus(SC_STATUS_FAILURE);
 	}
 }
-void SCI_METHOD LexerColdFusion::Fold(unsigned int startPos, int length, int initStyle, IDocument* pAccess)
+void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, Scintilla::IDocument* pAccess)
 {
 	try {
-		LexAccessor styler(pAccess);
+		Lexilla::LexAccessor styler(pAccess);
 		unsigned int endPos = startPos + length;
 		int visibleChars = 0;
 		int lineCurrent = styler.GetLine(startPos);
@@ -313,7 +316,7 @@ void SCI_METHOD LexerColdFusion::Fold(unsigned int startPos, int length, int ini
 					levelNext--;
 				}
 			}
-			if (!IsASpace(ch))
+			if (!Lexilla::IsASpace(ch))
 				visibleChars++;
 			if (atEOL || (i == endPos - 1)) {
 				int levelUse = levelCurrent;
@@ -346,7 +349,8 @@ void SCI_METHOD LexerColdFusion::Fold(unsigned int startPos, int length, int ini
 	}
 }
 
-int SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
+//int SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
+Sci_Position SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 {
 
 	if (n < numWordLists) {
@@ -369,7 +373,7 @@ int SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 
 
 //  <---  Colourise --->
-Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int initStyle, LexAccessor& styler, bool dostyling)
+Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position length, int initStyle, Lexilla::LexAccessor& styler, bool dostyling)
 {
 	Status status = Status();
 
@@ -406,16 +410,16 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 	if ((startPos < currenteditpos - min(currenteditpos, 100) || startPos > currenteditpos + 100)) {
 		outsideeditingrange = true;
 	}
-	SparseState<std::string> cfTagsNew(startPos);
-	SparseState<std::string> htmlTagsNew(startPos);
+	Lexilla::SparseState<std::string> cfTagsNew(startPos);
+	Lexilla::SparseState<std::string> htmlTagsNew(startPos);
 
-	SparseState<bool> scriptBlocksNew(startPos);
-	SparseState<bool> cfQueryBlocksNew(startPos);
-	SparseState<bool> jsBlocksNew(startPos);
-	SparseState<bool> cssBlocksNew(startPos);
-	SparseState<bool> inCFSetsNew(startPos);
-	SparseState<unsigned int> cfCommentDepthsNew(startPos);
-	SparseState<unsigned int> cfOutputDepthsNew(startPos);
+	Lexilla::SparseState<bool> scriptBlocksNew(startPos);
+	Lexilla::SparseState<bool> cfQueryBlocksNew(startPos);
+	Lexilla::SparseState<bool> jsBlocksNew(startPos);
+	Lexilla::SparseState<bool> cssBlocksNew(startPos);
+	Lexilla::SparseState<bool> inCFSetsNew(startPos);
+	Lexilla::SparseState<unsigned int> cfCommentDepthsNew(startPos);
+	Lexilla::SparseState<unsigned int> cfOutputDepthsNew(startPos);
 
 	unsigned int cfCommentDepth = cfCommentDepths.ValueAt(startPos);
 	unsigned int cfOutputDepth = cfOutputDepths.ValueAt(startPos);
@@ -427,7 +431,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 	bool inCFSet = inCFSets.ValueAt(startPos);
 
 
-	StyleContext sc(startPos, length, initStyle, styler);
+	Lexilla::StyleContext sc(startPos, length, initStyle, styler);
 
 
 	PublicSparseState<CFBaseType> argumentsNew;
@@ -444,7 +448,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 		bracketDepthsNew.setPositionFirst(startPos);
 	}
 
-	SparseState<CFUserFunction> cfUserFunctionsNew(cfFuncsStartPos);
+	Lexilla::SparseState<CFUserFunction> cfUserFunctionsNew(cfFuncsStartPos);
 	argumentsNew.setPositionFirst(cfFuncsStartPos);
 	localsNew.setPositionFirst(cfFuncsStartPos);
 
@@ -656,7 +660,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 					}
 				}
 			}
-			if (isoperator(sc.ch) && sc.state == sID::_DEFAULT && !((inCFSet || inCFQuery) && (sc.ch == '<' || sc.ch == '>')) && !(sc.ch == '<' && sc.chNext == '/') && !(sc.Match("<cf"))) {
+			if (Lexilla::isoperator(sc.ch) && sc.state == sID::_DEFAULT && !((inCFSet || inCFQuery) && (sc.ch == '<' || sc.ch == '>')) && !(sc.ch == '<' && sc.chNext == '/') && !(sc.Match("<cf"))) {
 				if (dostyling) {
 					sc.SetState(sID::_OPERATOR);
 				}
@@ -828,7 +832,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 				for (int a = 0; a < max; a++) {
 					int rel = sc.GetRelative(a);
 					if (rel != '.' && IsAWordChar(rel) || (inCSSBlock && rel == '-')) {
-						s[a] = MakeLowerCase(sc.GetRelative(a));
+						s[a] = Lexilla::MakeLowerCase(sc.GetRelative(a));
 					}
 					else {
 						s[a] = '\0';
@@ -1063,7 +1067,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = MakeLowerCase(ch);
+					s[i++] = Lexilla::MakeLowerCase(ch);
 					paddedText[i] = s[i - 1];
 				}
 				else {
@@ -1163,7 +1167,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = MakeLowerCase(ch);
+					s[i++] = Lexilla::MakeLowerCase(ch);
 				}
 				else {
 					//we're at a block
@@ -1195,7 +1199,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = MakeLowerCase(ch);
+					s[i++] = Lexilla::MakeLowerCase(ch);
 				}
 				else {
 					//we're at a block
@@ -1372,7 +1376,7 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 			}
 			else if (state == sID::_TAG) {
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
-				SparseState<std::string> htmlTagsNew(sc.currentPos);
+				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
 				if (strstr("meta link img area br hr input ", status.currentHTMLTag) == NULL) {
 					if (status.tagOpening) {
 						if (!dostyling) {
@@ -1483,6 +1487,19 @@ Status LexerColdFusion::Colourise_Doc(unsigned int startPos, int length, int ini
 	return status;
 }
 
+/*
+Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
+{
+	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
+//	return nullptr; /////////***
+}
+*/
+Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
+{
+	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
+}
+
+const char* SCI_METHOD LexerColdFusion::PropertyGet(const char* key) { return "";} ///
 
 CFUserFunction::CFUserFunction(unsigned int ipos) {
 	//arguments.states.empty();
@@ -1499,4 +1516,8 @@ CFUserFunction::~CFUserFunction() {}
 
 LRESULT nppMessageProc(UINT /*Message*/, WPARAM /*wParam*/, LPARAM /*lParam*/) {
 	return 1;
+}
+///override version 4 in exemple
+int SCI_METHOD LexerColdFusion::Version() const {
+	return Scintilla::lvRelease4;
 }

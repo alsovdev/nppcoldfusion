@@ -383,7 +383,11 @@
     <ClCompile Include="..\src\core\NppPluginMenu.cpp" />
     <ClCompile Include="..\src\core\SciMessager.cpp" />
     <ClCompile Include="..\src\DllEntry.cpp" />
+    <ClCompile Include="..\src\Lexer\lexlib\Accessor.cxx" />
+    <ClCompile Include="..\src\Lexer\lexlib\LexAccessor.cxx" />
     <ClCompile Include="..\src\Lexer\lexlib\LexerBase.cxx" />
+    <ClCompile Include="..\src\Lexer\lexlib\LexerModule.cxx" />
+    <ClCompile Include="..\src\Lexer\lexlib\LexerSimple.cxx" />
     <ClCompile Include="..\src\Lexer\lexlib\PropSetSimple.cxx" />
     <ClCompile Include="..\src\Lexer\lexlib\WordList.cxx" />
     <ClCompile Include="..\src\nppCFMenu.cpp" />
@@ -403,6 +407,8 @@
     <ClInclude Include="..\src\Lexer\lexlib\LexerBase.h" />
     <ClInclude Include="..\src\Lexer\lexlib\PropSetSimple.h" />
     <ClInclude Include="..\src\Lexer\lexlib\WordList.h" />
+    <ClInclude Include="..\src\Lexer\scintilla\ILexer.h" />
+    <ClInclude Include="..\src\Lexer\scintilla\Scintilla.h" />
     <ClInclude Include="..\src\nppCFMenu.h" />
     <ClInclude Include="..\src\nppColdFusion.h" />
     <ClInclude Include="..\src\nppLexCommon.h" />
@@ -415,6 +421,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="x64\Unicode Debug\nppColdFusion.dll" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="nppColdFusion.rc" />

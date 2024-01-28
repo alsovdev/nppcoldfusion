@@ -1,0 +1,543 @@
+20:04 23.01.2024
+пытаюсь понемножку фиксить проблемы, которые понимаю - в основном это сводится к неймспейсам
+
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\Lexer\lexlib\LexerBase.h(16,21): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+(lexAccessor.h) struct LexicalClass 
+
+#include "nppColdFusion.h"
+
+nppColdFusion.h
+#include "nppCFShared.h"
+#include <boost\algorithm\string\case_conv.hpp>
+
+nppCFShared.h
+#include "nppLexCommon.h"
+#include "SparseState.h"
+#include "core\NppMessager.h"
+#include "core\SciMessager.h"
+#include "nppColdFusion.h"
+
+nppLexCommon.h
+#include "precompiledHeaders.h"
+#include "PluginInterface.h"
+// Scintilla includes
+#include "ILexer.h"
+#include "PropSetSimple.h"
+#include "WordList.h"
+#include "LexerBase.h"
+#include "LexAccessor.h"
+#include "Accessor.h"
+#include "LexerModule.h"
+#include "StyleContext.h"
+#include "CharacterSet.h"
+#include "Styles.h"
+#include "sqlite3.h"
+#include <boost/shared_ptr.hpp>
+
+Есть еще вариант. Откатываться и начинать заменять файлы по одному. Только вот откуда начинать? И многие файлы со старыми будут давать конфликт.
+Я же заменил только библиотеки пока. Они должны были бы совместно нормально работать
+Интересно! Я поменял местами инклюды #include "LexerBase.h" #include "LexAccessor.h" и эта ошибка ушла. Интересно, а почему раньше работало?
+
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppCFShared.h(235,4): error C2280: 'Lexilla::StyleContext::StyleContext(const Lexilla::StyleContext &)': attempting to reference a deleted function
+это мы уже видели! Странно, в записках этого нет
+Может быть, это в другом проекте??
+Сделал по ссылке и все срослось: 
+		virtual bool validateforkeyword(Lexilla::StyleContext& sc, bool inCFSet) {///***
+			return validateforkeyword(sc) && !inCFSet;
+		}
+(тут тоже по ссылке на всякий случай)
+		virtual bool validateforkeyword(Lexilla::StyleContext& /*sc*/) {
+			return true;
+		}
+Но почему это компилировалось до замены библиотек?
+Дежавю
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.h(55,56): error C7511: 'T': 'typename' keyword must be followed by a qualified name
+class CFBaseType; // forward declaration 
+template <typename T>
+class PublicSparseState : public SparseState<typename T> {
+public:
+	PublicSparseState() {}
+	~PublicSparseState() {}
+	const SparseState<CFBaseType>::stateVector getStates() { return this->states; }
+	void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
+};
+Попробовать вернуть?
+Я помню, что тут были странные глюки и студия врала в своих подсказках
+
+	template <typename T>
+	class PublicSparseState : public SparseState<typename T> { ///
+	public:
+		PublicSparseState() {}
+		~PublicSparseState() {}
+		const SparseState<T>::stateVector getStates() { return this->states; }
+		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
+	}; 
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.h(84,56): error C7511: 'T': 'typename' keyword must be followed by a qualified name
+Точно такое было. Помню, что вылечилось мистически
+
+Перенес #include "SparseState.h"->nppLexCommon
+
+https://cplusplus.com/articles/Gw6AC542/
+Помню, я для sparsestate делал декларацию public и это помогало
+попробовал поменять на CFBaseType вместо T
+
+Может, эта вся херота вообще не нужна? Вместе со SparseState
+
+После очередных танцев с бубном эта часть скомпилилась (покурочен SparseState - часть открыта в паблик). Может, в таком раскладе и не нужен PublicSparseState
+
+Вот так сейчас скомпилировалось
+template <typename T>
+class PublicSparseState : public Lexilla::SparseState<T> {
+public:
+	PublicSparseState() {}
+	~PublicSparseState() {}
+	const Lexilla::SparseState<T>::stateVector getStates() { return this->states; }
+	void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
+};
+
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.h(206,16): error C2259: 'nppColdFusion::LexerColdFusion': cannot instantiate abstract class
+- ну с этим то должно быть просто. Это не реализованы методы интерфейса.
+А какие? Как их найти
+Вырезать по одному методы из интерфейса?
+
+const char *SCI_METHOD PropertyGet(const char *key) override; - не имплементирован в LexerBase.cxx
+Увидел в подсказке: Lex Fold не overrided
+В примере
+	//Lex see below
+	//copy-paste from DefaultLexer
+	void SCI_METHOD ExternalLexer::Fold(Sci_PositionU, Sci_Position, int, IDocument*) {
+	}
+
+	void* SCI_METHOD ExternalLexer::PrivateCall(int /*operation*/, void* /*pointer*/) {
+		return nullptr;
+	}
+
+А вот почему! IDocument у него в атрибутах undefined
+Непонятно почем. Scintilla::IDocument* pAccess так норм (то есть подсветилось)
+Ни хрена: та же ругань
+pure virtual function has no overrider
+Сигнатура? Там Sci_PositionU а тут инт
+просралось
+Но Status Colourise_Doc(Sci_PositionU startPos, Sci_Position length, int initStyle, Lexilla::LexAccessor& styler, bool dostyling = true); подпортил по аналогии
+Дублирование Scintilla.h npp_suff
+то же 
+#ifdef INCLUDE_DEPRECATED_FEATURES
+
+#define SCI_SETKEYSUNICODE 2521
+#define SCI_GETKEYSUNICODE 2522
+
+#define SCI_GETTWOPHASEDRAW 2283
+#define SCI_SETTWOPHASEDRAW 2284
+
+#define CharacterRange Sci_CharacterRange
+#define TextRange Sci_TextRange
+
+#define INCLUDE_DEPRECATED_FEATURES
+
+Вот опять неймспейс пришлось добавить. Почем раньше то работало (с тем же 20м языком)
+Lexilla::LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
+{
+	if ( index == 0 ) {
+		return LexerColdFusion::LexerFactory;
+	} else {
+		return 0;
+	}
+}
+Интрересно почему он предлагает оба неймспейса Scintilla Lexilla
+
+void BlockType::updateWordList(WordList& wl) {
+	this->keywords.reset(&wl);
+}
+->
+		void BlockType::updateWordList(Lexilla::WordList& wl) {
+			this->keywords.reset(&wl);
+		}
+
+
+bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+ return validateforkeyword(sc);
+}
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppCFShared.cpp(585,4): error C2280: 'Lexilla::StyleContext::StyleContext(const Lexilla::StyleContext &)': attempting to reference a deleted function
+
+		bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+			///return validateforkeyword(sc);
+			return false; ///***
+		}
+
+
+Дошло до линковки
+1>LexerModule.obj : error LNK2019: unresolved external symbol "public: __cdecl Lexilla::LexerSimple::LexerSimple(class Lexilla::LexerModule const *)" (??0LexerSimple@Lexilla@@QEAA@PEBVLexerModule@1@@Z) referenced in function "public: class Scintilla::ILexer5 * __cdecl Lexilla::LexerModule::Create(void)const " (?Create@LexerModule@Lexilla@@QEBAPEAVILexer5@Scintilla@@XZ)
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.dll : fatal error LNK1120: 1 unresolved externals
+Предположение: добавить какой-то из файлов в проект (LexerSimple). И посмотреть, есть ли он в объектниках. По моему текущему пониманию,  в проект надо добавить только cxx
+Помогло, теперь акцессор
+1>LexerSimple.obj : error LNK2019: unresolved external symbol "public: __cdecl Lexilla::Accessor::Accessor(class Scintilla::IDocument *,class Lexilla::PropSetSimple *)" (??0Accessor@Lexilla@@QEAA@PEAVIDocument@Scintilla@@PEAVPropSetSimple@1@@Z) referenced in function "public: virtual void __cdecl Lexilla::LexerSimple::Fold(unsigned __int64,__int64,int,class Scintilla::IDocument *)" (?Fold@LexerSimple@Lexilla@@UEAAX_K_JHPEAVIDocument@Scintilla@@@Z)
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.dll : fatal error LNK1120: 1 unresolved externals
+добавляем Accessor.cxx
+Собралось. Удалил из проекта заголовки библиотек
+Плагин работает, но не подсвечивает.
+Может, XML кривой
+А еще нету SQLite
+Странно. Его нету и у 7.6.2, а как работает?
+Подложил длл. Не красит
+Дебажить
+До какой версии SQLite с ним?
+20:22 24.01.2024
+Вот жопа.  Попробовал дебажить -  stack around variale sc was corrupted йокорный бабайfk
+
+f cj 2 hfpf cnfhnjd
+не,туплю. нверзможно 20:33 24.01.2024
+2:41 25.01.2024
+const TCHAR* CFMLPlugin::nppGetName()
+{
+	return PLUGIN_NAME;
+} PLUGIN_NAME generic_string
+typedef std::basic_string<TCHAR> generic_string;
+
+	__declspec( dllexport ) const TCHAR * getName()
+	{
+		return PLUGIN_NAME.c_str();
+	}
+???
+const TCHAR* CFMLPlugin::nppGetName()
+{
+	return PLUGIN_NAME;
+}
+компилятор не ругается
+а линкер
+1>CFMLPlugin.obj : error LNK2001: unresolved external symbol "public: static wchar_t const * const CFMLPlugin::PLUGIN_NAME" (?PLUGIN_NAME@CFMLPlugin@@2PEB_WEB)
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug\nppColdFusion.dll : fatal error LNK1120: 1 unresolved externals
+1
+
+error C2440: 'return': cannot convert from 'const std::string' to 'const TCHAR *'?
+const TCHAR* CFMLPlugin::nppGetName()
+{
+	//return PLUGIN_NAME; //produces error LNK2001: unresolved external symbol "public: static wchar_t const * const CFMLPlugin::PLUGIN_NAME" (?PLUGIN_NAME@CFMLPlugin@@2PEB_WEB)
+	//return 0; //no errors
+	return TEXT("nppColdFusion"); //incorrect ***
+}
+
+работает, не видит лексер
+static const std::string LEXER_NAME = "nppColdFusion";
+тоже не помогло. Подложить к портативному? Может у меня тут оверрайд настройками юзерского языка
+Нет, на портативном четко видно: не красит
+Ну что же, у меня несколько заглушек было, чтобы скомпилировалось - надо снимать
+Вроде ничего такого не осталось
+Вспомнил, что у меня нет sqlite не поддложен длл подкладываю портативному 8.5.4
+нет не красит
+надо
+
+Вот хрень - при отладке откуда то RainLexer вылез. И как он сорцы и символы нашел
+Интересно, что sqlite он дергает
+Почему он в списке плагинов видится как nppColdFusion.dll
+
+Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
+{
+	//return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
+	return nullptr; /////////***
+}
+вот заглушка, достигаю я ее? нет
+плагин работает, а лексер не подключается
+		bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+			///return validateforkeyword(sc);
+			return false; ///***
+		}
+
+Мистика. Цепляю к портативному - там ни фига. А, перекомпилил длл и брекпойнты недостижимы
+
+ILexer5* SCI_METHOD ExternalLexer::CreateLexer(const char* name)
+{
+	return (strcmp(name, LexerName()) == 0) ? ExternalLexer::LexerFactory() : nullptr;
+} это вызывается при открытии ассоциированного файла
+А у меня не вызывается. А почему
+Вот
+const char *SCI_METHOD LexerBase::GetName() {
+	return "";
+}
+- не вызывается
+static ILexer5* LexerFactory() {
+	try {
+		return new LexerColdFusion();
+	}
+	catch (...) {
+		// Should not throw into caller as may be compiled with different compiler or options
+		return 0;
+	}
+}
+6:55 25.01.2024
+У нас Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
+{
+	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
+//	return nullptr; /////////***
+}
+находится не в dllEntry, а в nppColdFusuion
+Я закомментировал, а оно скомпилилось
+А у меня должжен быть 
+///extern "C" DLLAPI inline ILexer5 * WINAPI CreateLexer(const char* name)
+extern "C" __declspec(dllexport) inline ILexer5 * WINAPI CreateLexer(const char* name)
+{
+	return LexerTemplateNs::ExternalLexer::CreateLexer(name);
+}
+а его нет!
+error C2352: 'nppColdFusion::LexerColdFusion::CreateLexer': a call of a non-static member function requires an object
+А как у меня в экзампле это работает? Там точно такой же вызов
+Не такой
+Вот какие объявления в экстернал лексере
+class ExternalLexer final : public ILexer5
+{
+protected:
+    const Lexilla::LexicalClass* lexClasses = {};
+    size_t nClasses = 0;
+
+public:
+    ExternalLexer() {};
+	virtual ~ExternalLexer() = default;
+
+	static ILexer5* LexerFactory();
+
+	// *** ILexer5 interface implementing function for Scintilla 5.2.1 and Lexilla 5.x (Notepad 8.3.4 or greater). 
+	static ILexer5* CreateLexer(const char* name);
+    /*
+
+Вписал static
+Но! у меня этот метод не экспонирован в заголовке. Ничего не должно получиться?
+
+А вот же он объявлен:
+static ILexer5* SCI_METHOD CreateLexer(const char* name);
+
+?
+class ExternalLexer final : public ILexer5
+Я был уверен, что нашел засаду с этим неэкспонированным методом, а поди ж ты
+Кстати, а как оно работает, если его закомментировать? Компиляться не должно даже
+Почему брекпоинты не работают: потому что я же не сделал перенос длл
+Может ему def нужен все таки
+другие работают без
+Перечитать ман по лексеру и ман по новому лексеру 8.3+
+Кстати, попробовать новый плагин со старыми нпп? Есть наверно обратная совместимость
+Как в моем понимании должен работать плагин. У ДЛЛ должен быть вход, на котором она объявляет версию и функциональные возможности в каком-то виде (отдельные методы или интерфейсы скажем). Конечно, хост-процесс может просто проверять все входы, декларированные для интерфейса плагина.
+Как связан лексер с остальным плагином?
+
+cd /d D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug
+D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug>dumpbin /exports nppColdFusion.dll
+Microsoft (R) COFF/PE Dumper Version 14.38.33133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file nppColdFusion.dll
+
+File Type: DLL
+
+  Section contains the following exports for nppColdFusion.dll
+
+    00000000 characteristics
+    FFFFFFFF time date stamp
+        0.00 version
+           1 ordinal base
+          11 number of functions
+          11 number of names
+
+    ordinal hint RVA      name
+
+          1    0 000F6595 ?GetLexerCount@@YAHXZ = @ILT+5520(?GetLexerCount@@YAHXZ)
+          2    1 000F9CE0 ?GetLexerFactory@@YAP6APEAVILexer5@Scintilla@@XZI@Z = @ILT+19675(?GetLexerFactory@@YAP6APEAVILexer5@Scintilla@@XZI@Z)
+          3    2 000F8264 ?GetLexerName@@YAXIPEADH@Z = @ILT+12895(?GetLexerName@@YAXIPEADH@Z)
+          4    3 000F72EC ?GetLexerStatusText@@YAXIPEA_WH@Z = @ILT+8935(?GetLexerStatusText@@YAXIPEA_WH@Z)
+          5    4 000F936C CreateLexer = @ILT+17255(CreateLexer)
+          6    5 000F6C2A beNotified = @ILT+7205(beNotified)
+          7    6 000F7585 getFuncsArray = @ILT+9600(getFuncsArray)
+          8    7 000F93DF getName = @ILT+17370(getName)
+          9    8 000F7FA3 isUnicode = @ILT+12190(isUnicode)
+         10    9 000F7DF5 messageProc = @ILT+11760(messageProc)
+         11    A 000F6BCB setInfo = @ILT+7110(setInfo)
+
+  Summary
+
+        1000 .00cfg
+        8000 .data
+        3000 .idata
+        1000 .msvcjmc
+       19000 .pdata
+       6D000 .rdata
+        5000 .reloc
+        1000 .rsrc
+      1FD000 .text
+       F4000 .textbss
+
+D:\code\npp\NPPCF.7.6.2\nppcoldfusion\vs.proj\x64\Unicode Debug>
+
+D:\code\npp\NPP-lexer-example\vs.proj\x64\Debug>dumpbin /exports ExternalLexerExample.dll
+Microsoft (R) COFF/PE Dumper Version 14.38.33133.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file ExternalLexerExample.dll
+
+File Type: DLL
+
+  Section contains the following exports for ExternalLexerExample.dll
+
+    00000000 characteristics
+    FFFFFFFF time date stamp
+        0.00 version
+           1 ordinal base
+          11 number of functions
+          11 number of names
+
+    ordinal hint RVA      name
+
+          1    0 000C83A2 CreateLexer = @ILT+21405(CreateLexer)
+          2    1 000C7A74 GetLexerCount = @ILT+19055(GetLexerCount)
+          3    2 000C303C GetLexerFactory = @ILT+55(GetLexerFactory)
+          4    3 000C7E2F GetLexerName = @ILT+20010(GetLexerName)
+          5    4 000C6CE1 GetLexerStatusText = @ILT+15580(GetLexerStatusText)
+          6    5 000C5346 beNotified = @ILT+9025(beNotified)
+          7    6 000C5EDB getFuncsArray = @ILT+11990(getFuncsArray)
+          8    7 000C8442 getName = @ILT+21565(getName)
+          9    8 000C6B15 isUnicode = @ILT+15120(isUnicode)
+         10    9 000C6926 messageProc = @ILT+14625(messageProc)
+         11    A 000C52A1 setInfo = @ILT+8860(setInfo)
+
+  Summary
+
+        1000 .00cfg
+        7000 .data
+        2000 .idata
+        1000 .msvcjmc
+       15000 .pdata
+       54000 .rdata
+        4000 .reloc
+        1000 .rsrc
+      19C000 .text
+       C2000 .textbss
+        1000 _RDATA
+        1000 memcpy_
+
+D:\code\npp\NPP-lexer-example\vs.proj\x64\Debug>
+
+ 1    0 000F9CE0 ?GetLexerFactory@@YAP6APEAVILexer5@Scintilla@@XZI@Z = @ILT+19675(?GetLexerFactory@@YAP6APEAVILexer5@Scintilla@@XZI@Z)
+          2    1 000F936C CreateLexer = @ILT+17255(CreateLexer)
+          3    2 000F8BE2 GetLexerCount = @ILT+15325(GetLexerCount)
+          4    3 000F8E8A GetLexerName = @ILT+16005(GetLexerName)
+          5    4 000F8142 GetLexerStatusText = @ILT+12605(GetLexerStatusText)
+          6    5 000F6C25 beNotified = @ILT+7200(beNotified)
+          7    6 000F757B getFuncsArray = @ILT+9590(getFuncsArray)
+          8    7 000F93DF getName = @ILT+17370(getName)
+          9    8 000F7F99 isUnicode = @ILT+12180(isUnicode)
+         10    9 000F7DEB messageProc = @ILT+11750(messageProc)
+         11    A 000F6BC6 setInfo = @ILT+7105(setInfo)
+
+Заметил, что новый использует Инлайн
+
+      1    0 000F9371 CreateLexer = @ILT+17260(CreateLexer)
+          2    1 000F8BE7 GetLexerCount = @ILT+15330(GetLexerCount)
+          3    2 000F503C GetLexerFactory = @ILT+55(GetLexerFactory)
+          4    3 000F8E8F GetLexerName = @ILT+16010(GetLexerName)
+          5    4 000F8147 GetLexerStatusText = @ILT+12610(GetLexerStatusText)
+          6    5 000F6C2A beNotified = @ILT+7205(beNotified)
+          7    6 000F7580 getFuncsArray = @ILT+9595(getFuncsArray)
+          8    7 000F93E4 getName = @ILT+17375(getName)
+          9    8 000F7F9E isUnicode = @ILT+12185(isUnicode)
+         10    9 000F7DF0 messageProc = @ILT+11755(messageProc)
+         11    A 000F6BCB setInfo = @ILT+7110(setInfo)
+
+Так - без манглинга, а почему? В чем разница
+extern "C" Lexilla::LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
+extern "C" __declspec(dllexport) inline Lexilla::LexerFactoryFunction SCI_METHOD GetLexerFactory(unsigned int index)
+
+#define EXT_LEXER_DECL __declspec( dllexport ) __stdcall
+extern "C" Lexilla::LexerFactoryFunction __declspec( dllexport ) __stdcall GetLexerFactory( unsigned int index )
+
+
+
+откуда что экспортировано
+
+NppPluginDemo
+
++isUnicode
++getName
++getFuncsArray
++messageProc
++beNotified
++setInfo
+
+LexerInterface
+
++CreateLexer
++GetLexerCount
++GetLexerFactory
+GetLexerFactory - 2
++GetLexerName
++GetLexerStatusText
+
+12 за минусом дубля
+
+1    0 000F9371 CreateLexer = @ILT+17260(CreateLexer)
+2    1 000F8BE7 GetLexerCount = @ILT+15330(GetLexerCount)
+3    2 000F503C GetLexerFactory = @ILT+55(GetLexerFactory)
+4    3 000F8E8F GetLexerName = @ILT+16010(GetLexerName)
+5    4 000F8147 GetLexerStatusText = @ILT+12610(GetLexerStatusText)
+6    5 000F6C2A beNotified = @ILT+7205(beNotified)
+7    6 000F7580 getFuncsArray = @ILT+9595(getFuncsArray)
+8    7 000F93E4 getName = @ILT+17375(getName)
+=9    8 000F7F9E isUnicode = @ILT+12185(isUnicode)
+10    9 000F7DF0 messageProc = @ILT+11755(messageProc)
+11    A 000F6BCB setInfo = @ILT+7110(setInfo)
+
+Почему GetLexer не экспортирован? (хотя ведь все работает) - это я увидел, чего нет
+Почему GetLexerFactory две и все работает - потому что закомменчено, а в поиске это не видно
+Итого все одинаково
+https://stackoverflow.com/questions/1261567/how-do-you-quickly-find-the-implementations-of-an-interfaces-method
+type ctrl+k clrl+t to open the Call Hierarchy window
+move down to Implements node.
+
+нашел разницу, в новом, Example так не красил?
+extern "C" void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name, int buflength )
+{
+	*name = 0;
+	if ( buflength > 0 ) {
+		strncpy_s( name, buflength, LEXER_NAME.c_str(), _TRUNCATE );
+	}
+}
+Исправил. Не цепляется, собака
+Почему-то плаги видится как nppColdFusion.dll
+new
+int SCI_METHOD LexerBase::Version() const {
+	return Scintilla::lvRelease5;
+}
+ex
+int SCI_METHOD ExternalLexer::Version() const
+{
+	return lvRelease4;
+}
+
+ругаются
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppColdFusion.cpp(1516,33): error C2509: 'Version': member function not declared in 'nppColdFusion::LexerColdFusion'
+
+А вот на эти почему не ругаются
+/// ILexer5 methods from LexerBase
+//const char* SCI_METHOD GetName();
+//int SCI_METHOD GetIdentifier();
+//const char* SCI_METHOD PropertyGet(const char* key);
+
+*** название содержит длл! Нет, в Example то же самое, а работает
+16:00 25.01.2024
+Сколько уже косяков нашел, а все не завелось
+
+Вспомним, у меня Lex вызывался, но не красилось?
+Отказаться от BaseLexer?
+Можно дебажить вместе с NPP, сорц выкачать
+15:49 26.01.2024
+sic
+void LexerCatalogue::GetLexerName(unsigned int index, char* name, int buflength)
+{
+	if (index < InstalledLexersCount)
+	{
+		strncpy_s(name, buflength, InstalledLexers[index].lexerName, _TRUNCATE);
+		name[buflength - 1] = L'\0'; /////////////////////////////////////////////////////////
+	}
+	else
+		throw std::out_of_range("index out of bounds");
+}
+
+Вероятно надо поднять до 20++ и проверить обратную совместимость с 762
+Может быть, рефакторить прежде, чем поднимать до ILexer5
+NWScript хорошо структурирован

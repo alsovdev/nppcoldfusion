@@ -19,7 +19,6 @@
 #ifndef NPP_COLDFUSION_H
 #define NPP_COLDFUSION_H
 
-//#include "nppLexCommon.h"
 #ifdef UNICODE
 #define generic_strncpy_s wcsncpy_s
 #else
@@ -50,16 +49,8 @@ namespace nppColdFusion
 	class nppCFShared;
 	class Status;
 
-	
-	class CFBaseType; // forward declaration 
-	template <typename T>
-	class PublicSparseState : public SparseState<typename T> {
-	public:
-		PublicSparseState() {}
-		~PublicSparseState() {}
-		const SparseState<CFBaseType>::stateVector getStates() { return this->states; }
-		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
-	};
+	inline static char* LexerName();
+
 
 
 	class CFBaseType {
@@ -87,6 +78,23 @@ namespace nppColdFusion
 
 		}
 
+	};
+	/*
+	template <typename T>
+	class PublicSparseState : public Lexilla::SparseState<T> {
+	public:
+		PublicSparseState() { }
+		~PublicSparseState() { }
+		const Lexilla::SparseState<T>stateVector getStates() { return this->states; }
+		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
+	};*/
+	template <typename T>
+	class PublicSparseState : public Lexilla::SparseState<T> {
+	public:
+		PublicSparseState() {}
+		~PublicSparseState() {}
+		const Lexilla::SparseState<T>::stateVector getStates() { return this->states; }
+		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
 	};
 
 	class CFUserFunction : public CFBaseType {
@@ -162,7 +170,7 @@ namespace nppColdFusion
 	class nppCFShared;
 	class Status;
 
-	class LexerColdFusion : public LexerBase
+	class LexerColdFusion final : public Lexilla::LexerBase
 	{
 	private:
 		nppCFShared* cfs;
@@ -175,26 +183,25 @@ namespace nppColdFusion
 		unsigned int invalidPos;
 		unsigned int currentDoc;
 	public:
-		SparseState<unsigned int> cfCommentDepths;
-		SparseState<unsigned int> cfOutputDepths;
-		SparseState<std::string> coldFusionTags;
-		SparseState<std::string> htmlTags;
-		SparseState<bool> scriptBlocks;
-		SparseState<bool> cfQueryBlocks;
-		SparseState<bool> jsBlocks;
-		SparseState<bool> cssBlocks;
-		SparseState<bool> inCFSets;
+		Lexilla::SparseState<unsigned int> cfCommentDepths;
+		Lexilla::SparseState<unsigned int> cfOutputDepths;
+		Lexilla::SparseState<std::string> coldFusionTags;
+		Lexilla::SparseState<std::string> htmlTags;
+		Lexilla::SparseState<bool> scriptBlocks;
+		Lexilla::SparseState<bool> cfQueryBlocks;
+		Lexilla::SparseState<bool> jsBlocks;
+		Lexilla::SparseState<bool> cssBlocks;
+		Lexilla::SparseState<bool> inCFSets;
 
 		LexerColdFusion();
 		~LexerColdFusion();
+		Lexilla::SparseState<CFUserFunction> cfUserFunctions;
 
-		SparseState<CFUserFunction> cfUserFunctions;
-
-		void SCI_METHOD Lex(unsigned int startPos, int length, int initStyle, IDocument* pAccess);
-		void SCI_METHOD Fold(unsigned int startPos, int length, int initStyle, IDocument* pAccess);
-		Status Colourise_Doc(unsigned int startPos, int length, int initStyle, LexAccessor& styler, bool dostyling = true);
-		int SCI_METHOD WordListSet(int n, const char* wl);
-		static ILexer* LexerFactory() {
+		void SCI_METHOD Lex(Sci_PositionU startPos, Sci_Position length, int initStyle, Scintilla::IDocument* pAccess);
+		void SCI_METHOD Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, Scintilla::IDocument* pAccess);
+		Status Colourise_Doc(Sci_PositionU startPos, Sci_Position length, int initStyle, Lexilla::LexAccessor& styler, bool dostyling = true);
+		Sci_Position SCI_METHOD WordListSet(int n, const char* wl);
+		static ILexer5* LexerFactory() {
 			try {
 				return new LexerColdFusion();
 			}
@@ -203,6 +210,13 @@ namespace nppColdFusion
 				return 0;
 			}
 		}
+		static ILexer5* SCI_METHOD CreateLexer(const char* name);
+		const char* SCI_METHOD PropertyGet(const char* key);
+		/// ILexer5 methods from LexerBase
+		//const char* SCI_METHOD GetName();
+		//int SCI_METHOD GetIdentifier();
+		//const char* SCI_METHOD PropertyGet(const char* key);
+		int SCI_METHOD Version() const override;
 	};
 
 	LRESULT nppMessageProc(UINT Message, WPARAM wParam, LPARAM lParam);

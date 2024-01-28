@@ -1,3 +1,4 @@
+#define INCLUDE_DEPRECATED_FEATURES /// *** troubles here can occur yet
 #include "SciMessager.h"
 
 CSciMessager::CSciMessager( HWND hSciWnd )

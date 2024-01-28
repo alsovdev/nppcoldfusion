@@ -53,7 +53,10 @@ extern "C" {
 
 	__declspec( dllexport ) const TCHAR * getName()
 	{
+		//generic_string s = PLUGIN_NAME;
+		//const TCHAR* s = TEXT("nppColdFusion");
 		return PLUGIN_NAME.c_str();
+		//return s; ///***
 	}
 	__declspec( dllexport ) void setInfo( NppData notpadPlusData )
 	{
@@ -80,21 +83,23 @@ extern "C" {
 
 } // End extern "C"
 
-int EXT_LEXER_DECL GetLexerCount()
+extern "C" int EXT_LEXER_DECL GetLexerCount()
 {
 	return 1;
 }
 
 
-void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name, int buflength )
+extern "C" void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name, int buflength )
 {
 	*name = 0;
 	if ( buflength > 0 ) {
 		strncpy_s( name, buflength, LEXER_NAME.c_str(), _TRUNCATE );
+		//strncpy_s( name, buflength, "nppColdFusion", _TRUNCATE);
+		name[buflength - 1] = L'\0';
 	}
 }
 
-void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR *desc, int buflength )
+extern "C" void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR *desc, int buflength )
 {
 	if ( buflength > 0 ) {
 		generic_strncpy_s( desc, buflength, LEXER_STATUS_TEXT.c_str(), _TRUNCATE );
@@ -102,7 +107,8 @@ void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR *desc, int
 }
 
 
-LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
+//extern "C" Lexilla::LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
+extern "C" __declspec(dllexport) inline Lexilla::LexerFactoryFunction SCI_METHOD GetLexerFactory(unsigned int index)
 {
 	if ( index == 0 ) {
 		return LexerColdFusion::LexerFactory;
@@ -110,3 +116,10 @@ LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
 		return 0;
 	}
 }
+
+///extern "C" DLLAPI inline ILexer5 * WINAPI CreateLexer(const char* name)
+extern "C" __declspec(dllexport) inline Scintilla::ILexer5 * WINAPI CreateLexer(const char* name)
+{
+	return nppColdFusion::LexerColdFusion::CreateLexer(name);
+}
+

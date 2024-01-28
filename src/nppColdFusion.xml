@@ -2,6 +2,7 @@
 <NotepadPlus>
     <Languages>
         <!-- name must be the same as the one in the language menu. -->
+		<!-- !!! and exactly the same as the lexer name being returned by plugin (not the plugin name) !!! -->
         <!-- ext here is the default one. -->
         <!-- Comments are the comment that is used from the context menu when you tell np++ to comment a line. -->
         <Language name="ColdFusion" ext="cfm cfc cfml">
@@ -17,6 +18,7 @@
     </Languages>
     <LexerStyles>
         <!-- name must be the same as the Language name above. -->
+		<!-- !!! and exactly the same as the lexer name being returned by plugin (not the plugin name) !!! -->
         <!-- desc is what shows up in the styler configuator. -->
         <!-- ext is the "user defined" one. -->
         <!-- excluded is whether is shows up in the language menu. (Can be changed in the settings by the user the normal way.) -->
@@ -41,9 +43,7 @@
             <WordsStyle name="SQLKEYWORDS" styleID="21" fgColor="0000FF" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="6" />
             <WordsStyle name="JSKEYWORDS" styleID="22" fgColor="871F78" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="5" />
             <WordsStyle name="CSSKEYWORDS" styleID="23" fgColor="871F78" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" keywordClass="7" />
-            <WordsStyle name="CFSRESERVED" styleID="19" fgColor="804000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />
-          
-            
+            <WordsStyle name="CFSRESERVED" styleID="19" fgColor="804000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="" />        
         </LexerType>
     </LexerStyles>
 </NotepadPlus>

@@ -19,7 +19,7 @@
 #define NPP_CF_SHARED
 
 #include "nppLexCommon.h"
-#include "SparseState.h"
+
 #include "core\NppMessager.h"
 #include "core\SciMessager.h"
 #include "nppColdFusion.h"
@@ -186,7 +186,7 @@ namespace nppColdFusion
 		TCHAR plugindir[MAX_PATH];
 		std::vector<BlockType*> blocks;
 		CNppMessager m_nppMsgr;
-		IDocument* currentdoc;
+		Scintilla::IDocument* currentdoc;
 		CFNamespace* coldfusionNS;
 		HTMLNamespace* htmlNS;
 		SQLNamespace* sqlNS;
@@ -231,11 +231,11 @@ namespace nppColdFusion
 
 		int inBlock;
 
-		virtual bool validateforkeyword(StyleContext sc, bool inCFSet) {
+		virtual bool validateforkeyword(Lexilla::StyleContext& sc, bool inCFSet) {// changed: byref
 			return validateforkeyword(sc) && !inCFSet;
 		}
 
-		virtual bool validateforkeyword(StyleContext /*sc*/) {
+		virtual bool validateforkeyword(Lexilla::StyleContext& /*sc*/) {// changed: byref
 			return true;
 		}
 
@@ -243,7 +243,7 @@ namespace nppColdFusion
 			return true;
 		}
 
-		boost::shared_ptr<WordList> keywords;
+		boost::shared_ptr<Lexilla::WordList> keywords;
 
 		int getKeywordState() const;
 
@@ -263,7 +263,7 @@ namespace nppColdFusion
 
 		void updatelinestate(int& linestate) const;
 
-		void updateWordList(WordList& wl);
+		void updateWordList(Lexilla::WordList& wl);
 
 		BlockType() {
 			inBlock = 0;
@@ -271,7 +271,7 @@ namespace nppColdFusion
 			bitmask = 0x01;
 			allowscommentblock = true;
 			keywordstate = Styles::_DEFAULT;
-			boost::shared_ptr<WordList> keywords(new WordList);
+			boost::shared_ptr<Lexilla::WordList> keywords(new Lexilla::WordList);
 		}
 		virtual ~BlockType() {
 			//delete keywords;
@@ -286,7 +286,7 @@ namespace nppColdFusion
 			bitshift = 19;
 			keywordstate = Styles::CSS_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc);
+		bool validateforkeyword(Lexilla::StyleContext sc);
 		bool hasKeyword(char* keyword);
 	};
 
@@ -297,7 +297,7 @@ namespace nppColdFusion
 			bitshift = 18;
 			keywordstate = Styles::JS_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc);
+		bool validateforkeyword(Lexilla::StyleContext sc);
 		bool hasKeyword(char* keyword);
 	};
 
@@ -308,9 +308,9 @@ namespace nppColdFusion
 			bitshift = 17;
 			keywordstate = Styles::CF_FUNCTION;
 		}
-		bool validateforkeyword(StyleContext sc, bool inCFSet);
+		bool validateforkeyword(Lexilla::StyleContext sc, bool inCFSet);
 
-		bool validateforkeyword(StyleContext sc);
+		bool validateforkeyword(Lexilla::StyleContext sc);
 
 		bool hasKeyword(char* keyword);
 
@@ -327,7 +327,7 @@ namespace nppColdFusion
 			bitshift = 16;
 			keywordstate = Styles::SQL_KEYWORD;
 		}
-		bool validateforkeyword(StyleContext sc);
+		bool validateforkeyword(Lexilla::StyleContext sc);
 		bool hasKeyword(char* keyword);
 	};
 

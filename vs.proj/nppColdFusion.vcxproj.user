@@ -3,8 +3,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|x64'">
     <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>D:\code\npp\notepad-plus-plus-8.6.2\PowerEditor\visual.net\x64\Debug\notepad++.exe</LocalDebuggerCommand>
   </PropertyGroup>
   <PropertyGroup>
-    <ShowAllFiles>true</ShowAllFiles>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>

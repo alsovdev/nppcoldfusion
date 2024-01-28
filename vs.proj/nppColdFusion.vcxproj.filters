@@ -16,6 +16,9 @@
     <Filter Include="Extra Files">
       <UniqueIdentifier>{b2bf0b89-6415-44c2-984f-0a8707e88dc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{5bbdda98-4486-4ff6-b1e0-d05ff945e395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\nppColdFusion.cpp">
@@ -48,14 +51,26 @@
     <ClCompile Include="..\src\nppCFMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\LexAccessor.cxx">
+      <Filter>Lib</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\Lexer\lexlib\LexerBase.cxx">
-      <Filter>Source Files</Filter>
+      <Filter>Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\LexerModule.cxx">
+      <Filter>Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\LexerSimple.cxx">
+      <Filter>Lib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Lexer\lexlib\PropSetSimple.cxx">
-      <Filter>Source Files</Filter>
+      <Filter>Lib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Lexer\lexlib\WordList.cxx">
-      <Filter>Source Files</Filter>
+      <Filter>Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Lexer\lexlib\Accessor.cxx">
+      <Filter>Lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,12 +128,19 @@
     <ClInclude Include="..\src\Lexer\lexlib\WordList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Lexer\scintilla\ILexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Lexer\scintilla\Scintilla.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\nppColdFusion.xml">
       <Filter>Extra Files</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="x64\Unicode Debug\nppColdFusion.dll" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="nppColdFusion.rc">

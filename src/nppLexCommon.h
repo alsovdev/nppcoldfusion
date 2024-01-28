@@ -26,14 +26,16 @@
 #include "ILexer.h"
 #include "PropSetSimple.h"
 #include "WordList.h"
+#include "LexAccessor.h"
 #include "LexerBase.h"
 
-#include "LexAccessor.h"
 #include "Accessor.h"
 #include "LexerModule.h"
 #include "StyleContext.h"
 #include "CharacterSet.h"
 
+
+#include "SparseState.h"
 #include "Styles.h"
 #include "sqlite3.h"
 #include <boost/shared_ptr.hpp>

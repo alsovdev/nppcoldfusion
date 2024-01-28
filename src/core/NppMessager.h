@@ -2,7 +2,7 @@
 #define _npp_messager_h_
 //---------------------------------------------------------------------------
 #include "base.h"
-#include "npp_stuff/PluginInterface.h"
+#include "PluginInterface.h" ///
 #include "npp_stuff/menuCmdID.h"
 
 class CNppMessager
