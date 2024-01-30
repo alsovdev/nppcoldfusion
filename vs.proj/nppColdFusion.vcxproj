@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="ANSI Debug|Win32">
+   <!--  <ProjectConfiguration Include="ANSI Debug|Win32">
       <Configuration>ANSI Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
@@ -16,7 +16,7 @@
     <ProjectConfiguration Include="ANSI Release|x64">
       <Configuration>ANSI Release</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
+    </ProjectConfiguration> -->
     <ProjectConfiguration Include="Unicode Debug|Win32">
       <Configuration>Unicode Debug</Configuration>
       <Platform>Win32</Platform>
@@ -42,7 +42,7 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'" Label="Configuration">
+  <!-- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -63,7 +63,7 @@
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v143</PlatformToolset>
-  </PropertyGroup>
+  </PropertyGroup> -->
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
@@ -89,7 +89,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'" Label="PropertySheets">
+ <!--  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|x64'" Label="PropertySheets">
@@ -100,7 +100,7 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
+  </ImportGroup> -->
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -124,14 +124,14 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+   <!--  <OutDir Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Release|x64'">false</LinkIncremental> 
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|Win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ANSI Debug|x64'">true</LinkIncremental>-->
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Release|Win32'">$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Release|x64'">$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Unicode Debug|Win32'">$(IncludePath)</IncludePath>
@@ -280,7 +280,7 @@
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">
+  <!-- <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ANSI Release|Win32'">
     <ClCompile>
       <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -378,7 +378,7 @@
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>.\..\bin\nppColdFusion.lib</ImportLibrary>
     </Link>
-  </ItemDefinitionGroup>
+  </ItemDefinitionGroup> -->
   <ItemGroup>
     <ClCompile Include="..\src\CFFunctions.cpp" />
     <ClCompile Include="..\src\CFMLPlugin.cpp" />
@@ -432,8 +432,8 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="solution\packages\boost.1.83.0\build\boost.targets" Condition="Exists('solution\packages\boost.1.83.0\build\boost.targets')" />
-    <Import Project="solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets" Condition="Exists('solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets')" />
+ <!--    <Import Project="solution\packages\boost.1.83.0\build\boost.targets" Condition="Exists('solution\packages\boost.1.83.0\build\boost.targets')" />
+    <Import Project="solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets" Condition="Exists('solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets')" /> -->
     <Import Project="packages\boost.1.84.0\build\boost.targets" Condition="Exists('packages\boost.1.84.0\build\boost.targets')" />
   </ImportGroup>
   <!-- <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

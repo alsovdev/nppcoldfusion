@@ -16,8 +16,11 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "CFMLPlugin.h"
+///#include <boost/thread/thread.hpp> /// *** trying use sleep, but failed to build
+//#include <Windows.h> //for Sleep only, this does work
 
-using namespace nppColdFusion;
+
+using namespace nppColdFusionNS;
 extern CFMLPlugin cfmlplugin;
 
 bool     g_dbOpen;
@@ -114,13 +117,14 @@ LRESULT CALLBACK CFMLPlugin::nppNewWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 	return nppCallWndProc(hWnd, uMsg, wParam, lParam);
 }
 
-
+/**/
 const TCHAR* CFMLPlugin::nppGetName()
 {
-	//return PLUGIN_NAME; //produces error LNK2001: unresolved external symbol "public: static wchar_t const * const CFMLPlugin::PLUGIN_NAME" (?PLUGIN_NAME@CFMLPlugin@@2PEB_WEB)
+	//return nppColdFusionNS::PLUGIN_NAME.c_str(); //produces error LNK2001: unresolved external symbol "public: static wchar_t const * const CFMLPlugin::PLUGIN_NAME" (?PLUGIN_NAME@CFMLPlugin@@2PEB_WEB)
 	//return 0; //no errors
 	return TEXT("nppColdFusion"); //incorrect ***
 }
+
 
 void CFMLPlugin::nppBeNotified(SCNotification* notifyCode)
 {
@@ -221,7 +225,6 @@ void CFMLPlugin::OnNppReady()
 	}
 	nppCFMenu::updateMenu();
 	cfs.nppReady = true;
-
 }
 
 
@@ -435,14 +438,20 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				char* expanded;
 				if (currentCFTag == "" && currentHTMLTag != "") {
 					//strncpy_s( tagName,status.currentHTMLTag, 100 );
-					expanded = cfs.htmlNS->listTagAttributes(tagName, true);
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_blue);
+					expanded = cfs.htmlNS->listTagAttributes(tagName, true);
+					//Sleep(100);
 				}
 				else {
-					expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
+					//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red);
+					//sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
+					expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
+					//Sleep(10); 
 				}
 				if (expanded != 0 && strlen(expanded) > 1) {
+					// by trial and error: SCI_AUTOCSETTYPESEPARATOR fixes /? in lists with images, in NPP 8.5+ 
+					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?" 
 					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);

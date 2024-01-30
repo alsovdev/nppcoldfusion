@@ -19,7 +19,7 @@
 #ifndef NPP_CF_STYLES
 #define NPP_CF_STYLES
 
-namespace nppColdFusion
+namespace nppColdFusionNS
 {
 
 namespace Styles

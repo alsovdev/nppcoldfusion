@@ -17,7 +17,7 @@
 
 
 #include "DllEntry.h"
-using namespace nppColdFusion;
+using namespace nppColdFusionNS;
 CFMLPlugin cfmlPlugin;
 
 BOOL APIENTRY DllMain( HINSTANCE hModule, DWORD reasonForCall, LPVOID /*lpReserved*/ )
@@ -53,10 +53,7 @@ extern "C" {
 
 	__declspec( dllexport ) const TCHAR * getName()
 	{
-		//generic_string s = PLUGIN_NAME;
-		//const TCHAR* s = TEXT("nppColdFusion");
-		return PLUGIN_NAME.c_str();
-		//return s; ///***
+		return nppColdFusionNS::PLUGIN_NAME.c_str();
 	}
 	__declspec( dllexport ) void setInfo( NppData notpadPlusData )
 	{
@@ -111,7 +108,7 @@ extern "C" void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR
 extern "C" __declspec(dllexport) inline Lexilla::LexerFactoryFunction SCI_METHOD GetLexerFactory(unsigned int index)
 {
 	if ( index == 0 ) {
-		return LexerColdFusion::LexerFactory;
+		return nppColdFusionNS::LexerColdFusion::LexerFactory;
 	} else {
 		return 0;
 	}
@@ -120,6 +117,6 @@ extern "C" __declspec(dllexport) inline Lexilla::LexerFactoryFunction SCI_METHOD
 ///extern "C" DLLAPI inline ILexer5 * WINAPI CreateLexer(const char* name)
 extern "C" __declspec(dllexport) inline Scintilla::ILexer5 * WINAPI CreateLexer(const char* name)
 {
-	return nppColdFusion::LexerColdFusion::CreateLexer(name);
+	return nppColdFusionNS::LexerColdFusion::CreateLexer(name);
 }
 

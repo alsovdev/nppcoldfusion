@@ -19,7 +19,7 @@
 
 
 
-namespace nppColdFusion
+namespace nppColdFusionNS
 {
 nppCFShared* nppCFShared::pinstance( 0 );
 
@@ -349,7 +349,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 					if (length > 0) {
 						copyvalue = new char[length + 5];
 						//strcpy_s( copyvalue, length +1, values );
-						strcpy_s(copyvalue, static_cast<rsize_t>(length) + 1, values);//***
+						strcpy_s(copyvalue, static_cast<rsize_t>(length) + 1, values); // *** not sure
 						copyvalue[length] = '"';
 						copyvalue[length + 1] = '\0';
 					}
@@ -369,7 +369,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 
-		unsigned int nppCFShared::registerLexer(LexerColdFusion* thisLexer) { ///unsigned int
+		unsigned int nppCFShared::registerLexer(LexerColdFusion* thisLexer) {
 			lexers.push_back(thisLexer);
 			return lexers.size() - 1;
 		}
@@ -597,7 +597,6 @@ nppCFShared* nppCFShared::pinstance( 0 );
 			return false;
 		}
 		bool CFScriptBlock::hasOperator(char* operatorword) {
-			//return false;//************
 			auto length = strnlen_s(operatorword, 100);
 			if (length > 7 || length == 1) {
 				return false;

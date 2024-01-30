@@ -14,7 +14,7 @@ namespace Lexilla {
 
 template <typename T>
 class SparseState {
-public:///
+public:/// *** would not compile otherwise
 	struct State {
 		Sci_Position position;
 		T value;

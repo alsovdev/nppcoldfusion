@@ -1,7 +1,7 @@
 #include "nppCFMenu.h"
 
 extern CFMLPlugin        cfmlPlugin;
-using namespace nppColdFusion;
+using namespace nppColdFusionNS;
 FuncItem nppCFMenu::arrFuncItems[N_NBFUNCITEMS] = {
 	{ _T( "Wrap in CFOutput Tags" ), wrapCFOutput, 0, false, NULL },
 	{ _T( "Wrap in CFComment" ), wrapCFComment, 0, false, NULL },

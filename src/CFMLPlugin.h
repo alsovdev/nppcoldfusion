@@ -58,7 +58,7 @@ public:
 	    MAX_ESCAPED_PREFIX  = 20
 	};
 
-	static const TCHAR* PLUGIN_NAME;
+	///static const TCHAR* PLUGIN_NAME;
 	AutoCompleteBit* lastAC;
 protected:
 	// plugin menu

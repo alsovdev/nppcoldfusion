@@ -20,12 +20,18 @@
 
 #include "CFMLPlugin.h"
 
-namespace nppColdFusion
+namespace nppColdFusionNS
 {
-	//static const generic_string PLUGIN_NAME = TEXT( "&ColdFusion Lexer" );
-	static const generic_string PLUGIN_NAME = TEXT("nppColdFusion"); ///*** to get xml file by name? ***
-	//static const std::string PLUGIN_NAME = "nppColdFusion"; ///*** to get xml file by name? ***
-	static const std::string LEXER_NAME = "ColdFusion"; //exactly the same as Language.name and LexerType.name specified in nppColdFusion.xml
+	
+	// Plugin file name possibly obtained directly from plugin dll name
+	
+	// Plugin display name for menu
+	static const generic_string PLUGIN_NAME = TEXT( "&ColdFusion Lexer" );
+	//static const generic_string PLUGIN_NAME = TEXT("nppColdFusion"); 
+
+	//exactly the same as Language.name and LexerType.name specified in nppColdFusion.xml
+	static const std::string LEXER_NAME = "ColdFusion"; 
+
 	static const generic_string LEXER_STATUS_TEXT = TEXT("(NPP STATUS TEXT): ColdFusion source file ");
 }
 #endif

@@ -29,7 +29,7 @@
 //#include "SparseState.h" ///
 #include "nppCFShared.h"
 #include <boost\algorithm\string\case_conv.hpp>
-namespace nppColdFusion
+namespace nppColdFusionNS
 {
 	typedef struct {
 		int value;

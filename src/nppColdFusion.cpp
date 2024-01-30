@@ -18,13 +18,13 @@
 
 #include "nppColdFusion.h"
 #include "DllEntry.h" ///*** 
-namespace sID = nppColdFusion::Styles;		//  All of the style state codes.
-namespace lex = nppColdFusion;				//  This lexer's namespace.
+namespace sID = nppColdFusionNS::Styles;		//  All of the style state codes.
+namespace lex = nppColdFusionNS;				//  This lexer's namespace.
 
-using namespace nppColdFusion;
+using namespace nppColdFusionNS;
 const Lexilla::CharacterSet setTagContinue(Lexilla::CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
 
-static char* nppColdFusion::LexerName() {
+static char* nppColdFusionNS::LexerName() {
 	return const_cast<char*>(LEXER_NAME.c_str());
 }
 
@@ -805,7 +805,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					sc.Forward();
 				}
 			}
-			else if (isdigit(static_cast <unsigned char> (sc.ch)) && sc.state == sID::_DEFAULT) { //*** not exactly great
+			else if (isdigit(static_cast <unsigned char> (sc.ch)) && sc.state == sID::_DEFAULT) { //  fixes crash on non-ASCII chars
 				int max = 100;
 				if ((startPos - sc.currentPos) + length < 100) {
 					max = (startPos - sc.currentPos) + length;
@@ -813,7 +813,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				int len = 0;
 				for (int a = 0; a < max; a++) {
 					char s = sc.GetRelative(a);
-					if (!isdigit(static_cast<unsigned char> (s)) && s != '.') { //***
+					if (!isdigit(static_cast<unsigned char> (s)) && s != '.') { // fixes crash on non-ASCII chars
 						len = a;
 						break;
 					}
@@ -854,7 +854,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									sc.Forward(a - 1);
 									
 									if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0) || strcmp(s, "function") == 0) {
-										//break; //*************************************
+										
 										/* Read Ahead to get name */
 										///bool inName = false;
 										int j = 0;
@@ -1487,13 +1487,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	return status;
 }
 
-/*
-Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
-{
-	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
-//	return nullptr; /////////***
-}
-*/
+
 Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
 {
 	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
@@ -1517,7 +1511,7 @@ CFUserFunction::~CFUserFunction() {}
 LRESULT nppMessageProc(UINT /*Message*/, WPARAM /*wParam*/, LPARAM /*lParam*/) {
 	return 1;
 }
-///override version 4 in exemple
+///override version 4 in example
 int SCI_METHOD LexerColdFusion::Version() const {
-	return Scintilla::lvRelease4;
+	return Scintilla::lvRelease4; // can try lvRelease5
 }

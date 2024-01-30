@@ -24,7 +24,7 @@
 #include "core\SciMessager.h"
 #include "nppColdFusion.h"
 
-namespace nppColdFusion
+namespace nppColdFusionNS
 {
 	class LexerColdFusion;
 	class Status
@@ -197,7 +197,7 @@ namespace nppColdFusion
 		bool alwaysCompleteReqAttributes;
 		bool completeCFsqltype;
 
-		unsigned int registerLexer(LexerColdFusion* thisLexer); ///
+		unsigned int registerLexer(LexerColdFusion* thisLexer); 
 
 		bool linkDocToLexer(unsigned int const& lexID, unsigned int const& docID);
 
@@ -270,7 +270,7 @@ namespace nppColdFusion
 			bitshift = 0;
 			bitmask = 0x01;
 			allowscommentblock = true;
-			keywordstate = Styles::_DEFAULT;
+			keywordstate = nppColdFusionNS::Styles::_DEFAULT;
 			boost::shared_ptr<Lexilla::WordList> keywords(new Lexilla::WordList);
 		}
 		virtual ~BlockType() {

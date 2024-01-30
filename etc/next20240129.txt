@@ -1,0 +1,101 @@
+Вернуться к автоматическому дебагу
+? Удалить ANSI сборку (если нет ANSI для NPP) (нет ANSI)
+Почистить (помечено /// ***)
+Выпилить SQLite
+Выпилить Finger
+Попробовать наборы слов мигрировать в xml или cfg
+Что-то оч долго оно 
+
+Переименовал namespace nppColdFusion->nppColdFusionNS
+ и все посыпалось
+1>D:\code\npp\NPPCF.7.6.2\nppcoldfusion\src\nppCFShared.h(273,19): error C2653: 'Styles': is not a class or namespace name
+10:30 29.01.2024
+оч долго стало компилироваться
+Слово Unicode Debug не помещается в поле в студии. Я думаю, у меня просто слишком маленький экран
+
+SELECT t.name as tagname, a.name as attributename \
+FROM namespaces AS n \
+INNER JOIN namespacetags AS nt ON n.id = nt.namespaceid \
+INNER JOIN tags AS t ON nt.tagid = t.id \
+INNER JOIN tagattributes AS ta on t.[id] = ta.tagid \
+INNER JOIN attributes AS a ON ta.[attributeid] = a.id \
+WHERE n.id = ? AND t.name = ? AND a.name = ? ORDER BY t.name, a.name
+
+По ходу, если я хочу избавляться от SQLite, надо (придется) профилировать и мерить производительность
+
+*** Сломана подстановка атрибутов, получается: <a href=?1 (возможно, в запросе кривизна)
+Проверить по старому. В старой версии (npp 7.5.4) подстановка корректная href=
+Но в старой почему-то ключевые слова колда подчеркиваются волнистой линией
+Надо сначала починить дефекты
+
+6:07 30.01.2024
+                SELECT GROUP_CONCAT(b.name, '=?1 ') || '=?1' FROM (                     SELECT a.name FROM namespaces n                     INNER JOIN namespacetags nt ON n.id = nt.namespaceid                     INNER JOIN tags t ON nt.tagid = t.id                     INNER JOIN tagattributes ta ON t.id = ta.tagid                     INNER JOIN attributes a ON ta.attributeid = a.id 					WHERE n.id = ? AND t.name = ? AND (ta.required = 1 OR ta.required = ?) ORDER BY a.name                 ) AS b
+
+GROUP_CONCAT(b.name, '=?1 ') || '=?1'
+default=?1 max=?1 min=?1 name=?1 pattern=?1 type=?1
+
+		char* DBNamespace::listTagAttributes(char* tag, bool forautoc) {
+			return listTagAttributes(tag, false, false, forautoc);
+		}
+Что за херня forautoc
+sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
+autocompletion
+Разница еще в том, что я все перетащил из h в cpp. Что-то повредил по дороге?
+CFMLPlugin.cpp
+Может, что то поменялось в сцинтилле? Попробую подложить новую длл старому нпп. Подложил в 7.6.2 - красит, и там нет этой ?1
+
+Так яснее https://www.scintilla.org/ScintillaDoc.html#SCI_AUTOCSETTYPESEPARATOR
+
+SCI_AUTOCSETTYPESEPARATOR(int separatorCharacter)
+SCI_AUTOCGETTYPESEPARATOR → int
+Autocompletion list items may display an image as well as text. Each image is first registered with an integer type. Then this integer is included in the text of the list separated by a '?' from the text. For example, "fclose?2 fopen" displays image 2 before the string "fclose" and no image before "fopen". The images are in either the XPM format (SCI_REGISTERIMAGE) or RGBA format (SCI_REGISTERRGBAIMAGE). For SCI_REGISTERRGBAIMAGE the width and height must previously been set with the SCI_RGBAIMAGESETWIDTH and SCI_RGBAIMAGESETHEIGHT messages. The set of registered images can be cleared with SCI_CLEARREGISTEREDIMAGES and the '?' separator changed with SCI_AUTOCSETTYPESEPARATOR.
+
+Блин! Оно само починилось. Жесть какая-то 
+А теперь снова нет. Когда не зарегистрировалось изображение - тогда вылазит ?1
+Можно прописать геттер и поставить на него ассерт
+Может в релизном варианте этого глюка не будет. Может, гонки?
+Или ресурс недоступен? А это не в ресурсах, это битмап
+Удивительно, он прицепляет картинки из прошлого инстанса НПП. Нет, в прошлом инстансе картинка красная, а я в коде поменял на синюю 
+Тем не менее, после прошлого инстанса работает правильно, а потом ломается. Попробую запустить релиз
+SCI_REGISTERIMAGE как-то не так?
+с релизом то же самое
+Что не так со сцинтиллой? Как проверить результат registerImage
+так и не смог сделать sleep 
+1>LINK : fatal error LNK1104: cannot open file 'libboost_thread-vc143-mt-gd-x64-1_84.lib'
+непонятно, как иметь дело с бустом
+ <ImportGroup Label="ExtensionTargets">
+    <Import Project="solution\packages\boost.1.83.0\build\boost.targets" Condition="Exists('solution\packages\boost.1.83.0\build\boost.targets')" />
+    <Import Project="solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets" Condition="Exists('solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets')" />
+    <Import Project="packages\boost.1.84.0\build\boost.targets" Condition="Exists('packages\boost.1.84.0\build\boost.targets')" />
+  </ImportGroup>
+старье какое то в проекте
+но 1.84 был
+закомментил лишнее, ребилд - то же
+https://itecnote.com/tecnote/c-vs2013-boost-using-nuget/
+ок, я поставлю thread но почему сейчас работает
+На маленьком экране многих контролов не видно
+Может потому что latest stable 1.83?
+? package source mapping is off/ Configure?
+Attempting to resolve dependencies for package 'boost_thread-vc120.1.83.0' with DependencyBehavior 'Lowest'
+Unable to resolve dependencies. 'boost 1.84.0' is not compatible with 'boost_thread-vc120 1.83.0 constraint: boost (= 1.83.0)'.
+
+Похоже надо отдельно учиться бусту, точнее нугету
+std has no member sleep
+так завелось. И помогает.
+#include <Windows.h> //for sleep only
+Sleep(10);
+Измена в том, что стало отрабатывать
+А может ему надо мессадж посылать, а не синхронную функцию звать. Или синхронно картинку регистрировать.
+Нет, там все через мессаджи
+
+https://github.com/jacobslusser/ScintillaNET/issues/72
+https://github.com/jacobslusser/ScintillaNET/wiki/Basic-Autocompletion
+https://www.scintilla.org/ScintillaDoc.html#SCI_REGISTERIMAGE
+Wrapping is not performed immediately there is a change but is delayed until the display is redrawn. This delay improves performance by allowing a set of changes to be performed and then wrapped and displayed once. Because of this, some operations may not occur as expected. If a file is read and the scroll position moved to a particular line in the text, such as occurs when a container tries to restore a previous editing session, then the scroll position will have been determined before wrapping so an unexpected range of text will be displayed. To scroll to the position correctly, delay the scroll until the wrapping has been performed by waiting for an initial SCN_PAINTED notification.
+Дублирование казалось помогло, а ни фига, через раз
+sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red); 
+sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red); // dirty hack
+
+Оказывается, все эти меры помогают через раз. Видимо, дело не в гонке?
+
+Установил, что у меня что-то сломано, автоподстановка не работает правильно с новой длл в 7.6.2
