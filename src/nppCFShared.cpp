@@ -381,7 +381,6 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 		LexerColdFusion* nppCFShared::getLexerForDoc(unsigned int const& docID) {
-			docLinks::iterator iter = doclinks.find(docID);
 			if (iter != doclinks.end()) {
 				return lexers[iter->second];
 			}
@@ -574,7 +573,6 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		bool JSBlock::validateforkeyword(Lexilla::StyleContext sc) {
 			return sc.state != Styles::CF_VALUE;
 		}
-
 		bool JSBlock::hasKeyword(char* keyword) {
 			nppCFShared& ref = *nppCFShared::Instance();
 			return ref.javascriptNS->isKeyword(keyword);

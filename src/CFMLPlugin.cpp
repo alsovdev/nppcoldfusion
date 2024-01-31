@@ -451,7 +451,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				}
 				if (expanded != 0 && strlen(expanded) > 1) {
 					// by trial and error: SCI_AUTOCSETTYPESEPARATOR fixes /? in lists with images, in NPP 8.5+ 
-					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?" 
+					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
 					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);
@@ -583,7 +583,6 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						if (b > 17) {
 							break;
 						}
-
 					}
 					thisword[b] = '\0';
 					loweredword = ::CharLowerA(thisword);

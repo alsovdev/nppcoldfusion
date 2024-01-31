@@ -71,8 +71,10 @@ namespace nppColdFusionNS
 	public:
 		DBNamespace() { }
 		DBNamespace(sqlite3* thedb);
+
 		char* listAllTags();
 		char* listAllTags(bool forautoc);
+
 		char* listAllKeywords();
 		char* listAllKeywords(bool lowered);
 		char* listAllKeywords(bool lowered, bool forautoc);
@@ -87,7 +89,9 @@ namespace nppColdFusionNS
 		char* listTagAttributes(char* tag, bool forautoc);
 		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText);
 		char* listTagAttributes(char* tag, bool onlyrequired, bool hasFingerText, bool forautoc);
+
 		bool tagHasAttribute(char* tag, char* attribute);
+
 		char* listAttributeValues(char* tag, char* attribute);
 	};
 
