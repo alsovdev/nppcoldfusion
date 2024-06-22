@@ -134,3 +134,5 @@ https://community.notepad-plus-plus.org/topic/19523/how-to-integrate-external-le
 DBnamespace - базовый класс, предполагающий реляционную БД как персистенс. Хотя я бы от природы персистенса всячески абстрагировался.
 
 Для начала вынести коннект к БД из интерфейса
+10:12 01.02.2024
+<Language name="ColdFusion" ext="cfm cfc cfml" commentStart="&lt;!---" commentEnd="---&gt;"> чтобы работала команда комментировать из NPP

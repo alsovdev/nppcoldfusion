@@ -5,7 +5,7 @@
 		<!-- !!! and exactly the same as the lexer name being returned by plugin (not the plugin name) !!! -->
         <!-- ext here is the default one. -->
         <!-- Comments are the comment that is used from the context menu when you tell np++ to comment a line. -->
-        <Language name="ColdFusion" ext="cfm cfc cfml">
+        <Language name="ColdFusion" ext="cfm cfc cfml" commentStart="&lt;!---" commentEnd="---&gt;">
             <Keywords name="0"></Keywords>
             <Keywords name="1"></Keywords>
             <Keywords name="2"></Keywords>
