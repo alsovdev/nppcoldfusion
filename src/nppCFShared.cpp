@@ -381,6 +381,7 @@ nppCFShared* nppCFShared::pinstance( 0 );
 		}
 
 		LexerColdFusion* nppCFShared::getLexerForDoc(unsigned int const& docID) {
+			docLinks::iterator iter = doclinks.find(docID);
 			if (iter != doclinks.end()) {
 				return lexers[iter->second];
 			}
