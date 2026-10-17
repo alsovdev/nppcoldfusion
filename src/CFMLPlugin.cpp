@@ -439,13 +439,14 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				if (currentCFTag == "" && currentHTMLTag != "") {
 					//strncpy_s( tagName,status.currentHTMLTag, 100 );
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_blue);
+					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
 					expanded = cfs.htmlNS->listTagAttributes(tagName, true);
 					//Sleep(100);
 				}
 				else {
 					//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red);
-					//sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
+					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
 					expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
 					//Sleep(10); 
 				}
@@ -554,6 +555,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tag_green);
+					
 					sciMsgr.autoCShow(charssince, (const char*)arguments.c_str());
 				}
 				else if (strcmp(previousword, "local") == 0) {
@@ -562,6 +564,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);
 					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)shield);
+					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
 					sciMsgr.autoCShow(charssince, (const char*)locals.c_str());
 				}
 
@@ -591,6 +594,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					if (test != 0) {
 						sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)cf_func);
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
 						sciMsgr.autoCSetIgnoreCase(true);
 						sciMsgr.autoCSetSeparator(space);
 						sciMsgr.autoCShow(charssince, (const char*)cff);
@@ -727,7 +731,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						int keytakeover = SCK_TAB + (SCMOD_SHIFT << 16);
 						sciMsgr.SendSciMsg(SCI_CLEARCMDKEY, (WPARAM)keytakeover);
 						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_red);
-
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
 						sciMsgr.SendSciMsg(SCI_ASSIGNCMDKEY, (WPARAM)keytakeover, SCI_AUTOCCOMPLETE);
 						sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 						sciMsgr.autoCSetIgnoreCase(true);
@@ -743,6 +747,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						//sciMsgr.SendSciMsg(SCI_AUTOCSETMAXHEIGHT, (WPARAM) 10);
 						//sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM) 0, (LPARAM) ' ');
 						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_blue);
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
 						sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 						sciMsgr.autoCSetIgnoreCase(true);
 						sciMsgr.autoCSetSeparator(space);
@@ -931,7 +936,7 @@ void CFMLPlugin::aboutDlg()
 		TEXT("updated by Msyu from v0.8.1\n")
 		TEXT("http://bitbucket.org/bbluemel/nppcoldfusion/ - \n")
 		TEXT("(not available anymore)\n\n"),
-		TEXT("nppColdFusion v0.8.3"),
+		TEXT("nppColdFusion v0.8.4"),
 		MB_OK);
 }
 void CFMLPlugin::wrapIn(const char* before, const char* after)

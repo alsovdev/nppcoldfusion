@@ -8,7 +8,7 @@
             "args": [
                 "/t:Rebuild",
                 "${workspaceFolder}/vs.proj/nppColdFusion.sln",
-                "/p:Configuration=Debug",
+                "/p:Configuration=Release",
                 "/p:Platform=x64",
                 "/p:PlatformToolset=v142"
             ],
