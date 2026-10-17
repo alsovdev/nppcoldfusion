@@ -1,4 +1,5 @@
-//this file is part of nppColdFusion
+//this file 
+// part of nppColdFusion
 //Copyright (C)2011 Ben Bluemel ( ben1982@gmail.com )
 //
 //This program is free software; you can redistribute it and/or
@@ -47,7 +48,7 @@ LexerColdFusion::~LexerColdFusion() {
 
 static inline bool IsAWordChar(const int ch)
 {
-	return (ch < 0x80) && (isalnum(ch) || ch == '.' || ch == '_');
+	return (ch < 0x80) && (isalnum(static_cast<unsigned char>(ch)) || ch == '.' || ch == '_');
 }
 
 

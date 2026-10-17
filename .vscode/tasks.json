@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build C++ Solution",
+            "type": "process",
+            "command": "msbuild",
+            "args": [
+                "/t:Rebuild",
+                "${workspaceFolder}/vs.proj/nppColdFusion.sln",
+                "/p:Configuration=Debug",
+                "/p:Platform=x64",
+                "/p:PlatformToolset=v142"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
