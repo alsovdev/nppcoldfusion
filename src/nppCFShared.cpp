@@ -23,6 +23,13 @@ using namespace AutoCompleteData;
 
 nppCFShared* nppCFShared::pinstance( 0 );
 
+nppCFShared* nppCFShared::Instance() {
+    if (!pinstance) {
+        pinstance = new nppCFShared();
+    }
+    return pinstance;
+}
+
     // Helper: build space-separated string from tags in a namespace
     static std::string buildTagList(NamespaceId ns_id, bool forautoc) {
         std::string result;
@@ -171,6 +178,57 @@ nppCFShared* nppCFShared::pinstance( 0 );
     const char* DBNamespace::listAttributeValues(const char* tag, const char* attribute) {
         // Not implemented in new system - return empty
         return "";
+    }
+
+    unsigned int nppCFShared::registerLexer(LexerColdFusion* thisLexer) {
+        lexers.push_back(thisLexer);
+        return static_cast<unsigned int>(lexers.size() - 1);
+    }
+
+    bool nppCFShared::linkDocToLexer(unsigned int const& lexID, unsigned int const& docID) {
+        if (lexID < lexers.size()) {
+            doclinks[docID] = lexID;
+            lexlinks[lexID] = docID;
+            return true;
+        }
+        return false;
+    }
+
+    LexerColdFusion* nppCFShared::getLexerForDoc(unsigned int const& docID) {
+        auto it = doclinks.find(docID);
+        if (it != doclinks.end()) {
+            unsigned int lexID = it->second;
+            if (lexID < lexers.size()) {
+                return lexers[lexID];
+            }
+        }
+        return nullptr;
+    }
+
+    bool nppCFShared::unregisterLexer(unsigned int const& lexID, unsigned int const& docID) {
+        if (lexID < lexers.size()) {
+            doclinks.erase(docID);
+            lexlinks.erase(lexID);
+            return true;
+        }
+        return false;
+    }
+
+    int BlockType::getKeywordState() const {
+        return keywordstate;
+    }
+
+    void BlockType::updatefromlinestate(int linestate) {
+        inBlock = (linestate >> bitshift) & bitmask;
+    }
+
+    void BlockType::updatelinestate(int& linestate) const {
+        linestate = (linestate & ~(bitmask << bitshift)) | (inBlock << bitshift);
+    }
+
+    void BlockType::updateWordList(Lexilla::WordList& wl) {
+        keywords.reset(new Lexilla::WordList);
+        // Copy from shared wordlist if needed
     }
 
 } // namespace nppColdFusionNS
