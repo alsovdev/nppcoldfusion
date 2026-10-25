@@ -17,7 +17,7 @@ permissions:
 
 env:
   SOLUTION_FILE: vs.proj/nppColdFusion.sln
-  CONFIGURATION: Unicode Release
+  CONFIGURATION: Release
   PLATFORM: x64
 
 jobs:
