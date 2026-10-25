@@ -231,4 +231,45 @@ nppCFShared* nppCFShared::Instance() {
         // Copy from shared wordlist if needed
     }
 
+    // CSSBlock
+    bool CSSBlock::validateforkeyword(Lexilla::StyleContext sc) {
+        return sc.state == Styles::CSS_KEYWORD || sc.state == Styles::CSS_PROPERTY;
+    }
+    bool CSSBlock::hasKeyword(char* keyword) {
+        return keywords->InList(keyword);
+    }
+
+    // JSBlock
+    bool JSBlock::validateforkeyword(Lexilla::StyleContext sc) {
+        return sc.state == Styles::JS_KEYWORD;
+    }
+    bool JSBlock::hasKeyword(char* keyword) {
+        return keywords->InList(keyword);
+    }
+
+    // CFScriptBlock
+    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+        return validateforkeyword(sc) && !inCFSet;
+    }
+    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc) {
+        return sc.state == Styles::CF_FUNCTION || sc.state == Styles::CF_KEYWORD;
+    }
+    bool CFScriptBlock::hasKeyword(char* keyword) {
+        return keywords->InList(keyword);
+    }
+    bool CFScriptBlock::hasOperator(char* operatorword) {
+        return false;
+    }
+    bool CFScriptBlock::hasReservedWord(const char* reservedword) {
+        return false;
+    }
+
+    // CFQueryBlock
+    bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext sc) {
+        return sc.state == Styles::SQL_KEYWORD;
+    }
+    bool CFQueryBlock::hasKeyword(char* keyword) {
+        return keywords->InList(keyword);
+    }
+
 } // namespace nppColdFusionNS

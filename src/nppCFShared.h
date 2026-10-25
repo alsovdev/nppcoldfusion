@@ -257,8 +257,8 @@ namespace nppColdFusionNS
             bitshift = 19;
             keywordstate = Styles::CSS_KEYWORD;
         }
-        bool validateforkeyword(Lexilla::StyleContext sc);
-        bool hasKeyword(char* keyword);
+        bool validateforkeyword(Lexilla::StyleContext sc) override;
+        bool hasKeyword(char* keyword) override;
     };
 
     class JSBlock : public BlockType
@@ -268,8 +268,8 @@ namespace nppColdFusionNS
             bitshift = 18;
             keywordstate = Styles::JS_KEYWORD;
         }
-        bool validateforkeyword(Lexilla::StyleContext sc);
-        bool hasKeyword(char* keyword);
+        bool validateforkeyword(Lexilla::StyleContext sc) override;
+        bool hasKeyword(char* keyword) override;
     };
 
     class CFScriptBlock : public BlockType
@@ -279,11 +279,11 @@ namespace nppColdFusionNS
             bitshift = 17;
             keywordstate = Styles::CF_FUNCTION;
         }
-        bool validateforkeyword(Lexilla::StyleContext sc, bool inCFSet);
-        bool validateforkeyword(Lexilla::StyleContext sc);
-        bool hasKeyword(char* keyword);
-        bool hasOperator(char* operatorword);
-        bool hasReservedWord(const char* reservedword);
+        bool validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) override;
+        bool validateforkeyword(Lexilla::StyleContext sc) override;
+        bool hasKeyword(char* keyword) override;
+        bool hasOperator(char* operatorword) override;
+        bool hasReservedWord(const char* reservedword) override;
     };
 
     class CFQueryBlock : public BlockType
@@ -293,8 +293,8 @@ namespace nppColdFusionNS
             bitshift = 16;
             keywordstate = Styles::SQL_KEYWORD;
         }
-        bool validateforkeyword(Lexilla::StyleContext sc);
-        bool hasKeyword(char* keyword);
+        bool validateforkeyword(Lexilla::StyleContext sc) override;
+        bool hasKeyword(char* keyword) override;
     };
 
     /* XPM */
