@@ -56,6 +56,7 @@ const int _XCCOMMENT = 20;
 const int SQL_KEYWORD = 21;
 const int JS_KEYWORD = 22;
 const int CSS_KEYWORD = 23;
+const int CSS_PROPERTY = 24;
 
 const int J_START = 40;
 const int J_DEFAULT = 41;
