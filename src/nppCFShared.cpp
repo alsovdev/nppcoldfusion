@@ -232,7 +232,7 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     // CSSBlock
-    bool CSSBlock::validateforkeyword(Lexilla::StyleContext sc) {
+    bool CSSBlock::validateforkeyword(Lexilla::StyleContext& sc) {
         return sc.state == Styles::CSS_KEYWORD || sc.state == Styles::CSS_PROPERTY;
     }
     bool CSSBlock::hasKeyword(char* keyword) {
@@ -240,7 +240,7 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     // JSBlock
-    bool JSBlock::validateforkeyword(Lexilla::StyleContext sc) {
+    bool JSBlock::validateforkeyword(Lexilla::StyleContext& sc) {
         return sc.state == Styles::JS_KEYWORD;
     }
     bool JSBlock::hasKeyword(char* keyword) {
@@ -248,10 +248,10 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     // CFScriptBlock
-    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc, bool inCFSet) {
+    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext& sc, bool inCFSet) {
         return validateforkeyword(sc) && !inCFSet;
     }
-    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext sc) {
+    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext& sc) {
         return sc.state == Styles::CF_FUNCTION || sc.state == Styles::CF_KEYWORD;
     }
     bool CFScriptBlock::hasKeyword(char* keyword) {
@@ -265,7 +265,7 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     // CFQueryBlock
-    bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext sc) {
+    bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext& sc) {
         return sc.state == Styles::SQL_KEYWORD;
     }
     bool CFQueryBlock::hasKeyword(char* keyword) {
