@@ -9,7 +9,7 @@
 
 - ✅ **Синтаксическая подсветка** — CF-теги, CFScript, HTML, JavaScript, CSS, SQL (в `<cfquery>`)
 - ✅ **Свертка кода (folding)** — CF-теги (`<cfif>`/`</cfif>`), HTML-теги, JS/CSS блоки, `{}` в CFScript
-- ✅ **Автодополнение** — через SQLite БД (`nppColdFusion.db3`) + XML (`nppColdFusion.xml`) — теги, атрибуты, функции
+- ✅ **Автодополнение** — встроенные constexpr структуры + XML (`nppColdFusion.xml`) — теги, атрибуты, функции
 - ✅ **Автоопределение типа файла** — `.cfc` (component) vs `.cfm` по ключевому слову `component`
 - ✅ **Подсветка вложенных блоков** — `<cfquery>`, `<cfscript>`, `<script>`, `<style>` — отдельные лексеры
 
@@ -27,17 +27,14 @@
    - `nppColdFusion.dll`
    - `nppColdFusion.xml`
    - `nppColdFusion.db3`
-   - `sqlite3.dll`
 2. Создайте папку: `%ProgramFiles%\Notepad++\plugins\nppColdFusion\`
 3. Скопируйте `nppColdFusion.dll` в эту папку
 4. Скопируйте `nppColdFusion.xml` и `nppColdFusion.db3` в: `%AppData%\Notepad++\plugins\config\`
-5. Положите `sqlite3.dll` рядом с `notepad++.exe` (или в папку, доступную через PATH)
 
 #### Для Portable-версии Notepad++
 ```
 <Notepad++>/
 ├── notepad++.exe
-├── sqlite3.dll          ← положите сюда
 └── plugins/
     ├── nppColdFusion/
     │   └── nppColdFusion.dll
@@ -61,17 +58,20 @@
 ### Предварительные требования
 - Visual Studio 2022 (Community/Professional/Enterprise) с нагрузкой **Desktop development with C++**
 - Windows 10 SDK (10.0.19041+)
+- Python 3.x (для генерации автодополнения из YAML)
 
 ### Шаги
 ```cmd
 git clone https://github.com/alsovdev/nppcoldfusion.git
 cd nppcoldfusion
+# Генерация данных автодополнения из YAML
+python scripts/generate_autocomplete.py
 # Откройте vs.proj\nppColdFusion.sln в Visual Studio 2022
 # Выберите конфигурацию: Unicode Release | x64
 # Build → Build Solution
 ```
 
-Артефакты появятся в `vs.proj\x64\Unicode Release\`.
+Артефакты появятся в `vs.proj\x64\Release\`.
 
 ### Автоматическая сборка (CI)
 GitHub Actions настроен для автоматической сборки при пуше тегов `v*`. Смотрите [workflow](.github/workflows/build.yml).

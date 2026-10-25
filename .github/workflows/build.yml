@@ -32,6 +32,14 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate autocomplete data from YAML
+        run: python scripts/generate_autocomplete.py
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
