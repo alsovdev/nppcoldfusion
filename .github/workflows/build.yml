@@ -1,0 +1,175 @@
+name: Build nppColdFusion Plugin
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.0.0)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  SOLUTION_FILE: vs.proj/nppColdFusion.sln
+  CONFIGURATION: Unicode Release
+  PLATFORM: x64
+
+jobs:
+  build-windows:
+    name: Build Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+        with:
+          nuget-version: '6.x'
+
+      - name: Restore NuGet packages
+        run: nuget restore "${{ env.SOLUTION_FILE }}"
+
+      - name: Build with MSBuild
+        run: |
+          msbuild "${{ env.SOLUTION_FILE }}" `
+            /p:Configuration="${{ env.CONFIGURATION }}" `
+            /p:Platform="${{ env.PLATFORM }}" `
+            /p:PlatformToolset=v143 `
+            /p:WindowsTargetPlatformVersion=10.0 `
+            /verbosity:minimal `
+            /maxcpucount
+
+      - name: Verify build outputs
+        run: |
+          $dllPath = "vs.proj\x64\${{ env.CONFIGURATION }}\nppColdFusion.dll"
+          $xmlPath = "src\nppColdFusion.xml"
+          $db3Path = "src\nppColdFusion.db3"
+          $sqlitePath = "extern\sqlite3\x64\sqlite3.dll"
+
+          if (-not (Test-Path $dllPath)) { Write-Error "DLL not found at $dllPath"; exit 1 }
+          if (-not (Test-Path $xmlPath)) { Write-Error "XML not found at $xmlPath"; exit 1 }
+          if (-not (Test-Path $db3Path)) { Write-Error "DB3 not found at $db3Path"; exit 1 }
+          if (-not (Test-Path $sqlitePath)) { Write-Error "sqlite3.dll not found at $sqlitePath"; exit 1 }
+
+          Write-Host "All artifacts found"
+
+      - name: Prepare release artifacts
+        shell: powershell
+        run: |
+          $version = "${{ github.ref_name }}"
+          if ($version -notmatch '^v\d+\.\d+\.\d+') {
+            $version = "v$(git describe --tags --always --dirty)"
+          }
+          $artifactDir = "dist\${version}"
+          New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
+
+          Copy-Item "vs.proj\x64\${{ env.CONFIGURATION }}\nppColdFusion.dll" "$artifactDir\nppColdFusion.dll"
+          Copy-Item "src\nppColdFusion.xml" "$artifactDir\nppColdFusion.xml"
+          Copy-Item "src\nppColdFusion.db3" "$artifactDir\nppColdFusion.db3"
+          Copy-Item "extern\sqlite3\x64\sqlite3.dll" "$artifactDir\sqlite3.dll"
+
+          $installText = @"
+nppColdFusion ${version} - Installation Instructions
+====================================================
+
+1. Create folder: %ProgramFiles%\Notepad++\plugins\nppColdFusion\
+2. Copy nppColdFusion.dll to that folder
+3. Copy nppColdFusion.xml and nppColdFusion.db3 to:
+   %AppData%\Notepad++\plugins\config\
+4. Ensure sqlite3.dll is in your PATH or next to notepad++.exe
+   (copy sqlite3.dll to Notepad++ installation folder)
+
+For Portable Notepad++:
+  Copy nppColdFusion.dll to <Notepad++>\plugins\nppColdFusion\
+  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\plugins\config\
+  Copy sqlite3.dll to <Notepad++>\ (next to notepad++.exe)
+"@
+          Set-Content "$artifactDir\INSTALL.txt" -Encoding UTF8 -Value $installText
+
+          Write-Host "Artifacts prepared in $artifactDir"
+          Get-ChildItem $artifactDir
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nppColdFusion-${{ env.PLATFORM }}-${{ env.CONFIGURATION }}
+          path: dist/**/*
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: nppColdFusion ${{ github.ref_name }}
+          body: |
+            ## nppColdFusion ${{ github.ref_name }}
+
+            **Notepad++ ColdFusion/CFML Lexer Plugin** for x64 (Notepad++ 8+)
+
+            ### Installation
+            1. Download `nppColdFusion.dll`, `nppColdFusion.xml`, `nppColdFusion.db3`, `sqlite3.dll` from Assets below
+            2. See `INSTALL.txt` for detailed instructions
+
+            ### Changes
+            See [CHANGELOG.md](https://github.com/alsovdev/nppcoldfusion/blob/master/CHANGELOG.md)
+          draft: false
+          prerelease: false
+          files: |
+            dist/${{ github.ref_name }}/nppColdFusion.dll
+            dist/${{ github.ref_name }}/nppColdFusion.xml
+            dist/${{ github.ref_name }}/nppColdFusion.db3
+            dist/${{ github.ref_name }}/sqlite3.dll
+            dist/${{ github.ref_name }}/INSTALL.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-win32:
+    name: Build Windows x86 (Win32)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    if: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore "${{ env.SOLUTION_FILE }}"
+
+      - name: Build Win32
+        run: |
+          msbuild "${{ env.SOLUTION_FILE }}" `
+            /p:Configuration="${{ env.CONFIGURATION }}" `
+            /p:Platform=Win32 `
+            /p:PlatformToolset=v143 `
+            /verbosity:minimal
+
+      - name: Upload Win32 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nppColdFusion-Win32-${{ env.CONFIGURATION }}
+          path: vs.proj\Win32\${{ env.CONFIGURATION }}\**
+          retention-days: 7
