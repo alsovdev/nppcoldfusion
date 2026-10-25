@@ -37,6 +37,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install PyYAML
+        run: pip install pyyaml
+
       - name: Generate autocomplete data from YAML
         run: python scripts/generate_autocomplete.py
 
