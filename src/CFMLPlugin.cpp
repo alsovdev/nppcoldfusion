@@ -936,7 +936,7 @@ void CFMLPlugin::aboutDlg()
 		TEXT("updated by Msyu from v0.8.1\n")
 		TEXT("http://bitbucket.org/bbluemel/nppcoldfusion/ - \n")
 		TEXT("(not available anymore)\n\n"),
-		TEXT("nppColdFusion v0.8.4"),
+		TEXT("nppColdFusion v1.0.0"),
 		MB_OK);
 }
 void CFMLPlugin::wrapIn(const char* before, const char* after)

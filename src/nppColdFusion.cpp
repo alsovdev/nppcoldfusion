@@ -26,7 +26,7 @@ using namespace nppColdFusionNS;
 const Lexilla::CharacterSet setTagContinue(Lexilla::CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
 
 static char* nppColdFusionNS::LexerName() {
-	return const_cast<char*>(LEXER_NAME.c_str());
+	return const_cast<char*>(nppColdFusionNS::LEXER_NAME);
 }
 
 LexerColdFusion::LexerColdFusion() {

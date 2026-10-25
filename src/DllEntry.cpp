@@ -53,7 +53,7 @@ extern "C" {
 
 	__declspec( dllexport ) const TCHAR * getName()
 	{
-		return nppColdFusionNS::PLUGIN_NAME.c_str();
+		return nppColdFusionNS::PLUGIN_NAME;
 	}
 	__declspec( dllexport ) void setInfo( NppData notpadPlusData )
 	{
@@ -90,8 +90,7 @@ extern "C" void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name,
 {
 	*name = 0;
 	if ( buflength > 0 ) {
-		strncpy_s( name, buflength, LEXER_NAME.c_str(), _TRUNCATE );
-		//strncpy_s( name, buflength, "nppColdFusion", _TRUNCATE);
+		strncpy_s( name, buflength, nppColdFusionNS::LEXER_NAME, _TRUNCATE );
 		name[buflength - 1] = L'\0';
 	}
 }
@@ -99,7 +98,7 @@ extern "C" void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name,
 extern "C" void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR *desc, int buflength )
 {
 	if ( buflength > 0 ) {
-		generic_strncpy_s( desc, buflength, LEXER_STATUS_TEXT.c_str(), _TRUNCATE );
+		generic_strncpy_s( desc, buflength, nppColdFusionNS::PLUGIN_STATUS_TEXT, _TRUNCATE );
 	}
 }
 

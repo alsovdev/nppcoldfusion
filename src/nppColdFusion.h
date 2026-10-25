@@ -31,6 +31,11 @@
 #include <boost\algorithm\string\case_conv.hpp>
 namespace nppColdFusionNS
 {
+	constexpr const char* LEXER_NAME = "ColdFusion";
+	constexpr const char* PLUGIN_NAME = "nppColdFusion";
+	constexpr const char* PLUGIN_VERSION = "1.0.0";
+	constexpr const char* PLUGIN_STATUS_TEXT = "ColdFusion Lexer for Notepad++";
+
 	typedef struct {
 		int value;
 		int shift;
