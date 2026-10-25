@@ -225,7 +225,7 @@ namespace nppColdFusionNS
             return false;
         }
 
-        virtual bool hasReservedWord(char* /*s*/) {
+        virtual bool hasReservedWord(const char* /*s*/) {
             return false;
         }
 
