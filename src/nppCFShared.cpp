@@ -614,22 +614,22 @@ nppCFShared* nppCFShared::pinstance( 0 );
 			return false;
 		}
 		bool CFScriptBlock::hasReservedWord(const char* reservedword) { ///
-			//
-			auto length = strnlen_s(reservedword, 100);
+				//
+				auto length = strnlen_s(reservedword, 100);
 
-			if (length > 9 || length == 1) {
-				return false;
+				if (length > 12 || length == 1) {
+					return false;
+				}
+				char* copyvalue = new char[length + 10];
+				strcpy_s(copyvalue, 2, (const char*)" ");
+
+				strcat_s(copyvalue, length + 2, reservedword);
+				copyvalue[length + 1] = ' ';
+				copyvalue[length + 2] = '\0';
+
+				const char* rwords = " component property function break if else switch case catch continue default do for in return try var while abstract final static null interface implements extends override ";
+				return (strstr(rwords, copyvalue) != NULL);
 			}
-			char* copyvalue = new char[length + 10];
-			strcpy_s(copyvalue, 2, (const char*)" ");
-
-			strcat_s(copyvalue, length + 2, reservedword);
-			copyvalue[length + 1] = ' ';
-			copyvalue[length + 2] = '\0';
-
-			const char* rwords = " component property function break if else switch case catch continue default do for in return try var while ";
-			return (strstr(rwords, copyvalue) != NULL);
-		}
 
 
 		bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext sc) {
