@@ -437,19 +437,19 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						(styleat == Styles::CF_ATTRIBUTE || styleat == Styles::_ATTRIBUTE)) {
 					const char* expanded;
 					if (currentCFTag == "" && currentHTMLTag != "") {
-						//strncpy_s( tagName,status.currentHTMLTag, 100 );
-						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_blue);
-						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-						expanded = cfs.htmlNS->listTagAttributes(tagName, true);
-						//Sleep(100);
-					}
-					else {
-						//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
-						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red);
-						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-						expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
-						//Sleep(10);
-					}
+								//strncpy_s( tagName,status.currentHTMLTag, 100 );
+								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_blue);
+								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
+								expanded = cfs.htmlNS->listTagAttributes(tagName, true);
+								//Sleep(100);
+							}
+							else {
+								//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
+								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_red);
+								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
+								expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
+								//Sleep(10);
+							}
 					if (expanded != 0 && strlen(expanded) > 1) {
 						// by trial and error: SCI_AUTOCSETTYPESEPARATOR fixes /? in lists with images, in NPP 8.5+
 						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
