@@ -82,22 +82,7 @@ jobs:
           Copy-Item "src\nppColdFusion.db3" "$artifactDir\nppColdFusion.db3"
           Copy-Item "extern\sqlite3\x64\sqlite3.dll" "$artifactDir\sqlite3.dll"
 
-          $installText = @"
-nppColdFusion ${version} - Installation Instructions
-====================================================
-
-1. Create folder: %ProgramFiles%\Notepad++\plugins\nppColdFusion\
-2. Copy nppColdFusion.dll to that folder
-3. Copy nppColdFusion.xml and nppColdFusion.db3 to:
-   %AppData%\Notepad++\plugins\config\
-4. Ensure sqlite3.dll is in your PATH or next to notepad++.exe
-   (copy sqlite3.dll to Notepad++ installation folder)
-
-For Portable Notepad++:
-  Copy nppColdFusion.dll to <Notepad++>\plugins\nppColdFusion\
-  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\plugins\config\
-  Copy sqlite3.dll to <Notepad++>\ (next to notepad++.exe)
-"@
+          $installText = "nppColdFusion $version - Installation Instructions`n====================================================`n`n1. Create folder: %ProgramFiles%\Notepad++\plugins\nppColdFusion\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\Notepad++\plugins\config\`n4. Ensure sqlite3.dll is in your PATH or next to notepad++.exe`n   (copy sqlite3.dll to Notepad++ installation folder)`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\plugins\nppColdFusion\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\plugins\config\`n  Copy sqlite3.dll to <Notepad++>\ (next to notepad++.exe)"
           Set-Content "$artifactDir\INSTALL.txt" -Encoding UTF8 -Value $installText
 
           Write-Host "Artifacts prepared in $artifactDir"
