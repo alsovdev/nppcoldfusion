@@ -242,7 +242,7 @@ void CFMLPlugin::OnNppShutdown()
 				GWLP_WNDPROC, (LONG_PTR)nppOriginalWndProc);
 		}
 	}
-	cfs.cleanupDB();
+	// cfs.cleanupDB();  // REMOVED - no SQLite
 
 	//SaveOptions();
 }
@@ -893,15 +893,15 @@ void CFMLPlugin::OnNppSetInfo(const NppData& notpadPlusData)
 	//m_PluginMenu.setNppData(notpadPlusData);
 	isNppWndUnicode = ::IsWindowUnicode(notpadPlusData._nppHandle) ? true : false;
 	cfs.m_nppMsgr.getPluginsConfigDir(MAX_PATH, cfs.plugindir);
-	char* dbfile;
+	// char* dbfile;  // REMOVED - no SQLite
 
-	int multibyteLength = WideCharToMultiByte(CP_UTF8, 0, cfs.plugindir, -1, NULL, 0, 0, 0);
-	dbfile = new char[multibyteLength + 50];
-	//_tcsncat(dbfile, cfs.plugindir, MAX_PATH);
+	// int multibyteLength = WideCharToMultiByte(CP_UTF8, 0, cfs.plugindir, -1, NULL, 0, 0, 0);
+	// dbfile = new char[multibyteLength + 50];
+	// //_tcsncat(dbfile, cfs.plugindir, MAX_PATH);
 
-	WideCharToMultiByte(CP_UTF8, 0, cfs.plugindir, -1, dbfile, multibyteLength, 0, 0);
-	strncat_s(dbfile, multibyteLength + 50, "\\nppColdFusion.db3", 20);
-	cfs.setDB(dbfile);
+	// WideCharToMultiByte(CP_UTF8, 0, cfs.plugindir, -1, dbfile, multibyteLength, 0, 0);
+	// strncat_s(dbfile, multibyteLength + 50, "\\nppColdFusion.db3", 20);
+	// cfs.setDB(dbfile);  // REMOVED - no SQLite
 
 }
 void CFMLPlugin::wrapCFComment()
