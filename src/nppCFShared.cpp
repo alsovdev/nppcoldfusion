@@ -16,14 +16,12 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "nppCFShared.h"
-#include <algorithm>
-#include <cstring>
 
 namespace nppColdFusionNS
 {
-    nppCFShared* nppCFShared::pinstance( 0 );
+using namespace AutoCompleteData;
 
-    using namespace AutoCompleteData;
+nppCFShared* nppCFShared::pinstance( 0 );
 
     // Helper: build space-separated string from tags in a namespace
     static std::string buildTagList(NamespaceId ns_id, bool forautoc) {
@@ -55,9 +53,8 @@ namespace nppColdFusionNS
             uint8_t set_id = nks.set_ids[i];
             if (set_id > 0 && set_id <= sizeof(keyword_sets) / sizeof(KeywordSet)) {
                 const auto& ks = keyword_sets[set_id - 1];
-                const char* sep = " ";
                 for (size_t j = 0; j < ks.count; ++j) {
-                    if (!result.empty()) result += sep;
+                    if (!result.empty()) result += " ";
                     if (lowered) {
                         // Convert to lowercase
                         std::string kw = ks.keywords[j];
@@ -126,35 +123,36 @@ namespace nppColdFusionNS
     const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
         static thread_local std::string cached_attrs[6][2][2]; // ns, onlyrequired, hasFingerText
         // Simple cache key
-        int cache_idx = (onlyrequired ? 1 : 0) * 2 + (hasFingerText ? 1 : 0);
+        int onlyreq_idx = onlyrequired ? 1 : 0;
+        int finger_idx = hasFingerText ? 1 : 0;
         
         if (this->ns > 0 && this->ns <= 5) {
-            if (cached_attrs[ns][cache_idx].empty()) {
+            if (cached_attrs[ns][onlyreq_idx][finger_idx].empty()) {
                 size_t attr_count = 0;
                 const TagAttribute* attrs = findTagAttributes(tag, namespace_id, attr_count);
                 if (attrs && attr_count > 0) {
                     const char* extra = forautoc ? "?1" : "";
                     for (size_t i = 0; i < attr_count; ++i) {
-                        if (!cached_attrs[ns][cache_idx].empty()) {
-                            cached_attrs[ns][cache_idx] += " ";
+                        if (!cached_attrs[ns][onlyreq_idx][finger_idx].empty()) {
+                            cached_attrs[ns][onlyreq_idx][finger_idx] += " ";
                         }
-                        cached_attrs[ns][cache_idx] += attrs[i].name;
+                        cached_attrs[ns][onlyreq_idx][finger_idx] += attrs[i].name;
                         if (onlyrequired) {
                             if (hasFingerText) {
-                                cached_attrs[ns][cache_idx] += "=\\\"$[![]!]\\\"";
+                                cached_attrs[ns][onlyreq_idx][finger_idx] += "=\\\\\\\"$[![]!]\\\\\\\"";
                             } else {
-                                cached_attrs[ns][cache_idx] += "=\"\"";
+                                cached_attrs[ns][onlyreq_idx][finger_idx] += "=\"\"";
                             }
                         } else {
-                            cached_attrs[ns][cache_idx] += "=";
+                            cached_attrs[ns][onlyreq_idx][finger_idx] += "=";
                         }
                         if (forautoc) {
-                            cached_attrs[ns][cache_idx] += extra;
+                            cached_attrs[ns][onlyreq_idx][finger_idx] += extra;
                         }
                     }
                 }
             }
-            return cached_attrs[ns][cache_idx].c_str();
+            return cached_attrs[ns][onlyreq_idx][finger_idx].c_str();
         }
         return "";
     }
