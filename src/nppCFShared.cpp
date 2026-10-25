@@ -248,9 +248,6 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     // CFScriptBlock
-    bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext& sc, bool inCFSet) {
-        return validateforkeyword(sc) && !inCFSet;
-    }
     bool CFScriptBlock::validateforkeyword(Lexilla::StyleContext& sc) {
         return sc.state == Styles::CF_FUNCTION || sc.state == Styles::CF_KEYWORD;
     }
