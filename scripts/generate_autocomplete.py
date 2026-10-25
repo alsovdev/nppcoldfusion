@@ -252,8 +252,11 @@ def generate_header():
         for i, (tname, _) in enumerate(sorted(tags_data.items())):
             if tname in tag_list:
                 tag_indices.append(str(i))
-        append("constexpr uint16_t " + safe_ns + "_tag_indices[] = { " + ', '.join(tag_indices) + " };")
-    append("")
+        if tag_indices:
+            append("constexpr uint16_t " + safe_ns + "_tag_indices[] = { " + ', '.join(tag_indices) + " };")
+        else:
+            append("constexpr uint16_t " + safe_ns + "_tag_indices[] = { 0 };")  # dummy element for empty namespace
+        append("")
 
     append("constexpr NamespaceTags namespace_tags[] = {")
     for ns_name in NAMESPACE_MAPPING.keys():
@@ -303,8 +306,11 @@ def generate_header():
 
     for ns_name, set_ids in NAMESPACE_KEYWORDSET_MAP.items():
         safe_ns = cpp_identifier(ns_name)
-        append("constexpr uint8_t " + safe_ns + "_kwset_ids[] = { " + ', '.join(str(s) for s in set_ids) + " };")
-    append("")
+        if set_ids:
+            append("constexpr uint8_t " + safe_ns + "_kwset_ids[] = { " + ', '.join(str(s) for s in set_ids) + " };")
+        else:
+            append("constexpr uint8_t " + safe_ns + "_kwset_ids[] = { 0 };")  # dummy element for empty namespace
+        append("")
 
     append("constexpr NamespaceKeywordSets namespace_keyword_sets[] = {")
     for ns_name in NAMESPACE_MAPPING.keys():
