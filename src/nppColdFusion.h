@@ -60,7 +60,7 @@ namespace nppColdFusionNS
 	class nppCFShared;
 	class Status;
 
-	inline static char* LexerName();
+	inline static const char* LexerName();
 
 
 
