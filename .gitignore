@@ -8,7 +8,7 @@ vs.proj/Release/
 *.suo
 *.aps
 *.zip
-*.dll
+# *.dll  # Allow sqlite3.dll in extern/
 *.obj
 *.pdb
 .vs/
@@ -16,3 +16,8 @@ vs.proj/Release/
 *.opensdf
 *.db
 *.ipch
+
+# Allow specific DLLs for distribution
+!extern/sqlite3/x64/sqlite3.dll
+!extern/sqlite3/x64/sqlite3.def
+!src/nppColdFusion.db3
