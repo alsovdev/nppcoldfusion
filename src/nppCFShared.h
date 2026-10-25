@@ -410,6 +410,62 @@ namespace nppColdFusionNS
     };
 
     /* XPM */
+    static const char* shield[] = {
+        /* columns rows colors chars-per-pixel */
+        "16 16 5 1 ",
+        "  c #000000",
+        ". c #FFFFFF",
+        "X c #808080",
+        "o c #C0C0C0",
+        "+ c #FFFF00",
+        /* pixels */
+        "                ",
+        "    XXXXXXXX    ",
+        "   X........X   ",
+        "  X..........X  ",
+        " X............X ",
+        " X..XX....XX..X ",
+        " X..XX....XX..X ",
+        " X............X ",
+        " X..XXXXXXXX..X ",
+        " X............X ",
+        " X............X ",
+        "  X..........X  ",
+        "   X........X   ",
+        "    XXXXXXXX    ",
+        "                ",
+        "                "
+    };
+
+    /* XPM */
+    static const char* tag_green[] = {
+        /* columns rows colors chars-per-pixel */
+        "16 16 4 1 ",
+        "  c #000000",
+        ". c #FFFFFF",
+        "X c #00FF00",
+        "o c #008000",
+        /* pixels */
+        "                ",
+        "      XXXXXX    ",
+        "     X......X   ",
+        "    X........X  ",
+        "   X........X   ",
+        "  X........X    ",
+        " X........X     ",
+        " X........X     ",
+        " X......XXXXX   ",
+        " X........X     ",
+        "  X........X    ",
+        "   X........X   ",
+        "    X........X  ",
+        "     X......X   ",
+        "      XXXXXX    ",
+        "                ",
+        "                "
+    };
+
+    /* XPM */
     static const char* cf_func[] = {
         /* columns rows colors chars-per-pixel */
         "16 16 61 1 ",
