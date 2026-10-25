@@ -1,0 +1,2439 @@
+Any:
+  basetype: ''
+  id: 198
+AnyValue:
+  basetype: ''
+  id: 139
+Array:
+  basetype: ''
+  id: 473
+DateTime:
+  basetype: ''
+  id: 175
+Number:
+  basetype: ''
+  id: 290
+Numeric:
+  basetype: ''
+  id: 2
+Object:
+  basetype: ''
+  id: 45
+Regex:
+  basetype: ''
+  id: 119
+String:
+  basetype: ''
+  id: 1
+Struct:
+  basetype: ''
+  id: 148
+Timespan:
+  basetype: ''
+  id: 7
+URL:
+  basetype: ''
+  id: 31
+a-charset:
+  basetype: String
+  id: 283
+a-contenteditable:
+  basetype: String
+  id: 284
+a-dir:
+  basetype: String
+  id: 285
+a-language:
+  basetype: String
+  id: 286
+a-rel:
+  basetype: String
+  id: 287
+a-rev:
+  basetype: String
+  id: 288
+a-shape:
+  basetype: String
+  id: 289
+a-target:
+  basetype: String
+  id: 291
+a-type:
+  basetype: String
+  id: 292
+a-unselectable:
+  basetype: String
+  id: 293
+abbr-dir:
+  basetype: String
+  id: 294
+acronym-dir:
+  basetype: String
+  id: 295
+address-contenteditable:
+  basetype: String
+  id: 296
+address-dir:
+  basetype: String
+  id: 297
+address-language:
+  basetype: String
+  id: 298
+address-unselectable:
+  basetype: String
+  id: 299
+applet-align:
+  basetype: String
+  id: 300
+applet-unselectable:
+  basetype: String
+  id: 301
+area-dir:
+  basetype: String
+  id: 302
+area-nohref:
+  basetype: String
+  id: 303
+area-shape:
+  basetype: String
+  id: 304
+area-target:
+  basetype: String
+  id: 305
+area-unselectable:
+  basetype: String
+  id: 306
+article-contenteditable:
+  basetype: String
+  id: 307
+article-dir:
+  basetype: String
+  id: 308
+article-draggable:
+  basetype: String
+  id: 309
+article-spellcheck:
+  basetype: String
+  id: 310
+aside-contenteditable:
+  basetype: String
+  id: 311
+aside-dir:
+  basetype: String
+  id: 312
+aside-draggable:
+  basetype: String
+  id: 313
+aside-spellcheck:
+  basetype: String
+  id: 314
+audio-autoplay:
+  basetype: String
+  id: 315
+audio-contenteditable:
+  basetype: String
+  id: 316
+audio-controls:
+  basetype: String
+  id: 317
+audio-dir:
+  basetype: String
+  id: 318
+audio-draggable:
+  basetype: String
+  id: 319
+audio-preload:
+  basetype: String
+  id: 320
+audio-spellcheck:
+  basetype: String
+  id: 321
+b-contenteditable:
+  basetype: String
+  id: 322
+b-dir:
+  basetype: String
+  id: 323
+b-language:
+  basetype: String
+  id: 324
+b-unselectable:
+  basetype: String
+  id: 325
+base-target:
+  basetype: String
+  id: 326
+basefont-size:
+  basetype: String
+  id: 327
+bdo-contenteditable:
+  basetype: String
+  id: 328
+bdo-dir:
+  basetype: String
+  id: 329
+bdo-language:
+  basetype: String
+  id: 330
+bdo-unselectable:
+  basetype: String
+  id: 331
+big-contenteditable:
+  basetype: String
+  id: 332
+big-dir:
+  basetype: String
+  id: 333
+big-language:
+  basetype: String
+  id: 334
+big-unselectable:
+  basetype: String
+  id: 335
+blockquote-contenteditable:
+  basetype: String
+  id: 336
+blockquote-dir:
+  basetype: String
+  id: 337
+blockquote-language:
+  basetype: String
+  id: 338
+blockquote-unselectable:
+  basetype: String
+  id: 339
+body-bgproperties:
+  basetype: String
+  id: 340
+body-contenteditable:
+  basetype: String
+  id: 341
+body-dir:
+  basetype: String
+  id: 342
+body-language:
+  basetype: String
+  id: 343
+body-nowrap:
+  basetype: String
+  id: 344
+body-scroll:
+  basetype: String
+  id: 345
+body-unselectable:
+  basetype: String
+  id: 346
+boolean:
+  basetype: ''
+  id: 5
+br-clear:
+  basetype: String
+  id: 347
+button-contenteditable:
+  basetype: String
+  id: 348
+button-dataformatas:
+  basetype: String
+  id: 349
+button-language:
+  basetype: String
+  id: 350
+button-type:
+  basetype: String
+  id: 351
+canvas-contenteditable:
+  basetype: String
+  id: 352
+canvas-dir:
+  basetype: String
+  id: 353
+canvas-draggable:
+  basetype: String
+  id: 354
+canvas-spellcheck:
+  basetype: String
+  id: 355
+caption-align:
+  basetype: String
+  id: 356
+caption-contenteditable:
+  basetype: String
+  id: 357
+caption-dir:
+  basetype: String
+  id: 358
+caption-language:
+  basetype: String
+  id: 359
+caption-unselectable:
+  basetype: String
+  id: 360
+caption-valign:
+  basetype: String
+  id: 361
+center-contenteditable:
+  basetype: String
+  id: 362
+center-dir:
+  basetype: String
+  id: 363
+center-language:
+  basetype: String
+  id: 364
+center-unselectable:
+  basetype: String
+  id: 365
+cfapplet-align:
+  basetype: String
+  id: 3
+cfapplication-clientstorage:
+  basetype: String
+  id: 6
+cfapplication-loginstorage:
+  basetype: String
+  id: 4
+cfapplication-scriptprotect:
+  basetype: String
+  id: 8
+cfapplication-securejsonprefix:
+  basetype: String
+  id: 9
+cfargument-type:
+  basetype: String
+  id: 10
+cfcache-action:
+  basetype: String
+  id: 11
+cfcache-protocol:
+  basetype: String
+  id: 12
+cfcalendar-daynames:
+  basetype: String
+  id: 14
+cfcalendar-mask:
+  basetype: String
+  id: 13
+cfcalendar-monthnames:
+  basetype: String
+  id: 15
+cfcalendar-style:
+  basetype: String
+  id: 16
+cfcase-delimiters:
+  basetype: String
+  id: 17
+cfcatch-type:
+  basetype: String
+  id: 18
+cfchart-backgroundcolor:
+  basetype: String
+  id: 22
+cfchart-databackgroundcolor:
+  basetype: String
+  id: 23
+cfchart-font:
+  basetype: String
+  id: 24
+cfchart-foregroundcolor:
+  basetype: String
+  id: 21
+cfchart-format:
+  basetype: String
+  id: 19
+cfchart-labelformat:
+  basetype: String
+  id: 25
+cfchart-pieslicestyle:
+  basetype: String
+  id: 30
+cfchart-seriesplacement:
+  basetype: String
+  id: 20
+cfchart-style:
+  basetype: String
+  id: 32
+cfchart-tipbgcolor:
+  basetype: String
+  id: 29
+cfchart-tipstyle:
+  basetype: String
+  id: 28
+cfchart-xaxistype:
+  basetype: String
+  id: 26
+cfchart-yaxistype:
+  basetype: String
+  id: 27
+cfchartseries-datalabelstyle:
+  basetype: String
+  id: 37
+cfchartseries-markerstyle:
+  basetype: String
+  id: 36
+cfchartseries-paintstyle:
+  basetype: String
+  id: 35
+cfchartseries-type:
+  basetype: String
+  id: 33
+cfcol-align:
+  basetype: String
+  id: 38
+cfcollection-action:
+  basetype: String
+  id: 39
+cfcollection-engine:
+  basetype: String
+  id: 40
+cfcomponent-cacheUse:
+  basetype: String
+  id: 43
+cfcomponent-optimisticlock:
+  basetype: String
+  id: 42
+cfcomponent-style:
+  basetype: String
+  id: 41
+cfcontent-type:
+  basetype: String
+  id: 44
+cfdbinfo-type:
+  basetype: String
+  id: 46
+cfdirectory-action:
+  basetype: String
+  id: 47
+cfdirectory-listinfo:
+  basetype: String
+  id: 50
+cfdirectory-sort:
+  basetype: String
+  id: 48
+cfdirectory-type:
+  basetype: String
+  id: 49
+cfdiv-tagName:
+  basetype: String
+  id: 51
+cfdocument-encryption:
+  basetype: String
+  id: 56
+cfdocument-format:
+  basetype: String
+  id: 52
+cfdocument-formsType:
+  basetype: String
+  id: 59
+cfdocument-mimetype:
+  basetype: String
+  id: 58
+cfdocument-orientation:
+  basetype: String
+  id: 54
+cfdocument-pagetype:
+  basetype: String
+  id: 53
+cfdocument-permissions:
+  basetype: String
+  id: 57
+cfdocument-unit:
+  basetype: String
+  id: 55
+cfdocumentitem-type:
+  basetype: String
+  id: 60
+cfdocumentsection-mimetype:
+  basetype: String
+  id: 61
+cfdump-format:
+  basetype: String
+  id: 63
+cfdump-output:
+  basetype: String
+  id: 64
+cferror-exception:
+  basetype: String
+  id: 66
+cferror-type:
+  basetype: String
+  id: 65
+cfexchangecalendar-action:
+  basetype: String
+  id: 231
+cfexchangecalendar-responseType:
+  basetype: String
+  id: 232
+cfexchangeconnection-action:
+  basetype: String
+  id: 233
+cfexchangeconnection-protocol:
+  basetype: String
+  id: 234
+cfexchangecontact-action:
+  basetype: String
+  id: 235
+cfexchangemail-action:
+  basetype: String
+  id: 236
+cfexchangetask-action:
+  basetype: String
+  id: 237
+cfexit-method:
+  basetype: String
+  id: 67
+cffile-action:
+  basetype: String
+  id: 68
+cffile-attributes:
+  basetype: String
+  id: 69
+cffile-charset:
+  basetype: String
+  id: 70
+cffile-fixnewline:
+  basetype: String
+  id: 72
+cffile-nameconflict:
+  basetype: String
+  id: 71
+cffileupload-align:
+  basetype: String
+  id: 273
+cffileupload-wmode:
+  basetype: String
+  id: 274
+cfform-format:
+  basetype: String
+  id: 74
+cfform-method:
+  basetype: String
+  id: 73
+cfform-skin:
+  basetype: String
+  id: 75
+cfform-wmode:
+  basetype: String
+  id: 76
+cfformgroup-type:
+  basetype: String
+  id: 77
+cfformitem-type:
+  basetype: String
+  id: 78
+cfftp-action:
+  basetype: String
+  id: 79
+cfftp-secure:
+  basetype: String
+  id: 81
+cfftp-transfermode:
+  basetype: String
+  id: 80
+cffunction-access:
+  basetype: String
+  id: 83
+cffunction-returnformat:
+  basetype: String
+  id: 84
+cffunction-returntype:
+  basetype: String
+  id: 82
+cfgrid-align:
+  basetype: String
+  id: 86
+cfgrid-bgcolor:
+  basetype: String
+  id: 94
+cfgrid-colheaderalign:
+  basetype: String
+  id: 92
+cfgrid-colheadertextcolor:
+  basetype: String
+  id: 93
+cfgrid-font:
+  basetype: String
+  id: 87
+cfgrid-format:
+  basetype: String
+  id: 85
+cfgrid-griddataalign:
+  basetype: String
+  id: 89
+cfgrid-rowheaderalign:
+  basetype: String
+  id: 90
+cfgrid-rowheadertextcolor:
+  basetype: String
+  id: 91
+cfgrid-selectcolor:
+  basetype: String
+  id: 95
+cfgrid-selectmode:
+  basetype: String
+  id: 96
+cfgrid-textcolor:
+  basetype: String
+  id: 88
+cfgridcolumn-bgcolor:
+  basetype: String
+  id: 98
+cfgridcolumn-dataalign:
+  basetype: String
+  id: 102
+cfgridcolumn-font:
+  basetype: String
+  id: 97
+cfgridcolumn-headeralign:
+  basetype: String
+  id: 103
+cfgridcolumn-headertextcolor:
+  basetype: String
+  id: 101
+cfgridcolumn-textcolor:
+  basetype: String
+  id: 99
+cfgridcolumn-type:
+  basetype: String
+  id: 100
+cfgridcolumn-valuesdelimiter:
+  basetype: String
+  id: 104
+cfheader-charset:
+  basetype: String
+  id: 105
+cfhttp-charset:
+  basetype: String
+  id: 107
+cfhttp-delimiter:
+  basetype: String
+  id: 109
+cfhttp-getasbinary:
+  basetype: String
+  id: 108
+cfhttp-method:
+  basetype: String
+  id: 106
+cfhttp-textqualifier:
+  basetype: String
+  id: 110
+cfhttpparam-mimetype:
+  basetype: String
+  id: 112
+cfhttpparam-type:
+  basetype: String
+  id: 111
+cfimage-action:
+  basetype: String
+  id: 238
+cfimage-difficulty:
+  basetype: String
+  id: 239
+cfimage-format:
+  basetype: String
+  id: 240
+cfimap-action:
+  basetype: String
+  id: 113
+cfindex-action:
+  basetype: String
+  id: 114
+cfindex-type:
+  basetype: String
+  id: 115
+cfinput-daynames:
+  basetype: String
+  id: 120
+cfinput-monthnames:
+  basetype: String
+  id: 121
+cfinput-type:
+  basetype: String
+  id: 116
+cfinput-validate:
+  basetype: String
+  id: 117
+cfinput-validateat:
+  basetype: String
+  id: 118
+cflayout-align:
+  basetype: String
+  id: 123
+cflayout-type:
+  basetype: String
+  id: 122
+cflayoutarea-align:
+  basetype: String
+  id: 125
+cflayoutarea-overflow:
+  basetype: String
+  id: 126
+cflayoutarea-position:
+  basetype: String
+  id: 124
+cfldap-action:
+  basetype: String
+  id: 127
+cfldap-delimiter:
+  basetype: String
+  id: 133
+cfldap-modifytype:
+  basetype: String
+  id: 130
+cfldap-scope:
+  basetype: String
+  id: 128
+cfldap-secure:
+  basetype: String
+  id: 131
+cfldap-separator:
+  basetype: String
+  id: 132
+cfldap-sortcontrol:
+  basetype: String
+  id: 129
+cflock-scope:
+  basetype: String
+  id: 134
+cflock-type:
+  basetype: String
+  id: 135
+cflog-log:
+  basetype: String
+  id: 136
+cflog-type:
+  basetype: String
+  id: 137
+cfloop-delimiters:
+  basetype: String
+  id: 138
+cfmail-charset:
+  basetype: String
+  id: 140
+cfmail-priority:
+  basetype: String
+  id: 142
+cfmail-type:
+  basetype: String
+  id: 141
+cfmailparam-disposition:
+  basetype: String
+  id: 145
+cfmailparam-name:
+  basetype: String
+  id: 144
+cfmailparam-type:
+  basetype: String
+  id: 143
+cfmailpart-charset:
+  basetype: String
+  id: 147
+cfmailpart-type:
+  basetype: String
+  id: 146
+cfmap-tip:
+  basetype: String
+  id: 278
+cfmap-type:
+  basetype: String
+  id: 276
+cfmap-typecontrol:
+  basetype: String
+  id: 279
+cfmap-zoomcontrol:
+  basetype: String
+  id: 277
+cfmediaplayer-align:
+  basetype: String
+  id: 270
+cfmediaplayer-quality:
+  basetype: String
+  id: 271
+cfmediaplayer-wmode:
+  basetype: String
+  id: 272
+cfmenu-type:
+  basetype: String
+  id: 219
+cfmenuitem-divider:
+  basetype: String
+  id: 220
+cfmessagebox-buttonType:
+  basetype: String
+  id: 281
+cfmessagebox-type:
+  basetype: String
+  id: 280
+cfobject-action:
+  basetype: String
+  id: 150
+cfobject-context:
+  basetype: String
+  id: 151
+cfobject-protocol:
+  basetype: String
+  id: 152
+cfobject-type:
+  basetype: String
+  id: 149
+cfobjectcache-action:
+  basetype: String
+  id: 153
+cfparam-type:
+  basetype: String
+  id: 154
+cfpdf-action:
+  basetype: String
+  id: 241
+cfpdf-algo:
+  basetype: String
+  id: 251
+cfpdf-align:
+  basetype: String
+  id: 253
+cfpdf-encrypt:
+  basetype: String
+  id: 242
+cfpdf-format:
+  basetype: String
+  id: 250
+cfpdf-numberFormat:
+  basetype: String
+  id: 252
+cfpdf-order:
+  basetype: String
+  id: 243
+cfpdf-overwrite:
+  basetype: String
+  id: 244
+cfpdf-permissions:
+  basetype: String
+  id: 245
+cfpdf-saveoption:
+  basetype: String
+  id: 249
+cfpdf-showonprint:
+  basetype: String
+  id: 246
+cfpdf-text:
+  basetype: String
+  id: 254
+cfpdf-type:
+  basetype: String
+  id: 247
+cfpdf-version:
+  basetype: String
+  id: 248
+cfpdfform-action:
+  basetype: String
+  id: 255
+cfpod-overflow:
+  basetype: String
+  id: 155
+cfpop-action:
+  basetype: String
+  id: 156
+cfpresentation-control:
+  basetype: String
+  id: 256
+cfpresentation-controlLocation:
+  basetype: String
+  id: 257
+cfpresentation-format:
+  basetype: String
+  id: 259
+cfpresentation-initialTab:
+  basetype: String
+  id: 258
+cfpresentationslide-advance:
+  basetype: String
+  id: 260
+cfprint-color:
+  basetype: String
+  id: 224
+cfprint-coverpage:
+  basetype: String
+  id: 225
+cfprint-orientation:
+  basetype: String
+  id: 221
+cfprint-paper:
+  basetype: String
+  id: 228
+cfprint-papersize:
+  basetype: String
+  id: 222
+cfprint-quality:
+  basetype: String
+  id: 223
+cfprint-sides:
+  basetype: String
+  id: 227
+cfprint-type:
+  basetype: String
+  id: 226
+cfprocessingdirective-pageEncoding:
+  basetype: String
+  id: 157
+cfprocparam-cfsqltype:
+  basetype: String
+  id: 159
+cfprocparam-type:
+  basetype: String
+  id: 158
+cfprogressbar-autoDisplay:
+  basetype: String
+  id: 267
+cfprogressbar-style:
+  basetype: String
+  id: 266
+cfproperty-cacheUse:
+  basetype: String
+  id: 174
+cfproperty-cascade:
+  basetype: String
+  id: 168
+cfproperty-elementtype:
+  basetype: String
+  id: 165
+cfproperty-fetch:
+  basetype: String
+  id: 167
+cfproperty-fieldtype:
+  basetype: String
+  id: 161
+cfproperty-generated:
+  basetype: String
+  id: 171
+cfproperty-generator:
+  basetype: String
+  id: 163
+cfproperty-lazy:
+  basetype: String
+  id: 172
+cfproperty-ormType:
+  basetype: String
+  id: 162
+cfproperty-source:
+  basetype: String
+  id: 164
+cfproperty-structkeytype:
+  basetype: String
+  id: 166
+cfproperty-type:
+  basetype: String
+  id: 160
+cfproperty-unique:
+  basetype: String
+  id: 169
+cfproperty-update:
+  basetype: String
+  id: 170
+cfproperty-validate:
+  basetype: String
+  id: 173
+cfqueryparam-cfsqltype:
+  basetype: String
+  id: 176
+cfregistry-action:
+  basetype: String
+  id: 178
+cfregistry-sort:
+  basetype: String
+  id: 180
+cfregistry-type:
+  basetype: String
+  id: 179
+cfreport-encryption:
+  basetype: String
+  id: 182
+cfreport-format:
+  basetype: String
+  id: 181
+cfreport-permissions:
+  basetype: String
+  id: 183
+cfreport-type:
+  basetype: String
+  id: 184
+cfschedule-action:
+  basetype: String
+  id: 185
+cfschedule-interval:
+  basetype: String
+  id: 186
+cfsearch-contextHighlightBegin:
+  basetype: String
+  id: 189
+cfsearch-contextHighlightEnd:
+  basetype: String
+  id: 190
+cfsearch-suggestions:
+  basetype: String
+  id: 188
+cfsearch-type:
+  basetype: String
+  id: 187
+cfselect-queryposition:
+  basetype: String
+  id: 191
+cfsharepoint-action:
+  basetype: String
+  id: 275
+cfslider-align:
+  basetype: String
+  id: 192
+cfslider-bgcolor:
+  basetype: String
+  id: 194
+cfslider-font:
+  basetype: String
+  id: 196
+cfslider-format:
+  basetype: String
+  id: 197
+cfslider-lookandfeel:
+  basetype: String
+  id: 193
+cfslider-textcolor:
+  basetype: String
+  id: 195
+cfspreadsheet-action:
+  basetype: String
+  id: 268
+cfspreadsheet-format:
+  basetype: String
+  id: 269
+cfsprydataset-type:
+  basetype: String
+  id: 229
+cftextarea-skin:
+  basetype: String
+  id: 200
+cftextarea-validateat:
+  basetype: String
+  id: 199
+cftextarea-wrap:
+  basetype: String
+  id: 201
+cftextinput-align:
+  basetype: String
+  id: 204
+cftextinput-bgcolor:
+  basetype: String
+  id: 205
+cftextinput-font:
+  basetype: String
+  id: 203
+cftextinput-textcolor:
+  basetype: String
+  id: 206
+cftextinput-validate:
+  basetype: String
+  id: 202
+cfthread-action:
+  basetype: String
+  id: 261
+cfthread-priority:
+  basetype: String
+  id: 262
+cfthrow-type:
+  basetype: String
+  id: 207
+cftimer-type:
+  basetype: String
+  id: 208
+cftooltip-preventoverlap:
+  basetype: String
+  id: 230
+cftrace-type:
+  basetype: String
+  id: 209
+cftransaction-action:
+  basetype: String
+  id: 210
+cftransaction-isolation:
+  basetype: String
+  id: 211
+cftree-align:
+  basetype: String
+  id: 216
+cftree-delimiter:
+  basetype: String
+  id: 213
+cftree-font:
+  basetype: String
+  id: 215
+cftree-format:
+  basetype: String
+  id: 212
+cftree-lookandfeel:
+  basetype: String
+  id: 214
+cftreeitem-img:
+  basetype: String
+  id: 217
+cfwddx-action:
+  basetype: String
+  id: 218
+cfzip-action:
+  basetype: String
+  id: 263
+cfzip-charset:
+  basetype: String
+  id: 264
+cfzipparam-charset:
+  basetype: String
+  id: 265
+char:
+  basetype: ''
+  id: 177
+cite-contenteditable:
+  basetype: String
+  id: 366
+cite-dir:
+  basetype: String
+  id: 367
+cite-language:
+  basetype: String
+  id: 368
+cite-unselectable:
+  basetype: String
+  id: 369
+code-contenteditable:
+  basetype: String
+  id: 370
+code-dir:
+  basetype: String
+  id: 371
+code-language:
+  basetype: String
+  id: 372
+code-unselectable:
+  basetype: String
+  id: 373
+col-align:
+  basetype: String
+  id: 374
+col-dir:
+  basetype: String
+  id: 375
+col-valign:
+  basetype: String
+  id: 376
+colgroup-align:
+  basetype: String
+  id: 377
+colgroup-dir:
+  basetype: String
+  id: 378
+colgroup-valign:
+  basetype: String
+  id: 379
+command-checked:
+  basetype: String
+  id: 380
+command-contenteditable:
+  basetype: String
+  id: 381
+command-dir:
+  basetype: String
+  id: 382
+command-draggable:
+  basetype: String
+  id: 383
+command-spellcheck:
+  basetype: String
+  id: 384
+datalist-contenteditable:
+  basetype: String
+  id: 385
+datalist-dir:
+  basetype: String
+  id: 386
+datalist-draggable:
+  basetype: String
+  id: 387
+datalist-spellcheck:
+  basetype: String
+  id: 388
+dd-contenteditable:
+  basetype: String
+  id: 389
+dd-dir:
+  basetype: String
+  id: 390
+dd-language:
+  basetype: String
+  id: 391
+dd-nowrap:
+  basetype: String
+  id: 392
+dd-unselectable:
+  basetype: String
+  id: 393
+del-contenteditable:
+  basetype: String
+  id: 394
+del-dir:
+  basetype: String
+  id: 395
+del-language:
+  basetype: String
+  id: 396
+del-unselectable:
+  basetype: String
+  id: 397
+details-contenteditable:
+  basetype: String
+  id: 398
+details-dir:
+  basetype: String
+  id: 399
+details-draggable:
+  basetype: String
+  id: 400
+details-open:
+  basetype: String
+  id: 401
+details-spellcheck:
+  basetype: String
+  id: 402
+dfn-contenteditable:
+  basetype: String
+  id: 403
+dfn-dir:
+  basetype: String
+  id: 404
+dfn-language:
+  basetype: String
+  id: 405
+dfn-unselectable:
+  basetype: String
+  id: 406
+dir-contenteditable:
+  basetype: String
+  id: 407
+dir-dir:
+  basetype: String
+  id: 408
+dir-language:
+  basetype: String
+  id: 409
+dir-unselectable:
+  basetype: String
+  id: 410
+div-align:
+  basetype: String
+  id: 411
+div-contenteditable:
+  basetype: String
+  id: 412
+div-dir:
+  basetype: String
+  id: 413
+div-language:
+  basetype: String
+  id: 414
+div-nowrap:
+  basetype: String
+  id: 415
+div-unselectable:
+  basetype: String
+  id: 416
+dl-contenteditable:
+  basetype: String
+  id: 417
+dl-dir:
+  basetype: String
+  id: 418
+dl-language:
+  basetype: String
+  id: 419
+dl-unselectable:
+  basetype: String
+  id: 420
+dt-contenteditable:
+  basetype: String
+  id: 421
+dt-dir:
+  basetype: String
+  id: 422
+dt-language:
+  basetype: String
+  id: 423
+dt-nowrap:
+  basetype: String
+  id: 424
+dt-unselectable:
+  basetype: String
+  id: 425
+em-contenteditable:
+  basetype: String
+  id: 426
+em-dir:
+  basetype: String
+  id: 427
+em-language:
+  basetype: String
+  id: 428
+em-unselectable:
+  basetype: String
+  id: 429
+embed-align:
+  basetype: String
+  id: 430
+embed-language:
+  basetype: String
+  id: 431
+embed-palette:
+  basetype: String
+  id: 432
+embed-units:
+  basetype: String
+  id: 433
+embed-unselectable:
+  basetype: String
+  id: 434
+fieldset-align:
+  basetype: String
+  id: 435
+fieldset-contenteditable:
+  basetype: String
+  id: 436
+fieldset-dir:
+  basetype: String
+  id: 437
+fieldset-language:
+  basetype: String
+  id: 438
+fieldset-unselectable:
+  basetype: String
+  id: 439
+figcaption-contenteditable:
+  basetype: String
+  id: 440
+figcaption-dir:
+  basetype: String
+  id: 441
+figcaption-draggable:
+  basetype: String
+  id: 442
+figcaption-spellcheck:
+  basetype: String
+  id: 443
+figure-contenteditable:
+  basetype: String
+  id: 444
+figure-dir:
+  basetype: String
+  id: 445
+figure-draggable:
+  basetype: String
+  id: 446
+figure-spellcheck:
+  basetype: String
+  id: 447
+font-contenteditable:
+  basetype: String
+  id: 448
+font-dir:
+  basetype: String
+  id: 449
+font-language:
+  basetype: String
+  id: 450
+font-size:
+  basetype: String
+  id: 451
+font-unselectable:
+  basetype: String
+  id: 452
+footer-contenteditable:
+  basetype: String
+  id: 453
+footer-dir:
+  basetype: String
+  id: 454
+footer-draggable:
+  basetype: String
+  id: 455
+footer-spellcheck:
+  basetype: String
+  id: 456
+form-accept-charset:
+  basetype: String
+  id: 457
+form-autocomplete:
+  basetype: String
+  id: 458
+form-contenteditable:
+  basetype: String
+  id: 459
+form-dir:
+  basetype: String
+  id: 460
+form-enctype:
+  basetype: String
+  id: 461
+form-language:
+  basetype: String
+  id: 462
+form-method:
+  basetype: String
+  id: 463
+form-target:
+  basetype: String
+  id: 464
+form-unselectable:
+  basetype: String
+  id: 465
+frame-allowtransparency:
+  basetype: String
+  id: 466
+frame-application:
+  basetype: String
+  id: 467
+frame-frameborder:
+  basetype: String
+  id: 468
+frame-language:
+  basetype: String
+  id: 469
+frame-noresize:
+  basetype: String
+  id: 470
+frame-scrolling:
+  basetype: String
+  id: 471
+frame-unselectable:
+  basetype: String
+  id: 472
+frameset-frameborder:
+  basetype: String
+  id: 474
+frameset-language:
+  basetype: String
+  id: 475
+frameset-unselectable:
+  basetype: String
+  id: 476
+h1-align:
+  basetype: String
+  id: 477
+h1-contenteditable:
+  basetype: String
+  id: 478
+h1-dir:
+  basetype: String
+  id: 479
+h1-language:
+  basetype: String
+  id: 480
+h1-unselectable:
+  basetype: String
+  id: 481
+h2-align:
+  basetype: String
+  id: 482
+h2-contenteditable:
+  basetype: String
+  id: 483
+h2-dir:
+  basetype: String
+  id: 484
+h2-language:
+  basetype: String
+  id: 485
+h2-unselectable:
+  basetype: String
+  id: 486
+h3-align:
+  basetype: String
+  id: 487
+h3-contenteditable:
+  basetype: String
+  id: 488
+h3-dir:
+  basetype: String
+  id: 489
+h3-language:
+  basetype: String
+  id: 490
+h3-unselectable:
+  basetype: String
+  id: 491
+h4-align:
+  basetype: String
+  id: 492
+h4-contenteditable:
+  basetype: String
+  id: 493
+h4-dir:
+  basetype: String
+  id: 494
+h4-language:
+  basetype: String
+  id: 495
+h4-unselectable:
+  basetype: String
+  id: 496
+h5-align:
+  basetype: String
+  id: 497
+h5-contenteditable:
+  basetype: String
+  id: 498
+h5-dir:
+  basetype: String
+  id: 499
+h5-language:
+  basetype: String
+  id: 500
+h5-unselectable:
+  basetype: String
+  id: 501
+h6-align:
+  basetype: String
+  id: 502
+h6-contenteditable:
+  basetype: String
+  id: 503
+h6-dir:
+  basetype: String
+  id: 504
+h6-language:
+  basetype: String
+  id: 505
+h6-unselectable:
+  basetype: String
+  id: 506
+head-dir:
+  basetype: String
+  id: 507
+header-contenteditable:
+  basetype: String
+  id: 508
+header-dir:
+  basetype: String
+  id: 509
+header-draggable:
+  basetype: String
+  id: 510
+header-spellcheck:
+  basetype: String
+  id: 511
+hgroup-contenteditable:
+  basetype: String
+  id: 512
+hgroup-dir:
+  basetype: String
+  id: 513
+hgroup-draggable:
+  basetype: String
+  id: 514
+hgroup-spellcheck:
+  basetype: String
+  id: 515
+hr-align:
+  basetype: String
+  id: 516
+hr-dir:
+  basetype: String
+  id: 517
+hr-language:
+  basetype: String
+  id: 518
+hr-noshade:
+  basetype: String
+  id: 519
+hr-size:
+  basetype: String
+  id: 520
+hr-unselectable:
+  basetype: String
+  id: 521
+html-dir:
+  basetype: String
+  id: 522
+html-scroll:
+  basetype: String
+  id: 523
+html-xmlns:
+  basetype: String
+  id: 524
+i-dir:
+  basetype: String
+  id: 525
+i-language:
+  basetype: String
+  id: 526
+i-unselectable:
+  basetype: String
+  id: 527
+iframe-align:
+  basetype: String
+  id: 528
+iframe-allowtransparency:
+  basetype: String
+  id: 529
+iframe-application:
+  basetype: String
+  id: 530
+iframe-frameborder:
+  basetype: String
+  id: 531
+iframe-language:
+  basetype: String
+  id: 532
+iframe-scrolling:
+  basetype: String
+  id: 533
+iframe-unselectable:
+  basetype: String
+  id: 534
+ilayer-visibility:
+  basetype: String
+  id: 535
+img-align:
+  basetype: String
+  id: 536
+img-dir:
+  basetype: String
+  id: 537
+img-galleryimg:
+  basetype: String
+  id: 538
+img-language:
+  basetype: String
+  id: 539
+img-unselectable:
+  basetype: String
+  id: 540
+input-accept:
+  basetype: String
+  id: 541
+input-align:
+  basetype: String
+  id: 542
+input-autocomplete:
+  basetype: String
+  id: 543
+input-checked:
+  basetype: String
+  id: 544
+input-dir:
+  basetype: String
+  id: 545
+input-language:
+  basetype: String
+  id: 546
+input-readonly:
+  basetype: String
+  id: 547
+input-size:
+  basetype: String
+  id: 548
+input-type:
+  basetype: String
+  id: 549
+input-unselectable:
+  basetype: String
+  id: 550
+ins-contenteditable:
+  basetype: String
+  id: 551
+ins-dir:
+  basetype: String
+  id: 552
+ins-language:
+  basetype: String
+  id: 553
+ins-unselectable:
+  basetype: String
+  id: 554
+isindex-dir:
+  basetype: String
+  id: 555
+isindex-language:
+  basetype: String
+  id: 556
+isindex-unselectable:
+  basetype: String
+  id: 557
+kbd-contenteditable:
+  basetype: String
+  id: 558
+kbd-dir:
+  basetype: String
+  id: 559
+kbd-language:
+  basetype: String
+  id: 560
+kbd-unselectable:
+  basetype: String
+  id: 561
+keygen-contenteditable:
+  basetype: String
+  id: 562
+keygen-dir:
+  basetype: String
+  id: 563
+keygen-draggable:
+  basetype: String
+  id: 564
+keygen-spellcheck:
+  basetype: String
+  id: 565
+label-contenteditable:
+  basetype: String
+  id: 566
+label-dataformatas:
+  basetype: String
+  id: 567
+label-dir:
+  basetype: String
+  id: 568
+label-language:
+  basetype: String
+  id: 569
+label-unselectable:
+  basetype: String
+  id: 570
+layer-overflow:
+  basetype: String
+  id: 571
+layer-visibility:
+  basetype: String
+  id: 572
+legend-align:
+  basetype: String
+  id: 573
+legend-contenteditable:
+  basetype: String
+  id: 574
+legend-dir:
+  basetype: String
+  id: 575
+legend-language:
+  basetype: String
+  id: 576
+legend-unselectable:
+  basetype: String
+  id: 577
+li-contenteditable:
+  basetype: String
+  id: 578
+li-dir:
+  basetype: String
+  id: 579
+li-language:
+  basetype: String
+  id: 580
+li-type:
+  basetype: String
+  id: 581
+li-unselectable:
+  basetype: String
+  id: 582
+link-charset:
+  basetype: String
+  id: 583
+link-dir:
+  basetype: String
+  id: 584
+link-media:
+  basetype: String
+  id: 585
+link-rel:
+  basetype: String
+  id: 586
+link-rev:
+  basetype: String
+  id: 587
+link-target:
+  basetype: String
+  id: 588
+link-type:
+  basetype: String
+  id: 589
+map-dir:
+  basetype: String
+  id: 590
+mark-contenteditable:
+  basetype: String
+  id: 591
+mark-dir:
+  basetype: String
+  id: 592
+mark-draggable:
+  basetype: String
+  id: 593
+mark-spellcheck:
+  basetype: String
+  id: 594
+marquee-behavior:
+  basetype: String
+  id: 595
+marquee-contenteditable:
+  basetype: String
+  id: 596
+marquee-dataformatas:
+  basetype: String
+  id: 597
+marquee-dir:
+  basetype: String
+  id: 598
+marquee-direction:
+  basetype: String
+  id: 599
+marquee-language:
+  basetype: String
+  id: 600
+marquee-truespeed:
+  basetype: String
+  id: 601
+marquee-unselectable:
+  basetype: String
+  id: 602
+math-contenteditable:
+  basetype: String
+  id: 603
+math-dir:
+  basetype: String
+  id: 604
+math-draggable:
+  basetype: String
+  id: 605
+math-spellcheck:
+  basetype: String
+  id: 606
+menu-contenteditable:
+  basetype: String
+  id: 607
+menu-dir:
+  basetype: String
+  id: 608
+menu-draggable:
+  basetype: String
+  id: 609
+menu-spellcheck:
+  basetype: String
+  id: 610
+meta-content:
+  basetype: String
+  id: 611
+meta-dir:
+  basetype: String
+  id: 612
+meter-contenteditable:
+  basetype: String
+  id: 613
+meter-dir:
+  basetype: String
+  id: 614
+meter-draggable:
+  basetype: String
+  id: 615
+meter-spellcheck:
+  basetype: String
+  id: 616
+nav-contenteditable:
+  basetype: String
+  id: 617
+nav-dir:
+  basetype: String
+  id: 618
+nav-draggable:
+  basetype: String
+  id: 619
+nav-spellcheck:
+  basetype: String
+  id: 620
+nobr-contenteditable:
+  basetype: String
+  id: 621
+nobr-dir:
+  basetype: String
+  id: 622
+nobr-unselectable:
+  basetype: String
+  id: 623
+noframes-dir:
+  basetype: String
+  id: 624
+noscript-dir:
+  basetype: String
+  id: 625
+object-align:
+  basetype: String
+  id: 626
+object-declare:
+  basetype: String
+  id: 627
+object-dir:
+  basetype: String
+  id: 628
+object-unselectable:
+  basetype: String
+  id: 629
+ol-contenteditable:
+  basetype: String
+  id: 630
+ol-dir:
+  basetype: String
+  id: 631
+ol-language:
+  basetype: String
+  id: 632
+ol-type:
+  basetype: String
+  id: 633
+ol-unselectable:
+  basetype: String
+  id: 634
+optgroup-dir:
+  basetype: String
+  id: 635
+option-dir:
+  basetype: String
+  id: 636
+option-language:
+  basetype: String
+  id: 637
+option-selected:
+  basetype: String
+  id: 638
+output-contenteditable:
+  basetype: String
+  id: 639
+output-dir:
+  basetype: String
+  id: 640
+output-draggable:
+  basetype: String
+  id: 641
+output-spellcheck:
+  basetype: String
+  id: 642
+p-align:
+  basetype: String
+  id: 643
+p-contenteditable:
+  basetype: String
+  id: 644
+p-dir:
+  basetype: String
+  id: 645
+p-language:
+  basetype: String
+  id: 646
+p-unselectable:
+  basetype: String
+  id: 647
+param-dataformatas:
+  basetype: String
+  id: 648
+param-valuetype:
+  basetype: String
+  id: 649
+pre-contenteditable:
+  basetype: String
+  id: 650
+pre-dir:
+  basetype: String
+  id: 651
+pre-language:
+  basetype: String
+  id: 652
+pre-unselectable:
+  basetype: String
+  id: 653
+pre-wrap:
+  basetype: String
+  id: 654
+pre-xml:space:
+  basetype: String
+  id: 655
+progress-contenteditable:
+  basetype: String
+  id: 656
+progress-dir:
+  basetype: String
+  id: 657
+progress-draggable:
+  basetype: String
+  id: 658
+progress-spellcheck:
+  basetype: String
+  id: 659
+q-contenteditable:
+  basetype: String
+  id: 660
+q-dir:
+  basetype: String
+  id: 661
+q-language:
+  basetype: String
+  id: 662
+q-unselectable:
+  basetype: String
+  id: 663
+query:
+  basetype: ''
+  id: 34
+rp-contenteditable:
+  basetype: String
+  id: 664
+rp-dir:
+  basetype: String
+  id: 665
+rp-draggable:
+  basetype: String
+  id: 666
+rp-spellcheck:
+  basetype: String
+  id: 667
+rt-contenteditable:
+  basetype: String
+  id: 668
+rt-dir:
+  basetype: String
+  id: 669
+rt-language:
+  basetype: String
+  id: 670
+rt-unselectable:
+  basetype: String
+  id: 671
+ruby-contenteditable:
+  basetype: String
+  id: 672
+ruby-dir:
+  basetype: String
+  id: 673
+ruby-language:
+  basetype: String
+  id: 674
+ruby-unselectable:
+  basetype: String
+  id: 675
+s-contenteditable:
+  basetype: String
+  id: 676
+s-dir:
+  basetype: String
+  id: 677
+s-language:
+  basetype: String
+  id: 678
+s-unselectable:
+  basetype: String
+  id: 679
+samp-contenteditable:
+  basetype: String
+  id: 680
+samp-dir:
+  basetype: String
+  id: 681
+samp-language:
+  basetype: String
+  id: 682
+samp-unselectable:
+  basetype: String
+  id: 683
+script-charset:
+  basetype: String
+  id: 684
+script-defer:
+  basetype: String
+  id: 685
+script-language:
+  basetype: String
+  id: 686
+script-type:
+  basetype: String
+  id: 687
+script-xml:space:
+  basetype: String
+  id: 688
+section-contenteditable:
+  basetype: String
+  id: 689
+section-dir:
+  basetype: String
+  id: 690
+section-draggable:
+  basetype: String
+  id: 691
+section-spellcheck:
+  basetype: String
+  id: 692
+select-align:
+  basetype: String
+  id: 693
+select-dir:
+  basetype: String
+  id: 694
+select-language:
+  basetype: String
+  id: 695
+select-multiple:
+  basetype: String
+  id: 696
+select-size:
+  basetype: String
+  id: 697
+select-unselectable:
+  basetype: String
+  id: 698
+small-contenteditable:
+  basetype: String
+  id: 699
+small-dir:
+  basetype: String
+  id: 700
+small-language:
+  basetype: String
+  id: 701
+small-unselectable:
+  basetype: String
+  id: 702
+source-contenteditable:
+  basetype: String
+  id: 703
+source-dir:
+  basetype: String
+  id: 704
+source-draggable:
+  basetype: String
+  id: 705
+source-media:
+  basetype: String
+  id: 706
+source-spellcheck:
+  basetype: String
+  id: 707
+span-contenteditable:
+  basetype: String
+  id: 708
+span-dataformatas:
+  basetype: String
+  id: 709
+span-dir:
+  basetype: String
+  id: 710
+span-language:
+  basetype: String
+  id: 711
+span-unselectable:
+  basetype: String
+  id: 712
+strike-contenteditable:
+  basetype: String
+  id: 713
+strike-dir:
+  basetype: String
+  id: 714
+strike-language:
+  basetype: String
+  id: 715
+strike-unselectable:
+  basetype: String
+  id: 716
+strong-contenteditable:
+  basetype: String
+  id: 717
+strong-dir:
+  basetype: String
+  id: 718
+strong-language:
+  basetype: String
+  id: 719
+strong-unselectable:
+  basetype: String
+  id: 720
+style-dir:
+  basetype: String
+  id: 721
+style-media:
+  basetype: String
+  id: 722
+style-type:
+  basetype: String
+  id: 723
+style-xml:space:
+  basetype: String
+  id: 724
+sub-contenteditable:
+  basetype: String
+  id: 725
+sub-dir:
+  basetype: String
+  id: 726
+sub-language:
+  basetype: String
+  id: 727
+sub-unselectable:
+  basetype: String
+  id: 728
+summary-contenteditable:
+  basetype: String
+  id: 729
+summary-dir:
+  basetype: String
+  id: 730
+summary-draggable:
+  basetype: String
+  id: 731
+summary-spellcheck:
+  basetype: String
+  id: 732
+sup-contenteditable:
+  basetype: String
+  id: 733
+sup-dir:
+  basetype: String
+  id: 734
+sup-language:
+  basetype: String
+  id: 735
+sup-unselectable:
+  basetype: String
+  id: 736
+svg-contenteditable:
+  basetype: String
+  id: 737
+svg-dir:
+  basetype: String
+  id: 738
+svg-draggable:
+  basetype: String
+  id: 739
+svg-spellcheck:
+  basetype: String
+  id: 740
+table-dir:
+  basetype: String
+  id: 741
+table-frame:
+  basetype: String
+  id: 742
+table-language:
+  basetype: String
+  id: 743
+table-rules:
+  basetype: String
+  id: 744
+table-unselectable:
+  basetype: String
+  id: 745
+tbody-align:
+  basetype: String
+  id: 746
+tbody-dir:
+  basetype: String
+  id: 747
+tbody-language:
+  basetype: String
+  id: 748
+tbody-unselectable:
+  basetype: String
+  id: 749
+tbody-valign:
+  basetype: String
+  id: 750
+td-align:
+  basetype: String
+  id: 751
+td-dir:
+  basetype: String
+  id: 752
+td-language:
+  basetype: String
+  id: 753
+td-nowrap:
+  basetype: String
+  id: 754
+td-scope:
+  basetype: String
+  id: 755
+td-unselectable:
+  basetype: String
+  id: 756
+td-valign:
+  basetype: String
+  id: 757
+textarea-dir:
+  basetype: String
+  id: 758
+textarea-language:
+  basetype: String
+  id: 759
+textarea-readonly:
+  basetype: String
+  id: 760
+textarea-wrap:
+  basetype: String
+  id: 761
+tfoot-align:
+  basetype: String
+  id: 762
+tfoot-dir:
+  basetype: String
+  id: 763
+tfoot-language:
+  basetype: String
+  id: 764
+tfoot-unselectable:
+  basetype: String
+  id: 765
+tfoot-valign:
+  basetype: String
+  id: 766
+th-align:
+  basetype: String
+  id: 767
+th-dir:
+  basetype: String
+  id: 768
+th-language:
+  basetype: String
+  id: 769
+th-nowrap:
+  basetype: String
+  id: 770
+th-scope:
+  basetype: String
+  id: 771
+th-unselectable:
+  basetype: String
+  id: 772
+th-valign:
+  basetype: String
+  id: 773
+thead-align:
+  basetype: String
+  id: 774
+thead-dir:
+  basetype: String
+  id: 775
+thead-language:
+  basetype: String
+  id: 776
+thead-unselectable:
+  basetype: String
+  id: 777
+thead-valign:
+  basetype: String
+  id: 778
+time-contenteditable:
+  basetype: String
+  id: 779
+time-dir:
+  basetype: String
+  id: 780
+time-draggable:
+  basetype: String
+  id: 781
+time-spellcheck:
+  basetype: String
+  id: 782
+title-dir:
+  basetype: String
+  id: 783
+tr-align:
+  basetype: String
+  id: 784
+tr-dir:
+  basetype: String
+  id: 785
+tr-language:
+  basetype: String
+  id: 786
+tr-valign:
+  basetype: String
+  id: 787
+tt-contenteditable:
+  basetype: String
+  id: 788
+tt-dir:
+  basetype: String
+  id: 789
+tt-language:
+  basetype: String
+  id: 790
+tt-unselectable:
+  basetype: String
+  id: 791
+u-contenteditable:
+  basetype: String
+  id: 792
+u-dir:
+  basetype: String
+  id: 793
+u-language:
+  basetype: String
+  id: 794
+u-unselectable:
+  basetype: String
+  id: 795
+ul-contenteditable:
+  basetype: String
+  id: 796
+ul-dir:
+  basetype: String
+  id: 797
+ul-language:
+  basetype: String
+  id: 798
+ul-type:
+  basetype: String
+  id: 799
+ul-unselectable:
+  basetype: String
+  id: 800
+var-contenteditable:
+  basetype: String
+  id: 801
+var-dir:
+  basetype: String
+  id: 802
+var-language:
+  basetype: String
+  id: 803
+var-unselectable:
+  basetype: String
+  id: 804
+variablename:
+  basetype: ''
+  id: 62
+video-autoplay:
+  basetype: String
+  id: 805
+video-contenteditable:
+  basetype: String
+  id: 806
+video-dir:
+  basetype: String
+  id: 807
+video-draggable:
+  basetype: String
+  id: 808
+video-preload:
+  basetype: String
+  id: 809
+video-spellcheck:
+  basetype: String
+  id: 810
+xmp-contenteditable:
+  basetype: String
+  id: 811
+xmp-dir:
+  basetype: String
+  id: 812
+xmp-language:
+  basetype: String
+  id: 813
+xmp-unselectable:
+  basetype: String
+  id: 814
