@@ -90,8 +90,13 @@ extern "C" void EXT_LEXER_DECL GetLexerName( unsigned int /*index*/, char *name,
 {
 	*name = 0;
 	if ( buflength > 0 ) {
+#ifdef UNICODE
+		// Convert from wide to narrow for the ANSI API
+		wcstombs_s(nullptr, name, buflength, nppColdFusionNS::LEXER_NAME, _TRUNCATE);
+#else
 		strncpy_s( name, buflength, nppColdFusionNS::LEXER_NAME, _TRUNCATE );
-		name[buflength - 1] = L'\0';
+#endif
+		name[buflength - 1] = '\0';
 	}
 }
 

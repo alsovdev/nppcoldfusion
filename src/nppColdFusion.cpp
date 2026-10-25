@@ -25,8 +25,15 @@ namespace lex = nppColdFusionNS;				//  This lexer's namespace.
 using namespace nppColdFusionNS;
 const Lexilla::CharacterSet setTagContinue(Lexilla::CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
 
-static char* nppColdFusionNS::LexerName() {
-	return const_cast<char*>(nppColdFusionNS::LEXER_NAME);
+static const char* nppColdFusionNS::LexerName() {
+#ifdef UNICODE
+	// Convert wide string to UTF-8 for Lexilla API
+	static char utf8Name[64];
+	wcstombs_s(nullptr, utf8Name, sizeof(utf8Name), nppColdFusionNS::LEXER_NAME, _TRUNCATE);
+	return utf8Name;
+#else
+	return nppColdFusionNS::LEXER_NAME;
+#endif
 }
 
 LexerColdFusion::LexerColdFusion() {

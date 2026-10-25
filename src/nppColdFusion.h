@@ -29,12 +29,18 @@
 //#include "SparseState.h" ///
 #include "nppCFShared.h"
 #include <boost\algorithm\string\case_conv.hpp>
+#ifdef UNICODE
+#define STRINGIFY(x) L##x
+#else
+#define STRINGIFY(x) x
+#endif
+
 namespace nppColdFusionNS
 {
-	constexpr const char* LEXER_NAME = "ColdFusion";
-	constexpr const char* PLUGIN_NAME = "nppColdFusion";
-	constexpr const char* PLUGIN_VERSION = "1.0.0";
-	constexpr const char* PLUGIN_STATUS_TEXT = "ColdFusion Lexer for Notepad++";
+	constexpr const TCHAR* LEXER_NAME = STRINGIFY("ColdFusion");
+	constexpr const TCHAR* PLUGIN_NAME = STRINGIFY("nppColdFusion");
+	constexpr const TCHAR* PLUGIN_VERSION = STRINGIFY("1.0.0");
+	constexpr const TCHAR* PLUGIN_STATUS_TEXT = STRINGIFY("ColdFusion Lexer for Notepad++");
 
 	typedef struct {
 		int value;
