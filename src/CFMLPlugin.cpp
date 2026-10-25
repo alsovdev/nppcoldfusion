@@ -383,30 +383,30 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 			previousword[j++] = '\0';
 
 			if (status.tagOpening == true && (status.currentCFTag[0] != 0 || status.currentHTMLTag[0] != 0)) {
-				char tagName[100];
-				strncpy_s(tagName, status.currentCFTag, 100);
+						char tagName[100];
+						strncpy_s(tagName, status.currentCFTag, 100);
 
-				char* expanded;
-				if (status.currentHTMLTag[0] != 0) {
-					strncpy_s(tagName, status.currentHTMLTag, 100);
-					expanded = cfs.htmlNS->listAttributeValues(tagName, previousword);
-				}
-				else {
-					expanded = cfs.coldfusionNS->listAttributeValues(tagName, previousword);
-				}
-				if (cfs.completeCFsqltype && charssince == 0 && strcmp(previousword, "cfsqltype") == 0) {
-					sciMsgr.SendSciMsg(SCI_ADDTEXT, (WPARAM)7, (LPARAM)"cf_sql_");
-					charssince = 7;
-				}
-				if (expanded != 0 && strlen(expanded) > 1) {
-					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
-					sciMsgr.autoCSetIgnoreCase(true);
-					sciMsgr.autoCSetSeparator(space);
-					sciMsgr.autoCShow(charssince, (const char*)expanded);
-				}
-				delete[] expanded;
-			}
-			return;
+						const char* expanded;
+						if (status.currentHTMLTag[0] != 0) {
+							strncpy_s(tagName, status.currentHTMLTag, 100);
+							expanded = cfs.htmlNS->listAttributeValues(tagName, previousword);
+						}
+						else {
+							expanded = cfs.coldfusionNS->listAttributeValues(tagName, previousword);
+						}
+						if (cfs.completeCFsqltype && charssince == 0 && strcmp(previousword, "cfsqltype") == 0) {
+							sciMsgr.SendSciMsg(SCI_ADDTEXT, (WPARAM)7, (LPARAM)"cf_sql_");
+							charssince = 7;
+						}
+						if (expanded != 0 && strlen(expanded) > 1) {
+							sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
+							sciMsgr.autoCSetIgnoreCase(true);
+							sciMsgr.autoCSetSeparator(space);
+							sciMsgr.autoCShow(charssince, (const char*)expanded);
+						}
+						// delete[] expanded;  // expanded is now const char*, don't delete
+					}
+					return;
 
 		}
 		else if (wordstartchar == ' ' && prevch != '>') {
@@ -430,36 +430,36 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				strncpy_s(tagName, currentHTMLTag.c_str(), 100);
 			}
 			if ((status.tagOpening == true || currentCFTag != "" || currentHTMLTag != "") &&
-				!(prevch == '"' && nextch == '"') &&
-				(currentCFTag != "" || currentHTMLTag != "") &&
-				(stylebefore == Styles::_TAG || stylebefore == Styles::CF_TAG) ||
-				(styleat == Styles::CF_ATTRIBUTEBAD || styleat == Styles::_ATTRIBUTEUNKNOWN) && (stylebefore == styleat || stylebefore == Styles::_DOUBLESTRING) ||
-				(styleat == Styles::CF_ATTRIBUTE || styleat == Styles::_ATTRIBUTE)) {
-				char* expanded;
-				if (currentCFTag == "" && currentHTMLTag != "") {
-					//strncpy_s( tagName,status.currentHTMLTag, 100 );
-					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_blue);
-					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
-					expanded = cfs.htmlNS->listTagAttributes(tagName, true);
-					//Sleep(100);
-				}
-				else {
-					//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
-					sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red);
-					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // "?"
-					expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
-					//Sleep(10); 
-				}
-				if (expanded != 0 && strlen(expanded) > 1) {
-					// by trial and error: SCI_AUTOCSETTYPESEPARATOR fixes /? in lists with images, in NPP 8.5+ 
-					sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)""); // 0x3f="?" 
-					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
-					sciMsgr.autoCSetIgnoreCase(true);
-					sciMsgr.autoCSetSeparator(space);
-					sciMsgr.autoCShow(charssince, (const char*)expanded);
-				}
-				delete[] expanded;
-				return;
+						!(prevch == '"' && nextch == '"') &&
+						(currentCFTag != "" || currentHTMLTag != "") &&
+						(stylebefore == Styles::_TAG || stylebefore == Styles::CF_TAG) ||
+						(styleat == Styles::CF_ATTRIBUTEBAD || styleat == Styles::_ATTRIBUTEUNKNOWN) && (stylebefore == styleat || stylebefore == Styles::_DOUBLESTRING) ||
+						(styleat == Styles::CF_ATTRIBUTE || styleat == Styles::_ATTRIBUTE)) {
+					const char* expanded;
+					if (currentCFTag == "" && currentHTMLTag != "") {
+						//strncpy_s( tagName,status.currentHTMLTag, 100 );
+						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_blue);
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
+						expanded = cfs.htmlNS->listTagAttributes(tagName, true);
+						//Sleep(100);
+					}
+					else {
+						//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
+						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)attr_red);
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
+						expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
+						//Sleep(10);
+					}
+					if (expanded != 0 && strlen(expanded) > 1) {
+						// by trial and error: SCI_AUTOCSETTYPESEPARATOR fixes /? in lists with images, in NPP 8.5+
+						sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
+						sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
+						sciMsgr.autoCSetIgnoreCase(true);
+						sciMsgr.autoCSetSeparator(space);
+						sciMsgr.autoCShow(charssince, (const char*)expanded);
+					}
+					// delete[] expanded;  // expanded is now const char*, don't delete
+					return;
 			}
 		}
 	}
