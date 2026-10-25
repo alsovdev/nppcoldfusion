@@ -37,7 +37,6 @@
 
 #include "SparseState.h"
 #include "Styles.h"
-#include "sqlite3.h"
 #include <boost/shared_ptr.hpp>
 
 #endif
