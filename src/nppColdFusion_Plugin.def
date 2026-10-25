@@ -1,0 +1,13 @@
+LIBRARY nppColdFusion
+EXPORTS
+    isUnicode
+    getName
+    setInfo
+    getFuncsArray
+    beNotified
+    messageProc
+    GetLexerCount
+    GetLexerName
+    GetLexerStatusText
+    GetLexerFactory
+    CreateLexer
