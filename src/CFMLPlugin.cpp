@@ -527,12 +527,14 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				int charssince = currentpos - wordstart;
 
 				if (charssince > 1 && charssince < 15) {
-					const char* sqkw = ::CharUpperA(cfs.sqlNS->listAllKeywords());
-					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
-					sciMsgr.autoCSetIgnoreCase(true);
-					sciMsgr.autoCSetSeparator(space);
-					sciMsgr.autoCShow(charssince, (const char*)sqkw);
-				}
+								char sqkw_copy[2048];
+								strncpy_s(sqkw_copy, cfs.sqlNS->listAllKeywords(), sizeof(sqkw_copy));
+								::CharUpperA(sqkw_copy);
+								sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
+								sciMsgr.autoCSetIgnoreCase(true);
+								sciMsgr.autoCSetSeparator(space);
+								sciMsgr.autoCShow(charssince, sqkw_copy);
+							}
 			}
 		}
 
