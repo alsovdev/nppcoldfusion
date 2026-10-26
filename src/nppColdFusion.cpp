@@ -387,17 +387,17 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 
 	status.openTagsBuffer[0] = '\0';
 
-	boost::shared_ptr<BlockType> cfqueryblock(new CFQueryBlock);
-	boost::shared_ptr<BlockType> cssblock(new CSSBlock);
-	boost::shared_ptr<BlockType> jsblock(new JSBlock);
-	boost::shared_ptr<BlockType> cfscriptblock(new CFScriptBlock);
+	std::shared_ptr<BlockType> cfqueryblock = std::make_shared<CFQueryBlock>();
+	std::shared_ptr<BlockType> cssblock = std::make_shared<CSSBlock>();
+	std::shared_ptr<BlockType> jsblock = std::make_shared<JSBlock>();
+	std::shared_ptr<BlockType> cfscriptblock = std::make_shared<CFScriptBlock>();
 
 	static const int cfquery = 0;
 	static const int cfscript = 1;
 	static const int js = 2;
 	static const int css = 3;
 
-	std::vector<boost::shared_ptr<BlockType>> blocks;
+	std::vector<std::shared_ptr<BlockType>> blocks;
 
 	blocks.push_back(cfqueryblock);
 	blocks.push_back(cfscriptblock);
@@ -489,8 +489,8 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						sc.SetState(sID::_DEFAULT);
 					}
 					linestate = styler.GetLineState(currentLine);
-					for (std::vector<boost::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) {
-						(*thisblock)->updatelinestate(linestate);
+					for (autofor (std::vector<std::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) { thisblock : blocks) {
+						thisblock->updatelinestate(linestate);
 
 					}
 					styler.SetLineState(currentLine, linestate);
@@ -850,10 +850,10 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						blocks[cfquery]->inBlock = inCFQuery;
 						blocks[js]->inBlock = inJSBlock;
 						blocks[css]->inBlock = inCSSBlock;
-						for (std::vector<boost::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) {
-							if ((*thisblock)->inBlock &&
-								(*thisblock)->validateforkeyword(sc, inCFSet)) {
-								if ((*thisblock)->hasReservedWord(s)) {
+						for (autofor (std::vector<std::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) { thisblock : blocks) {
+							if (thisblock->inBlock &&
+								thisblock->validateforkeyword(sc, inCFSet)) {
+								if (thisblock->hasReservedWord(s)) {
 									int statebefore = sc.state;
 									if (dostyling) {
 										sc.SetState(sID::CFS_RESERVED);
@@ -913,7 +913,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									handledkeyword = true;
 									break;
 								}
-								else 	if ((*thisblock)->hasOperator(s)) {
+								else 	if (thisblock->hasOperator(s)) {
 									int statebefore = sc.state;
 									if (dostyling) {
 										sc.SetState(sID::_OPERATOR);
@@ -926,11 +926,11 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									handledkeyword = true;
 									break;
 								}
-								else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == (*thisblock)->getKeywordState()) ||
-									(*thisblock)->hasKeyword(s))) {
+								else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == thisblock->getKeywordState()) ||
+									thisblock->hasKeyword(s))) {
 									int statebefore = sc.state;
 									if (dostyling) {
-										sc.SetState((*thisblock)->getKeywordState());
+										sc.SetState(thisblock->getKeywordState());
 									}
 									sc.Forward(a - 1);
 									if (dostyling) {

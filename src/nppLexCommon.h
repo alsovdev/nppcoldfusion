@@ -37,6 +37,6 @@
 
 #include "SparseState.h"
 #include "Styles.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #endif

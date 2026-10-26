@@ -213,7 +213,7 @@ namespace nppColdFusionNS
             return validateforkeyword(sc) && !inCFSet;
         }
 
-        boost::shared_ptr<Lexilla::WordList> keywords;
+        std::shared_ptr<Lexilla::WordList> keywords;
 
         int getKeywordState() const;
 
@@ -239,7 +239,7 @@ namespace nppColdFusionNS
             bitmask = 0x01;
             allowscommentblock = true;
             keywordstate = nppColdFusionNS::Styles::_DEFAULT;
-            boost::shared_ptr<Lexilla::WordList> keywords(new Lexilla::WordList);
+            keywords = std::make_shared<Lexilla::WordList>();
         }
         virtual ~BlockType() {}
     };

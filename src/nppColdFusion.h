@@ -28,7 +28,8 @@
 //#pragma once
 //#include "SparseState.h" ///
 #include "nppCFShared.h"
-#include <boost\algorithm\string\case_conv.hpp>
+#include <algorithm>
+#include <cctype>
 #ifdef UNICODE
 #define STRINGIFY(x) L##x
 #else
@@ -83,11 +84,11 @@ namespace nppColdFusionNS
 		}
 
 		void setName(const char* sName) {
-			name.assign(sName);
-			nameLowered.assign(sName);
-			boost::to_lower(nameLowered);
-
-		}
+				name.assign(sName);
+				nameLowered.assign(sName);
+				std::transform(nameLowered.begin(), nameLowered.end(), nameLowered.begin(),
+					[](unsigned char c){ return std::tolower(c); });
+			}
 
 	};
 	/*
