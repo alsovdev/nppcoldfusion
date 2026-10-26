@@ -5,26 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2026-10-25
-
-### Added
-- **GitHub Actions CI/CD** — автоматическая сборка x64, релизы с артефактами (`.dll`, `.xml`, `.db3`, `sqlite3.dll`, `INSTALL.txt`)
-- **README.md** — полная документация: установка, требования, сборка, лицензия
-- **LICENSE** — GNU GPL v2+
-- **src/nppColdFusion_Plugin.def** — модуль экспорта DLL (исправлена линковка)
-- **extern/sqlite3/x64/sqlite3.dll** — предустановленная SQLite 3.54.1 для Windows x64
-- **src/nppColdFusion.db3** — база автодополнения (восстановлена из релиза v0.8.4)
-- **INSTALL.txt** в артефактах релиза — инструкция по установке
+## [0.9.1] - 2026-10-26
 
 ### Changed
-- Версионирование: переход с alpha `0.8.4` на стабильную `1.0.0` (SemVer)
-- Версия теперь читается из git-тегов (`git describe --tags`) в CI
-- Обновлён `CFMLPlugin.cpp`: версия плагина теперь подставляется автоматически при сборке
+- **Modern C++20 migration**: Removed Boost dependency entirely
+  - `boost::shared_ptr` → `std::shared_ptr` with `std::make_shared`
+  - `boost::to_lower` → `std::transform` + `std::tolower`
+  - Commented out NuGet Boost imports in `.vcxproj`
+- **Removed sqlite3.lib link dependencies** — SQLite used runtime-only via pre-generated `nppColdFusion.db3`
+- **Fixed build configuration** for `Unicode Release|x64`:
+  - Added missing `OutDir`/`IntDir` properties
+  - Corrected GitHub Actions artifact paths to `x64/Unicode Release/`
+- **Fixed corrupted range-based for loops** in `Colourise_Doc` function (lines 492, 853)
+- **Generated missing artifacts**: `AutoCompleteData.h`, `nppColdFusion.db3`, `nppColdFusion.xml`
 
 ### Fixed
-- Отсутствующий `.def` файл, вызывающий ошибки линкера
-- Отсутствие `sqlite3.dll` в дистрибутиве (runtime зависимость)
-- Битые ассеты в GitHub Releases (теперь загружаются автоматически через workflow)
+- GitHub Actions CI/CD now builds successfully on `windows-latest` + MSBuild
+- No external NuGet dependencies required for build
+- Build outputs to correct directory structure
 
 ## [0.8.4] - 2024-10-17 (pre-release / alpha)
 
@@ -47,7 +45,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Оригинальный плагин для Notepad++ 32-bit (≤ 7.5.9)
 - Scintilla-based lexer (до перехода NPP на Lexilla)
 - SourceForge: https://sourceforge.net/projects/npp-plugins/files/NppColdFusion/
-
----
-
-**Note:** Версии до 1.0.0 считаются pre-release. Начиная с 1.0.0 соблюдается Semantic Versioning.

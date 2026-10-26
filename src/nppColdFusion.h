@@ -40,7 +40,7 @@ namespace nppColdFusionNS
 {
 	constexpr const TCHAR* LEXER_NAME = STRINGIFY("ColdFusion");
 	constexpr const TCHAR* PLUGIN_NAME = STRINGIFY("nppColdFusion");
-	constexpr const TCHAR* PLUGIN_VERSION = STRINGIFY("1.0.0");
+	constexpr const TCHAR* PLUGIN_VERSION = STRINGIFY("0.9.1");
 	constexpr const TCHAR* PLUGIN_STATUS_TEXT = STRINGIFY("ColdFusion Lexer for Notepad++");
 
 	typedef struct {

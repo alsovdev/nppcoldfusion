@@ -77,12 +77,12 @@ BEGIN
         BLOCK "080904b0"
         BEGIN
             VALUE "FileDescription", "ColdFusion Lexer for Notepad++"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "0.9.1.0"
             VALUE "InternalName", "nppColdFusion.dll"
             VALUE "LegalCopyright", "Copyright (C) 2024-2026"
             VALUE "OriginalFilename", "nppColdFusion.dll"
             VALUE "ProductName", "nppColdFusion"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "0.9.1.0"
         END
     END
     BLOCK "VarFileInfo"
