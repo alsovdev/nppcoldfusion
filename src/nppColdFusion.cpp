@@ -489,7 +489,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						sc.SetState(sID::_DEFAULT);
 					}
 					linestate = styler.GetLineState(currentLine);
-					for (autofor (std::vector<std::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) { thisblock : blocks) {
+					for (auto& thisblock : blocks) {
 						thisblock->updatelinestate(linestate);
 
 					}
@@ -850,7 +850,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						blocks[cfquery]->inBlock = inCFQuery;
 						blocks[js]->inBlock = inJSBlock;
 						blocks[css]->inBlock = inCSSBlock;
-						for (autofor (std::vector<std::shared_ptr<BlockType>>::iterator thisblock = blocks.begin(); thisblock != blocks.end(); ++thisblock) { thisblock : blocks) {
+						for (auto& thisblock : blocks) {
 							if (thisblock->inBlock &&
 								thisblock->validateforkeyword(sc, inCFSet)) {
 								if (thisblock->hasReservedWord(s)) {
