@@ -66,7 +66,7 @@ jobs:
 
       - name: Verify build outputs
         run: |
-          $dllPath = "vs.proj\x64\${{ env.CONFIGURATION }}\nppColdFusion.dll"
+          $dllPath = "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll"
           $xmlPath = "src\nppColdFusion.xml"
           $db3Path = "src\nppColdFusion.db3"
 
@@ -86,7 +86,7 @@ jobs:
           $artifactDir = "dist\${version}"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          Copy-Item "vs.proj\x64\${{ env.CONFIGURATION }}\nppColdFusion.dll" "$artifactDir\nppColdFusion.dll"
+          Copy-Item "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll" "$artifactDir\nppColdFusion.dll"
           Copy-Item "src\nppColdFusion.xml" "$artifactDir\nppColdFusion.xml"
           Copy-Item "src\nppColdFusion.db3" "$artifactDir\nppColdFusion.db3"
 
