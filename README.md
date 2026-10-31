@@ -118,9 +118,4 @@ Current maintainer: **smishchuk** — fork for x64 and Notepad++ 8+ (Lexilla API
 
 ## 🤝 Contributing
 
-PRs and Issues welcome!
-
-- Add CF2021/2023 tags (`cfdocument`, `cfpdf`, `queryExecute`, etc.)
-- Unit tests for the lexer
-- Refactor `Colourise_Doc` (split into separate classes)
-- LSP integration (cflint-lsp / vscode-cfml)
+PRs and Issues welcome! Contributions of any kind are appreciated — bug reports, feature requests, code improvements, documentation updates, and more.
