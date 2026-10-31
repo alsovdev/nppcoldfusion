@@ -5,6 +5,10 @@
 Формат основан на [Keep a Changelog](https://keepachangelog.com/ru/1.0.0/),
 и проект следует [Semantic Versioning](https://semver.org/lang/ru/).
 
+**In English: [CHANGELOG.md](CHANGELOG.md)**
+
+---
+
 ## [0.9.1] - 2026-10-26
 
 ### Изменено

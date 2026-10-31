@@ -17,6 +17,10 @@
 
 ---
 
+**Available in English: [README.md](README.md)**
+
+---
+
 ## 📥 Установка
 
 ### Через Plugin Admin (рекомендуется, после добавления в nppPluginList)
@@ -88,7 +92,7 @@ GitHub Actions настроен для автоматической сборки
 
 ## 📖 История изменений
 
-См. [CHANGELOG.ru.md](CHANGELOG.ru.md)
+См. [CHANGELOG.ru.md](CHANGELOG.ru.md) / [Changelog](CHANGELOG.md)
 
 ---
 
@@ -114,19 +118,9 @@ GitHub Actions настроен для автоматической сборки
 
 ## 🤝 Участие в разработке
 
-PR и Issues приветствуются! Особенно нужны:
+PR и Issues приветствуются!
 
 - Добавление тегов CF2021/2023 (`cfdocument`, `cfpdf`, `queryExecute` и др.)
 - Unit-тесты для лексера
 - Рефакторинг `Colourise_Doc` (разбить на отдельные классы)
 - LSP-интеграция (cflint-lsp / vscode-cfml)
-
----
-
-## 📸 Скриншоты
-
-> *Скриншоты будут добавлены в следующем релизе*
-
-![Syntax Highlighting](docs/images/syntax-highlighting.png)
-![Code Folding](docs/images/code-folding.png)
-![Auto-completion](docs/images/autocomplete.png)

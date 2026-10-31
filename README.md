@@ -17,6 +17,10 @@
 
 ---
 
+**Доступен на русском: [README.ru.md](README.ru.md)**
+
+---
+
 ## 📥 Installation
 
 ### Via Plugin Admin (recommended, once added to nppPluginList)
@@ -88,7 +92,7 @@ GitHub Actions builds automatically on `v*` tag pushes. See [workflow](.github/w
 
 ## 📖 Changelog
 
-See [CHANGELOG.md](CHANGELOG.md)
+See [CHANGELOG.md](CHANGELOG.md) / [История изменений](CHANGELOG.ru.md)
 
 ---
 
@@ -114,19 +118,9 @@ Current maintainer: **smishchuk** — fork for x64 and Notepad++ 8+ (Lexilla API
 
 ## 🤝 Contributing
 
-PRs and Issues welcome! Especially needed:
+PRs and Issues welcome!
 
 - Add CF2021/2023 tags (`cfdocument`, `cfpdf`, `queryExecute`, etc.)
 - Unit tests for the lexer
 - Refactor `Colourise_Doc` (split into separate classes)
 - LSP integration (cflint-lsp / vscode-cfml)
-
----
-
-## 📸 Screenshots
-
-> *Screenshots will be added in the next release*
-
-![Syntax Highlighting](docs/images/syntax-highlighting.png)
-![Code Folding](docs/images/code-folding.png)
-![Auto-completion](docs/images/autocomplete.png)
