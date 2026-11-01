@@ -83,22 +83,23 @@ jobs:
           if ($version -notmatch '^v\d+\.\d+\.\d+') {
             $version = "v$(git describe --tags --always --dirty)"
           }
-          $artifactDir = "${{ github.workspace }}\\dist\\${version}\\x64"
+          $ws = $env:GITHUB_WORKSPACE
+          $artifactDir = Join-Path $ws "dist\$version\x64"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          Copy-Item "${{ github.workspace }}\\vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll" "$artifactDir\\nppColdFusion.dll"
-          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion.xml"
-          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion.db3"
+          Copy-Item (Join-Path $ws "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll") (Join-Path $artifactDir "nppColdFusion.dll")
+          Copy-Item (Join-Path $ws "src\nppColdFusion.xml") (Join-Path $artifactDir "nppColdFusion.xml")
+          Copy-Item (Join-Path $ws "src\nppColdFusion.db3") (Join-Path $artifactDir "nppColdFusion.db3")
 
-          $installText = "nppColdFusion $version - Installation Instructions`n====================================================`n`n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\\Notepad++\\plugins\\config\\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\\plugins\\config\\"
-          Set-Content "$artifactDir\\INSTALL.txt" -Encoding UTF8 -Value $installText
+          $installText = "nppColdFusion $version - Installation Instructions`n====================================================`n`n1. Create folder: %ProgramFiles%\Notepad++\plugins\nppColdFusion\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\Notepad++\plugins\config\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\plugins\nppColdFusion\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\plugins\config\"
+          Set-Content (Join-Path $artifactDir "INSTALL.txt") -Encoding UTF8 -Value $installText
 
           # SHA256SUMS.txt (required for Plugin Admin)
           $sha256 = @()
-          $sha256 += "nppColdFusion.dll $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion.dll\" | Select-Object -ExpandProperty Hash -First 1)"
-          $sha256 += "nppColdFusion.xml $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion.xml\" | Select-Object -ExpandProperty Hash -First 1)"
-          $sha256 += "nppColdFusion.db3 $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion.db3\" | Select-Object -ExpandProperty Hash -First 1)"
-          Set-Content "$artifactDir\\SHA256SUMS.txt" -Encoding UTF8 -Value ($sha256 -join "`n")
+          $sha256 += "nppColdFusion.dll $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion.dll") | Select-Object -ExpandProperty Hash -First 1)"
+          $sha256 += "nppColdFusion.xml $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion.xml") | Select-Object -ExpandProperty Hash -First 1)"
+          $sha256 += "nppColdFusion.db3 $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion.db3") | Select-Object -ExpandProperty Hash -First 1)"
+          Set-Content (Join-Path $artifactDir "SHA256SUMS.txt") -Encoding UTF8 -Value ($sha256 -join "`n")
 
           Write-Host "x64 artifacts prepared in $artifactDir"
           Get-ChildItem $artifactDir
@@ -193,22 +194,23 @@ jobs:
           if ($version -notmatch '^v\d+\.\d+\.\d+') {
             $version = "v$(git describe --tags --always --dirty)"
           }
-          $artifactDir = "${{ github.workspace }}\\dist\\${version}\\win32"
+          $ws = $env:GITHUB_WORKSPACE
+          $artifactDir = Join-Path $ws "dist\$version\win32"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          Copy-Item "${{ github.workspace }}\\vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll" "$artifactDir\\nppColdFusion-win32.dll"
-          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion-win32.xml"
-          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion-win32.db3"
+          Copy-Item (Join-Path $ws "vs.proj\Win32\Unicode Release\nppColdFusion.dll") (Join-Path $artifactDir "nppColdFusion-win32.dll")
+          Copy-Item (Join-Path $ws "src\nppColdFusion.xml") (Join-Path $artifactDir "nppColdFusion-win32.xml")
+          Copy-Item (Join-Path $ws "src\nppColdFusion.db3") (Join-Path $artifactDir "nppColdFusion-win32.db3")
 
-          $installText = "nppColdFusion $version - Installation Instructions (Win32)`n====================================================`n`n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\\Notepad++\\plugins\\config\\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\\plugins\\config\\"
-          Set-Content "$artifactDir\\INSTALL-win32.txt" -Encoding UTF8 -Value $installText
+          $installText = "nppColdFusion $version - Installation Instructions (Win32)`n====================================================`n`n1. Create folder: %ProgramFiles%\Notepad++\plugins\nppColdFusion\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\Notepad++\plugins\config\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\plugins\nppColdFusion\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\plugins\config\"
+          Set-Content (Join-Path $artifactDir "INSTALL-win32.txt") -Encoding UTF8 -Value $installText
 
           # SHA256SUMS.txt (required for Plugin Admin)
           $sha256 = @()
-          $sha256 += "nppColdFusion-win32.dll $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion-win32.dll\" | Select-Object -ExpandProperty Hash -First 1)"
-          $sha256 += "nppColdFusion-win32.xml $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion-win32.xml\" | Select-Object -ExpandProperty Hash -First 1)"
-          $sha256 += "nppColdFusion-win32.db3 $(Get-FileHash -Algorithm SHA256 \"$artifactDir\\nppColdFusion-win32.db3\" | Select-Object -ExpandProperty Hash -First 1)"
-          Set-Content "$artifactDir\\SHA256SUMS-win32.txt" -Encoding UTF8 -Value ($sha256 -join "`n")
+          $sha256 += "nppColdFusion-win32.dll $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion-win32.dll") | Select-Object -ExpandProperty Hash -First 1)"
+          $sha256 += "nppColdFusion-win32.xml $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion-win32.xml") | Select-Object -ExpandProperty Hash -First 1)"
+          $sha256 += "nppColdFusion-win32.db3 $(Get-FileHash -Algorithm SHA256 (Join-Path $artifactDir "nppColdFusion-win32.db3") | Select-Object -ExpandProperty Hash -First 1)"
+          Set-Content (Join-Path $artifactDir "SHA256SUMS-win32.txt") -Encoding UTF8 -Value ($sha256 -join "`n")
 
           Write-Host "Win32 artifacts prepared in $artifactDir"
           Get-ChildItem $artifactDir
