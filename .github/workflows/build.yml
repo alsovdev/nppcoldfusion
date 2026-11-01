@@ -151,7 +151,7 @@ jobs:
             /p:Platform="x86" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
-            /verbosity:minimal `
+            /verbosity:detailed `
             /maxcpucount
 
       - name: Debug Win32 object files (search everywhere)
