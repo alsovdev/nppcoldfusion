@@ -227,6 +227,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PreprocessToFile>false</PreprocessToFile>
       <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/PD %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
