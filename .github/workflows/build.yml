@@ -147,7 +147,7 @@ jobs:
         continue-on-error: true
         run: |
           msbuild "${{ env.SOLUTION_FILE }}" `
-            /p:Configuration="Unicode Release" `
+            /p:Configuration="Release" `
             /p:Platform="x86" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
