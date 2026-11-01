@@ -156,6 +156,16 @@ jobs:
             /verbosity:minimal `
             /maxcpucount
 
+      - name: Debug Win32 object files
+        run: |
+          $objDir = "D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release"
+          Write-Host "Checking object directory: $objDir"
+          if (Test-Path $objDir) {
+            Get-ChildItem $objDir -Recurse | Select-Object FullName, Length, LastWriteTime
+          } else {
+            Write-Host "Object directory does not exist!"
+          }
+
       - name: Verify Win32 build outputs
         run: |
           $dllPath = "vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll"
