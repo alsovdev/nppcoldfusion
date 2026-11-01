@@ -156,14 +156,37 @@ jobs:
             /verbosity:minimal `
             /maxcpucount
 
-      - name: Debug Win32 object files
+      - name: Build Win32 (project directly with explicit Unicode Release|Win32)
+        continue-on-error: true
         run: |
+          msbuild "${{ env.PROJECT_FILE }}" `
+            /p:Configuration="Unicode Release" `
+            /p:Platform="Win32" `
+            /p:SolutionDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\" `
+            /p:OutDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release\" `
+            /p:IntDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release\" `
+            /p:PlatformToolset=v143 `
+            /p:WindowsTargetPlatformVersion=10.0 `
+            /verbosity:minimal `
+            /maxcpucount
+
+      - name: Debug Win32 object files (search everywhere)
+        run: |
+          Write-Host "=== Searching for .obj files in workspace ==="
+          Get-ChildItem -Path "D:\a\nppcoldfusion\nppcoldfusion" -Recurse -Filter "*.obj" -ErrorAction SilentlyContinue | Select-Object FullName, Length, LastWriteTime, DirectoryName
+          Write-Host "=== Checking explicit OutDir ==="
           $objDir = "D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release"
-          Write-Host "Checking object directory: $objDir"
           if (Test-Path $objDir) {
             Get-ChildItem $objDir -Recurse | Select-Object FullName, Length, LastWriteTime
           } else {
-            Write-Host "Object directory does not exist!"
+            Write-Host "Explicit OutDir does not exist!"
+          }
+          Write-Host "=== Checking vs.proj\Win32 ==="
+          $altDir = "D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32"
+          if (Test-Path $altDir) {
+            Get-ChildItem $altDir -Recurse | Select-Object FullName, Length, LastWriteTime
+          } else {
+            Write-Host "vs.proj\Win32 does not exist!"
           }
 
       - name: Verify Win32 build outputs
