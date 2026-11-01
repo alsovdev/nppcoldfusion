@@ -84,7 +84,7 @@ jobs:
             $version = "v$(git describe --tags --always --dirty)"
           }
           $ws = $env:GITHUB_WORKSPACE
-          $artifactDir = Join-Path $ws "dist\$version\x64"
+          $artifactDir = Join-Path $ws "artifacts\x64"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
           Copy-Item (Join-Path $ws "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll") (Join-Path $artifactDir "nppColdFusion.dll")
@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nppColdFusion-x64-${{ env.CONFIGURATION }}
-          path: dist/**/*
+          path: artifacts/x64/**
           retention-days: 30
 
   build-win32:
@@ -195,7 +195,7 @@ jobs:
             $version = "v$(git describe --tags --always --dirty)"
           }
           $ws = $env:GITHUB_WORKSPACE
-          $artifactDir = Join-Path $ws "dist\$version\win32"
+          $artifactDir = Join-Path $ws "artifacts\win32"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
           Copy-Item (Join-Path $ws "vs.proj\Win32\Unicode Release\nppColdFusion.dll") (Join-Path $artifactDir "nppColdFusion-win32.dll")
@@ -219,7 +219,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nppColdFusion-Win32-${{ env.CONFIGURATION }}
-          path: dist/**/*
+          path: artifacts/win32/**
           retention-days: 30
 
   release:
@@ -257,15 +257,15 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            dist/${{ github.ref_name }}/x64/nppColdFusion.dll
-            dist/${{ github.ref_name }}/x64/nppColdFusion.xml
-            dist/${{ github.ref_name }}/x64/nppColdFusion.db3
-            dist/${{ github.ref_name }}/x64/INSTALL.txt
-            dist/${{ github.ref_name }}/x64/SHA256SUMS.txt
-            dist/${{ github.ref_name }}/win32/nppColdFusion-win32.dll
-            dist/${{ github.ref_name }}/win32/nppColdFusion-win32.xml
-            dist/${{ github.ref_name }}/win32/nppColdFusion-win32.db3
-            dist/${{ github.ref_name }}/win32/INSTALL-win32.txt
-            dist/${{ github.ref_name }}/win32/SHA256SUMS-win32.txt
+            artifacts/x64/nppColdFusion.dll
+            artifacts/x64/nppColdFusion.xml
+            artifacts/x64/nppColdFusion.db3
+            artifacts/x64/INSTALL.txt
+            artifacts/x64/SHA256SUMS.txt
+            artifacts/win32/nppColdFusion-win32.dll
+            artifacts/win32/nppColdFusion-win32.xml
+            artifacts/win32/nppColdFusion-win32.db3
+            artifacts/win32/INSTALL-win32.txt
+            artifacts/win32/SHA256SUMS-win32.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
