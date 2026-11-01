@@ -145,9 +145,11 @@ jobs:
 
       - name: Build Win32 (project directly with explicit Unicode Release|Win32)
         run: |
+          $solutionDir = "$(Get-Location)\vs.proj\"
           msbuild "${{ env.PROJECT_FILE }}" `
             /p:Configuration="Unicode Release" `
             /p:Platform="Win32" `
+            /p:SolutionDir="$solutionDir" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
             /verbosity:minimal `
