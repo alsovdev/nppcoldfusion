@@ -142,11 +142,11 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore "${{ env.SOLUTION_FILE }}"
 
-      - name: Build Win32 (solution platform x86 maps to project Unicode Release|Win32)
+      - name: Build Win32 (project directly with explicit Unicode Release|Win32)
         run: |
-          msbuild "${{ env.SOLUTION_FILE }}" `
-            /p:Configuration="${{ env.CONFIGURATION }}" `
-            /p:Platform="x86" `
+          msbuild "${{ env.PROJECT_FILE }}" `
+            /p:Configuration="Unicode Release" `
+            /p:Platform="Win32" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
             /verbosity:minimal `
