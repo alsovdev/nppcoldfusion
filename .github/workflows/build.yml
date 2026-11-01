@@ -143,15 +143,12 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore "${{ env.SOLUTION_FILE }}"
 
-      - name: Build Win32 (project directly with explicit Unicode Release|Win32)
+      - name: Build Win32 (solution with Platform=x86 maps to Unicode Release|Win32)
         continue-on-error: true
         run: |
-          msbuild "${{ env.PROJECT_FILE }}" `
+          msbuild "${{ env.SOLUTION_FILE }}" `
             /p:Configuration="Unicode Release" `
-            /p:Platform="Win32" `
-            /p:SolutionDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\" `
-            /p:OutDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release\" `
-            /p:IntDir="D:\a\nppcoldfusion\nppcoldfusion\vs.proj\Win32\Unicode Release\" `
+            /p:Platform="x86" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
             /verbosity:minimal `
