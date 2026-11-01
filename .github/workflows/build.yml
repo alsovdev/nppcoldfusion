@@ -17,6 +17,7 @@ permissions:
 
 env:
   SOLUTION_FILE: vs.proj/nppColdFusion.sln
+  PROJECT_FILE: vs.proj/nppColdFusion.vcxproj
   CONFIGURATION: Release
 
 jobs:
