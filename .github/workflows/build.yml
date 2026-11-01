@@ -83,12 +83,12 @@ jobs:
           if ($version -notmatch '^v\d+\.\d+\.\d+') {
             $version = "v$(git describe --tags --always --dirty)"
           }
-          $artifactDir = "dist\\${version}\\x64"
+          $artifactDir = "${{ github.workspace }}\\dist\\${version}\\x64"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          Copy-Item "vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll" "$artifactDir\\nppColdFusion.dll"
-          Copy-Item "src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion.xml"
-          Copy-Item "src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion.db3"
+          Copy-Item "${{ github.workspace }}\\vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll" "$artifactDir\\nppColdFusion.dll"
+          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion.xml"
+          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion.db3"
 
           $installText = "nppColdFusion $version - Installation Instructions`n====================================================`n`n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\\Notepad++\\plugins\\config\\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\\plugins\\config\\"
           Set-Content "$artifactDir\\INSTALL.txt" -Encoding UTF8 -Value $installText
@@ -193,12 +193,12 @@ jobs:
           if ($version -notmatch '^v\d+\.\d+\.\d+') {
             $version = "v$(git describe --tags --always --dirty)"
           }
-          $artifactDir = "dist\\${version}\\win32"
+          $artifactDir = "${{ github.workspace }}\\dist\\${version}\\win32"
           New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
-          Copy-Item "vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll" "$artifactDir\\nppColdFusion-win32.dll"
-          Copy-Item "src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion-win32.xml"
-          Copy-Item "src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion-win32.db3"
+          Copy-Item "${{ github.workspace }}\\vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll" "$artifactDir\\nppColdFusion-win32.dll"
+          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.xml" "$artifactDir\\nppColdFusion-win32.xml"
+          Copy-Item "${{ github.workspace }}\\src\\nppColdFusion.db3" "$artifactDir\\nppColdFusion-win32.db3"
 
           $installText = "nppColdFusion $version - Installation Instructions (Win32)`n====================================================`n`n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\`n2. Copy nppColdFusion.dll to that folder`n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:`n   %AppData%\\Notepad++\\plugins\\config\\`n`nFor Portable Notepad++:`n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\`n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\\plugins\\config\\"
           Set-Content "$artifactDir\\INSTALL-win32.txt" -Encoding UTF8 -Value $installText
