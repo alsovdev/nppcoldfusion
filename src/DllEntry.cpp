@@ -109,7 +109,7 @@ extern "C" void EXT_LEXER_DECL GetLexerStatusText( unsigned int /*Index*/, TCHAR
 
 
 //extern "C" Lexilla::LexerFactoryFunction EXT_LEXER_DECL GetLexerFactory( unsigned int index )
-extern "C" __declspec(dllexport) inline Lexilla::LexerFactoryFunction SCI_METHOD GetLexerFactory(unsigned int index)
+extern "C" __declspec(dllexport) Lexilla::LexerFactoryFunction SCI_METHOD GetLexerFactory(unsigned int index)
 {
 	if ( index == 0 ) {
 		return nppColdFusionNS::LexerColdFusion::LexerFactory;
