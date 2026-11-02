@@ -16,6 +16,7 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
+
 #ifndef NPP_CF_STYLES
 #define NPP_CF_STYLES
 
@@ -27,83 +28,161 @@ namespace Styles
 
 /*
  *	List all of your styleIDs as found in your style xml file.
- *
+ *  Must match nppColdFusion.xml LexerStyles
+ *  Using enum class to ensure unique values and type safety.
  */
 
-const int _DEFAULT = 0;
-const int _TAG = 1;
-const int CF_TAG = 2;
-const int _TAGUNKNOWN = 22;
-const int _ATTRIBUTE = 3;
-const int _ATTRIBUTEUNKNOWN = 4;
-const int _NUMBER = 5;
-const int _DOUBLESTRING = 6;
-const int _SINGLESTRING = 7;
-const int _OPERATOR = 8;
-const int _COMMENT = 9;
-const int _COMMENTBLOCK = 10;
-const int _TAGEND = 11;
-const int CF_COMMENT = 12;
-//const int _XMLSTART = 12;
-const int CF_VALUE = 13;
-const int CF_FUNCTION = 14;
-const int CF_KEYWORD = 15;
-const int CF_ATTRIBUTE = 16;
-const int CF_ATTRIBUTEBAD = 17;
-const int LOCAL_VARIABLE = 18;
-const int _QUESTION = 19;
-const int CFS_RESERVED = 20;
-const int _XCCOMMENT = 21;
-const int SQL_KEYWORD = 22;
-const int JS_KEYWORD = 23;
-const int CSS_KEYWORD = 24;
-const int CSS_PROPERTY = 25;
+enum class StyleId : int
+{
+    // Base styles (match XML)
+    DEFAULT          = 0,
+    TAG              = 1,
+    CF_TAG           = 2,
+    ATTRIBUTE        = 3,
+    ATTRIBUTEUNKNOWN = 4,
+    NUMBER           = 5,
+    DOUBLESTRING     = 6,
+    SINGLESTRING     = 7,
+    OPERATOR         = 8,
+    COMMENT          = 9,
+    COMMENTBLOCK     = 10,
+    TAGEND           = 11,
+    CF_COMMENT       = 12,
+    CF_VALUE         = 13,
+    CF_FUNCTION      = 14,
+    CF_KEYWORD       = 15,
+    CF_ATTRIBUTE     = 16,
+    CF_ATTRIBUTEBAD  = 17,
+    LOCAL_VARIABLE   = 18,
+    QUESTION         = 19,
+    CFS_RESERVED     = 20,
+    XCCOMMENT        = 21,
+    
+    // Language-specific keywords (must be unique)
+    SQL_KEYWORD      = 22,
+    JS_KEYWORD       = 23,
+    CSS_KEYWORD      = 24,
+    CSS_PROPERTY     = 25,
+    
+    // JavaScript styles
+    J_START          = 40,
+    J_DEFAULT        = 41,
+    J_COMMENT        = 42,
+    J_COMMENTLINE    = 43,
+    J_COMMENTDOC     = 44,
+    J_NUMBER         = 45,
+    J_WORD           = 46,
+    J_KEYWORD        = 47,
+    J_DOUBLESTRING   = 48,
+    J_SINGLESTRING   = 49,
+    J_SYMBOLS        = 50,
+    J_STRINGEOL      = 51,
+    J_REGEX          = 52,
+    
+    // Java styles
+    JA_START         = 55,
+    JA_COMMENT       = 57,
+    JA_COMMENTLINE   = 58,
+    JA_COMMENTDOC    = 59,
+    JA_NUMBER        = 60,
+    JA_WORD          = 61,
+    JA_KEYWORD       = 62,
+    JA_DOUBLESTRING  = 63,
+    JA_SINGLESTRING  = 64,
+    JA_SYMBOLS       = 65,
+    JA_STRINGEOL     = 66,
+    JA_REGEX         = 67,
+    
+    // ColdFusion specific styles (extended range)
+    CF_TAGUNKNOWN    = 130,
+    CF_NUMBER        = 133,
+    CF_DOUBLESTRING  = 72,
+    CF_SINGLESTRING  = 135,
+    CF_OTHER         = 136,
+    CF_ENTITY        = 138,
+    CF_TAGEND        = 139,
+    CF_XMLSTART      = 140,
+    CF_XMLEND        = 141,
+    CF_SCRIPT        = 142,
+    CF_OUTPUT        = 143,
+    CF_QUERY         = 150,  // Was 24 (conflict with CSS_KEYWORD), moved to unique value
+    CF_CDATA         = 145,
+    CF_QUESTION      = 146,
+    
+    CF_XCCOMMENT     = 148,
+};
 
-const int J_START = 40;
-const int J_DEFAULT = 41;
-const int J_COMMENT = 42;
-const int J_COMMENTLINE = 43;
-const int J_COMMENTDOC = 44;
-const int J_NUMBER = 45;
-const int J_WORD = 46;
-const int J_KEYWORD = 47;
-const int J_DOUBLESTRING = 48;
-const int J_SINGLESTRING = 49;
-const int J_SYMBOLS = 50;
-const int J_STRINGEOL = 51;
-const int J_REGEX = 52;
-const int JA_START = 55;
-const int JA_COMMENT = 57;
-const int JA_COMMENTLINE = 58;
-const int JA_COMMENTDOC = 59;
-const int JA_NUMBER = 60;
-const int JA_WORD = 61;
-const int JA_KEYWORD = 62;
-const int JA_DOUBLESTRING = 63;
-const int JA_SINGLESTRING = 64;
-const int JA_SYMBOLS = 65;
-const int JA_STRINGEOL = 66;
-const int JA_REGEX = 67;
-//const int CF_TAG = 22;
-const int CF_TAGUNKNOWN = 130;
-//const int CF_ATTRIBUTE = 131;
-//const int CF_ATTRIBUTEUNKNOWN = 132;
-const int CF_NUMBER = 133;
-const int CF_DOUBLESTRING = 72;
-const int CF_SINGLESTRING = 135;
-const int CF_OTHER = 136;
-const int CF_ENTITY = 138;
-const int CF_TAGEND = 139;
-const int CF_XMLSTART = 140;
-const int CF_XMLEND = 141;
-const int CF_SCRIPT = 142;
-const int CF_OUTPUT = 143;
-const int CF_QUERY = 24;
-const int CF_CDATA = 145;
-const int CF_QUESTION = 146;
+// Backward compatibility constants (deprecated - use StyleId enum)
+const int _DEFAULT           = static_cast<int>(StyleId::DEFAULT);
+const int _TAG               = static_cast<int>(StyleId::TAG);
+const int CF_TAG             = static_cast<int>(StyleId::CF_TAG);
+const int _TAGUNKNOWN        = static_cast<int>(StyleId::CF_TAGUNKNOWN);  // Was 22, now unique
+const int _ATTRIBUTE         = static_cast<int>(StyleId::ATTRIBUTE);
+const int _ATTRIBUTEUNKNOWN  = static_cast<int>(StyleId::ATTRIBUTEUNKNOWN);
+const int _NUMBER            = static_cast<int>(StyleId::NUMBER);
+const int _DOUBLESTRING      = static_cast<int>(StyleId::DOUBLESTRING);
+const int _SINGLESTRING      = static_cast<int>(StyleId::SINGLESTRING);
+const int _OPERATOR          = static_cast<int>(StyleId::OPERATOR);
+const int _COMMENT           = static_cast<int>(StyleId::COMMENT);
+const int _COMMENTBLOCK      = static_cast<int>(StyleId::COMMENTBLOCK);
+const int _TAGEND            = static_cast<int>(StyleId::TAGEND);
+const int CF_COMMENT         = static_cast<int>(StyleId::CF_COMMENT);
+const int CF_VALUE           = static_cast<int>(StyleId::CF_VALUE);
+const int CF_FUNCTION        = static_cast<int>(StyleId::CF_FUNCTION);
+const int CF_KEYWORD         = static_cast<int>(StyleId::CF_KEYWORD);
+const int CF_ATTRIBUTE       = static_cast<int>(StyleId::CF_ATTRIBUTE);
+const int CF_ATTRIBUTEBAD    = static_cast<int>(StyleId::CF_ATTRIBUTEBAD);
+const int LOCAL_VARIABLE     = static_cast<int>(StyleId::LOCAL_VARIABLE);
+const int _QUESTION          = static_cast<int>(StyleId::QUESTION);
+const int CFS_RESERVED       = static_cast<int>(StyleId::CFS_RESERVED);
+const int _XCCOMMENT         = static_cast<int>(StyleId::XCCOMMENT);
+const int SQL_KEYWORD        = static_cast<int>(StyleId::SQL_KEYWORD);
+const int JS_KEYWORD         = static_cast<int>(StyleId::JS_KEYWORD);
+const int CSS_KEYWORD        = static_cast<int>(StyleId::CSS_KEYWORD);
+const int CSS_PROPERTY       = static_cast<int>(StyleId::CSS_PROPERTY);
 
-const int CF_XCCOMMENT = 148;
+const int J_START            = static_cast<int>(StyleId::J_START);
+const int J_DEFAULT          = static_cast<int>(StyleId::J_DEFAULT);
+const int J_COMMENT          = static_cast<int>(StyleId::J_COMMENT);
+const int J_COMMENTLINE      = static_cast<int>(StyleId::J_COMMENTLINE);
+const int J_COMMENTDOC       = static_cast<int>(StyleId::J_COMMENTDOC);
+const int J_NUMBER           = static_cast<int>(StyleId::J_NUMBER);
+const int J_WORD             = static_cast<int>(StyleId::J_WORD);
+const int J_KEYWORD          = static_cast<int>(StyleId::J_KEYWORD);
+const int J_DOUBLESTRING     = static_cast<int>(StyleId::J_DOUBLESTRING);
+const int J_SINGLESTRING     = static_cast<int>(StyleId::J_SINGLESTRING);
+const int J_SYMBOLS          = static_cast<int>(StyleId::J_SYMBOLS);
+const int J_STRINGEOL        = static_cast<int>(StyleId::J_STRINGEOL);
+const int J_REGEX            = static_cast<int>(StyleId::J_REGEX);
 
+const int JA_START           = static_cast<int>(StyleId::JA_START);
+const int JA_COMMENT         = static_cast<int>(StyleId::JA_COMMENT);
+const int JA_COMMENTLINE     = static_cast<int>(StyleId::JA_COMMENTLINE);
+const int JA_COMMENTDOC      = static_cast<int>(StyleId::JA_COMMENTDOC);
+const int JA_NUMBER          = static_cast<int>(StyleId::JA_NUMBER);
+const int JA_WORD            = static_cast<int>(StyleId::JA_WORD);
+const int JA_KEYWORD         = static_cast<int>(StyleId::JA_KEYWORD);
+const int JA_DOUBLESTRING    = static_cast<int>(StyleId::JA_DOUBLESTRING);
+const int JA_SINGLESTRING    = static_cast<int>(StyleId::JA_SINGLESTRING);
+const int JA_SYMBOLS         = static_cast<int>(StyleId::JA_SYMBOLS);
+const int JA_STRINGEOL       = static_cast<int>(StyleId::JA_STRINGEOL);
+const int JA_REGEX           = static_cast<int>(StyleId::JA_REGEX);
+
+const int CF_TAGUNKNOWN      = static_cast<int>(StyleId::CF_TAGUNKNOWN);
+const int CF_NUMBER          = static_cast<int>(StyleId::CF_NUMBER);
+const int CF_DOUBLESTRING    = static_cast<int>(StyleId::CF_DOUBLESTRING);
+const int CF_SINGLESTRING    = static_cast<int>(StyleId::CF_SINGLESTRING);
+const int CF_OTHER           = static_cast<int>(StyleId::CF_OTHER);
+const int CF_ENTITY          = static_cast<int>(StyleId::CF_ENTITY);
+const int CF_TAGEND          = static_cast<int>(StyleId::CF_TAGEND);
+const int CF_XMLSTART        = static_cast<int>(StyleId::CF_XMLSTART);
+const int CF_XMLEND          = static_cast<int>(StyleId::CF_XMLEND);
+const int CF_SCRIPT          = static_cast<int>(StyleId::CF_SCRIPT);
+const int CF_OUTPUT          = static_cast<int>(StyleId::CF_OUTPUT);
+const int CF_QUERY           = static_cast<int>(StyleId::CF_QUERY);
+const int CF_CDATA           = static_cast<int>(StyleId::CF_CDATA);
+const int CF_QUESTION        = static_cast<int>(StyleId::CF_QUESTION);
+const int CF_XCCOMMENT       = static_cast<int>(StyleId::CF_XCCOMMENT);
 
 };  // End namespace Style
 

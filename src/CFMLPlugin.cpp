@@ -811,7 +811,6 @@ void CFMLPlugin::ResetShiftTab()
 void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 {
 
-
 	nppCFShared& cfs = *nppCFShared::Instance();
 	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
 	const char* expanded;
@@ -819,20 +818,19 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 	expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);
 
 	if (expanded != 0 && strlen(expanded) > 1) {
-		char* texttoinsert = new char[strlen(expanded) + strlen(text) + 2];
-		texttoinsert[0] = '\0';
+		// Use std::string to avoid manual memory management
+		std::string texttoinsert;
+		texttoinsert.reserve(strlen(expanded) + strlen(text) + 2);
 		int curpos = sciMsgr.getCurrentPos();
-		strcat_s(texttoinsert, strlen(expanded) + strlen(text) + 2, text + (curpos - pos));
-		strcat_s(texttoinsert, strlen(expanded) + strlen(text) + 2, " ");
-		//expanded[strlen(expanded)] = '\0';
-		strcat_s(texttoinsert, strlen(expanded) + strlen(text) + 2, expanded);
-		//
+		texttoinsert += text + (curpos - pos);
+		texttoinsert += ' ';
+		texttoinsert += expanded;
 
 		sciMsgr.SendSciMsg(SCI_AUTOCCANCEL);
 		sciMsgr.setSelectionStart(pos);
 		sciMsgr.setSelectionEnd(curpos);
 
-		sciMsgr.SendSciMsg(SCI_ADDTEXT, strlen(texttoinsert), (LPARAM)texttoinsert);
+		sciMsgr.SendSciMsg(SCI_ADDTEXT, texttoinsert.size(), (LPARAM)texttoinsert.c_str());
 		sciMsgr.goToPos(curpos);
 		if (cfs.isFingerTextInstalled && cfs.integrateWithFingerText) {
 			// We need to cancel the shift key so fingertext will activate
@@ -846,10 +844,10 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 		}
 
 	}
-	delete[] expanded;
 
-	/* TODO: maybe add proper indenting when closing tags etc */
-	/* NOTE: the below was a test for chaining autocompletes, which failed :( */
+	// DO NOT delete[] expanded - it points to internal cache, not heap memory
+	// TODO: maybe add proper indenting when closing tags etc
+	// NOTE: the below was a test for chaining autocompletes, which failed :(
 
 
 

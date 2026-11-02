@@ -21,13 +21,11 @@ namespace nppColdFusionNS
 {
 using namespace AutoCompleteData;
 
-nppCFShared* nppCFShared::pinstance( 0 );
-
-nppCFShared* nppCFShared::Instance() {
-    if (!pinstance) {
-        pinstance = new nppCFShared();
-    }
-    return pinstance;
+// Meyers Singleton - thread-safe, no manual memory management
+nppCFShared& nppCFShared::Instance()
+{
+    static nppCFShared instance;
+    return instance;
 }
 
     // Helper: build space-separated string from tags in a namespace
@@ -63,9 +61,10 @@ nppCFShared* nppCFShared::Instance() {
                 for (size_t j = 0; j < ks.count; ++j) {
                     if (!result.empty()) result += " ";
                     if (lowered) {
-                        // Convert to lowercase
+                        // Convert to lowercase - safe for signed char
                         std::string kw = ks.keywords[j];
-                        std::transform(kw.begin(), kw.end(), kw.begin(), ::tolower);
+                        std::transform(kw.begin(), kw.end(), kw.begin(),
+                            [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
                         result += kw;
                     } else {
                         result += ks.keywords[j];
@@ -128,38 +127,45 @@ nppCFShared* nppCFShared::Instance() {
     }
 
     const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
-        static thread_local std::string cached_attrs[6][2][2]; // ns, onlyrequired, hasFingerText
-        // Simple cache key
-        int onlyreq_idx = onlyrequired ? 1 : 0;
-        int finger_idx = hasFingerText ? 1 : 0;
-        
+        // Cache key includes namespace, tag name, onlyrequired, hasFingerText, forautoc
+        static thread_local std::unordered_map<std::string, std::string> cached_attrs;
+
+        std::string cache_key = std::to_string(this->ns) + "|" +
+                               std::to_string(onlyrequired) + "|" +
+                               std::to_string(hasFingerText) + "|" +
+                               std::to_string(forautoc) + "|" +
+                               tag;
+
         if (this->ns > 0 && this->ns <= 5) {
-            if (cached_attrs[ns][onlyreq_idx][finger_idx].empty()) {
+            auto it = cached_attrs.find(cache_key);
+            if (it == cached_attrs.end()) {
                 size_t attr_count = 0;
                 const TagAttribute* attrs = findTagAttributes(tag, namespace_id, attr_count);
+                std::string result;
                 if (attrs && attr_count > 0) {
                     const char* extra = forautoc ? "?1" : "";
                     for (size_t i = 0; i < attr_count; ++i) {
-                        if (!cached_attrs[ns][onlyreq_idx][finger_idx].empty()) {
-                            cached_attrs[ns][onlyreq_idx][finger_idx] += " ";
+                        if (!result.empty()) {
+                            result += " ";
                         }
-                        cached_attrs[ns][onlyreq_idx][finger_idx] += attrs[i].name;
+                        result += attrs[i].name;
                         if (onlyrequired) {
                             if (hasFingerText) {
-                                cached_attrs[ns][onlyreq_idx][finger_idx] += "=\\\\\\\"$[![]!]\\\\\\\"";
+                                result += "=\\\\\\\\\\\\\\\"$[![]!]\\\\\\\\\\\\\\\"";
                             } else {
-                                cached_attrs[ns][onlyreq_idx][finger_idx] += "=\"\"";
+                                result += "=\"\"";
                             }
                         } else {
-                            cached_attrs[ns][onlyreq_idx][finger_idx] += "=";
+                            result += "=";
                         }
                         if (forautoc) {
-                            cached_attrs[ns][onlyreq_idx][finger_idx] += extra;
+                            result += extra;
                         }
                     }
                 }
+                it = cached_attrs.emplace(std::move(cache_key), std::move(result)).first;
             }
-            return cached_attrs[ns][onlyreq_idx][finger_idx].c_str();
+            return it->second.c_str();
         }
         return "";
     }
@@ -198,7 +204,7 @@ nppCFShared* nppCFShared::Instance() {
         auto it = doclinks.find(docID);
         if (it != doclinks.end()) {
             unsigned int lexID = it->second;
-            if (lexID < lexers.size()) {
+            if (lexID < lexers.size() && lexers[lexID] != nullptr) {
                 return lexers[lexID];
             }
         }
@@ -209,6 +215,8 @@ nppCFShared* nppCFShared::Instance() {
         if (lexID < lexers.size()) {
             doclinks.erase(docID);
             lexlinks.erase(lexID);
+            // Mark lexer as unregistered (don't remove from vector to preserve indices)
+            lexers[lexID] = nullptr;
             return true;
         }
         return false;
