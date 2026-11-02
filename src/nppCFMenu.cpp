@@ -16,7 +16,7 @@ FuncItem nppCFMenu::arrFuncItems[N_NBFUNCITEMS] = {
 
 void nppCFMenu::toggleAutocReq()
 {
-	nppCFShared &cfs = *nppCFShared::Instance();
+	nppCFShared &cfs = nppCFShared::Instance();
 	cfs.alwaysCompleteReqAttributes = !cfs.alwaysCompleteReqAttributes;
 	updateMenu();
 
@@ -24,21 +24,21 @@ void nppCFMenu::toggleAutocReq()
 
 void nppCFMenu::toggleAutocCFSQL()
 {
-	nppCFShared &cfs = *nppCFShared::Instance();
+	nppCFShared &cfs = nppCFShared::Instance();
 	cfs.completeCFsqltype = !cfs.completeCFsqltype;
 	updateMenu();
 }
 
 void nppCFMenu::toggleIntegrateFT()
 {
-	nppCFShared &cfs = *nppCFShared::Instance();
+	nppCFShared &cfs = nppCFShared::Instance();
 	cfs.integrateWithFingerText = !cfs.integrateWithFingerText;
 	updateMenu();
 }
 
 void nppCFMenu::updateMenu()
 {
-	nppCFShared &cfs = *nppCFShared::Instance();
+	nppCFShared &cfs = nppCFShared::Instance();
 	cfs.m_nppMsgr.SendNppMsg( NPPM_SETMENUITEMCHECK, arrFuncItems[N_AUTOCREQ]._cmdID, cfs.alwaysCompleteReqAttributes );
 	cfs.m_nppMsgr.SendNppMsg( NPPM_SETMENUITEMCHECK, arrFuncItems[N_AUTOCCFSQL]._cmdID, cfs.completeCFsqltype );
 	cfs.m_nppMsgr.SendNppMsg( NPPM_SETMENUITEMCHECK, arrFuncItems[N_FINGERTEXTINT]._cmdID, cfs.integrateWithFingerText );

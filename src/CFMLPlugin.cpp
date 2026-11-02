@@ -48,7 +48,7 @@ CFMLPlugin::~CFMLPlugin()
 
 FuncItem* CFMLPlugin::nppGetFuncsArray(int* pnbFuncItems)
 {
-	//nppCFShared &cfs = *nppCFShared::Instance();
+	//nppCFShared &cfs = nppCFShared::Instance();
 
 	*pnbFuncItems = nppCFMenu::N_NBFUNCITEMS;
 	return nppCFMenu::arrFuncItems;
@@ -159,7 +159,7 @@ void CFMLPlugin::nppBeNotified(SCNotification* notifyCode)
 		// <<< notifications from Notepad++
 	}
 	else {
-		nppCFShared& cfs = *nppCFShared::Instance();
+		nppCFShared& cfs = nppCFShared::Instance();
 
 		// >>> notifications from Scintilla
 		switch (notifyCode->nmhdr.code) {
@@ -214,7 +214,7 @@ void CFMLPlugin::OnNppReady()
 			m_nppMsgr.getNppWnd(), GWLP_WNDPROC, (LONG_PTR)nppNewWndProc);
 	}
 
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 	int a = cfs.m_nppMsgr.SendNppMsg(NPPM_MSGTOPLUGIN, (WPARAM)_T("FingerText.dll"), (LPARAM)true);
 	if (a) {
 		cfs.isFingerTextInstalled = true;
@@ -230,7 +230,7 @@ void CFMLPlugin::OnNppReady()
 
 void CFMLPlugin::OnNppShutdown()
 {
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 	if (nppOriginalWndProc) {
 		if (isNppWndUnicode) {
 			::SetWindowLongPtrW(m_nppMsgr.getNppWnd(),
@@ -316,7 +316,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 	// We need to check to see if the lexer is currently "aware" of this buffer - that is -
 	// if the lexer has not been run, then in theory the buffer id we store should not be the
 	// same, this essentially means any files that use the lexer can have the auto complete
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 	int currentbuffid = cfs.m_nppMsgr.getCurrentBufferID();
 	LexerColdFusion* lexer = cfs.getLexerForDoc(currentbuffid);
 	// If N++'s current buffer id doesn't match the lexer one then don't go any further.
@@ -811,7 +811,7 @@ void CFMLPlugin::ResetShiftTab()
 void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 {
 
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
 	const char* expanded;
 
@@ -887,7 +887,7 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 
 void CFMLPlugin::OnNppSetInfo(const NppData& notpadPlusData)
 {
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 	cfs.m_nppMsgr.setNppData(notpadPlusData);
 	//m_PluginMenu.setNppData(notpadPlusData);
 	isNppWndUnicode = ::IsWindowUnicode(notpadPlusData._nppHandle) ? true : false;
@@ -928,7 +928,7 @@ void CFMLPlugin::wrapCFDump()
 }
 void CFMLPlugin::aboutDlg()
 {
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 
 	::MessageBox(cfs.m_nppMsgr.getNppWnd(),
 		TEXT("nppColdFusion by Ben Bluemel\n")
@@ -940,7 +940,7 @@ void CFMLPlugin::aboutDlg()
 }
 void CFMLPlugin::wrapIn(const char* before, const char* after)
 {
-	nppCFShared& cfs = *nppCFShared::Instance();
+	nppCFShared& cfs = nppCFShared::Instance();
 
 	CSciMessager sciMsgr(cfs.m_nppMsgr.getCurrentScintillaWnd());
 

@@ -37,7 +37,7 @@ static const char* nppColdFusionNS::LexerName() {
 }
 
 LexerColdFusion::LexerColdFusion() {
-	cfs = nppCFShared::Instance();
+	cfs = &nppCFShared::Instance();
 	isScriptCFC = false;
 	hasDeterminedType = false;
 	sharedid = cfs->registerLexer(this);
@@ -251,10 +251,9 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 				}
 				else if (ch == '>') {
 					tagCFcomplete = true;
-					tagCF[tagCFpos] = ' ';
-					tagCF[tagCFpos + 1] = '\0';
-					nppCFShared& ref = *nppCFShared::Instance();
-					if (chPrev != '/' && strstr("meta link img area br hr input cfabort cfajaximport cfajaxproxy cfapplet cfapplication cfargument cfassociate cfbreak cfcache cfcalendar cfchartdata cfchartseries cfcol cfcollection cfcontent cfcontinue cfcookie cfdbinfo cfdirectory cfdiv cfdump cferror cfexchangecalendar cfexchangeconnection cfexchangecontact cfexchangefilter cfexchangemail cfexchangetask cfexit cffeed cffile cfflush cfftp cfgridcolumn cfgridrow cfgridupdate cfheader cfhtmlhead cfhttp cfhttpparam cfimage cfimport cfinclude cfindex cfinput cfinsert cfinvoke cfinvokeargument cfldap cflocation cflog cfloginuser cflogout cfmailparam cfmodule cfntauthenticate cfobject cfobjectcache cfparam cfpdf cfpdfformparam cfpdfparam cfpop cfpresenter cfprint cfprocessingdirective cfprocparam cfprocresult cfproperty cfqueryparam cfregistry cfreport cfreportparam cfrethrow cfreturn cfschedule cfsearch cfset cfsetting cfsilent cfslider cfsprydataset cfstoredproc cftextinput cfthrow cftrace cftreeitem cfupdate cfwddx cfzip cfzipparam cfwebsocket cfclient cfpdfform cfpdfformparam cfpdfsubform", tagCF) == NULL && !cfs->coldfusionNS->isCustomTag(tagCF)) {
+			tagCF[tagCFpos] = ' ';
+			tagCF[tagCFpos + 1] = '\0';
+			if (chPrev != '/' && strstr("meta link img area br hr input cfabort cfajaximport cfajaxproxy cfapplet cfapplication cfargument cfassociate cfbreak cfcache cfcalendar cfchartdata cfchartseries cfcol cfcollection cfcontent cfcontinue cfcookie cfdbinfo cfdirectory cfdiv cfdump cferror cfexchangecalendar cfexchangeconnection cfexchangecontact cfexchangefilter cfexchangemail cfexchangetask cfexit cffeed cffile cfflush cfftp cfgridcolumn cfgridrow cfgridupdate cfheader cfhtmlhead cfhttp cfhttpparam cfimage cfimport cfinclude cfindex cfinput cfinsert cfinvoke cfinvokeargument cfldap cflocation cflog cfloginuser cflogout cfmailparam cfmodule cfntauthenticate cfobject cfobjectcache cfparam cfpdf cfpdfformparam cfpdfparam cfpop cfpresenter cfprint cfprocessingdirective cfprocparam cfprocresult cfproperty cfqueryparam cfregistry cfreport cfreportparam cfrethrow cfreturn cfschedule cfsearch cfset cfsetting cfsilent cfslider cfsprydataset cfstoredproc cftextinput cfthrow cftrace cftreeitem cfupdate cfwddx cfzip cfzipparam cfwebsocket cfclient cfpdfform cfpdfformparam cfpdfsubform", tagCF) == NULL && !cfs->coldfusionNS->isCustomTag(tagCF)) {
 						if (tagCFClosing) {
 							levelNext--;
 						}
