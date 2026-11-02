@@ -30,29 +30,26 @@ namespace nppColdFusionNS
     class Status
     {
     public:
-        static constexpr int MAX_STATE_HISTORY = 32;
-        static constexpr int MAX_TAG_NAME_LENGTH = 100;
-        static constexpr int MAX_OPEN_TAGS = 25;
-        static constexpr int MAX_OPEN_TAGS_BUFFER = 512;
-        
         bool tagClosing;
         bool tagOpening;
-        std::array<int, MAX_STATE_HISTORY> stateHistory{};
+        int stateHistory[32];
         int lastState;
         bool preCFTagisHTMLTagOpening;
-        std::array<char, MAX_TAG_NAME_LENGTH> currentCFTag{};
-        std::array<char, MAX_TAG_NAME_LENGTH> currentHTMLTag{};
-        std::array<char, MAX_OPEN_TAGS_BUFFER> openTagsBuffer{};
-        std::array<int, MAX_OPEN_TAGS> openTagsPositions{};
+        char currentCFTag[100];
+        char currentHTMLTag[100];
+        char openTagsBuffer[512];
+        int openTagsPositions[25];
         int currentopenTag;
 
         Status() {
             tagClosing = false;
             tagOpening = false;
+            stateHistory[0] = 0;
             lastState = 0;
             preCFTagisHTMLTagOpening = false;
             currentopenTag = 0;
-            // Arrays are zero-initialized by {}
+            currentCFTag[0] = '\0';
+            currentHTMLTag[0] = '\0';
         }
         ~Status() {}
     };
