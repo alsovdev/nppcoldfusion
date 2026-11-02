@@ -427,7 +427,6 @@
     <None Include="..\src\nppColdFusion.xml">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="x64\Unicode Debug\nppColdFusion.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -435,22 +434,6 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-  <!--    <Import Project="solution\packages\boost.1.83.0\build\boost.targets" Condition="Exists('solution\packages\boost.1.83.0\build\boost.targets')" />
-      <Import Project="solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets" Condition="Exists('solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets')" /> -->
-  <!--    <Import Project="packages\boost.1.84.0\build\boost.targets" Condition="Exists('packages\boost.1.84.0\build\boost.targets')" /> -->
-    </ImportGroup>
-  <!-- <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('solution\packages\boost.1.83.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'solution\packages\boost.1.83.0\build\boost.targets'))" />
-    <Error Condition="!Exists('solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets')" Text="$([System.String]::Format('$(ErrorText)', 'solution\packages\boost_regex-vc143.1.83.0\build\boost_regex-vc143.targets'))" />
-  </Target> -->
+  </ImportGroup>
   <Import Project="$(SolutionDir)\Publish.Dll.To.Notepad.targets" Condition="Exists('$(SolutionDir)\Publish.Dll.To.Notepad.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <!-- <Error Condition="!Exists('packages\boost.1.84.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.84.0\build\boost.targets'))" /> -->
-  </Target>
 </Project>

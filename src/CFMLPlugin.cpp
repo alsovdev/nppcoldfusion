@@ -16,7 +16,6 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "CFMLPlugin.h"
-///#include <boost/thread/thread.hpp> /// *** trying use sleep, but failed to build
 //#include <Windows.h> //for Sleep only, this does work
 
 

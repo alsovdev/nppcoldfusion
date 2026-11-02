@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.2] - 2026-11-02
+
+### Changed
+
+- **Boost completely removed** from project:
+  - Deleted `vs.proj/packages.config` (unused NuGet reference)
+  - Removed all commented Boost imports/errors from `.vcxproj`
+  - Removed commented `#include <boost/thread/thread.hpp>` from `CFMLPlugin.cpp`
+- Build system cleaned: no NuGet dependencies required
+
 ## [0.9.1] - 2026-10-26
 
 ### Changed
