@@ -166,8 +166,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary>..\..\bin\$(Platform)\$(Configuration)\nppColdFusion.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
@@ -201,8 +200,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary>..\..\bin\$(Platform)\$(Configuration)\nppColdFusion.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -276,8 +274,7 @@
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary>..\..\bin\$(Platform)\$(Configuration)\nppColdFusion.lib</ImportLibrary>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/VERBOSE %(AdditionalOptions)</AdditionalOptions>
       <TargetMachine>MachineX64</TargetMachine>
