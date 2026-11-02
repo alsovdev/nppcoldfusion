@@ -232,11 +232,17 @@ jobs:
       contents: write
 
     steps:
-      - name: Download all artifacts
+      - name: Download x64 artifacts
         uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
-          path: ${{ github.workspace }}
+          name: nppColdFusion-x64-Release
+          path: artifacts/x64
+
+      - name: Download Win32 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: nppColdFusion-Win32-Release
+          path: artifacts/win32
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
