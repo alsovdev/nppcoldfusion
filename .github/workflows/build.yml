@@ -52,12 +52,12 @@ jobs:
 
       - name: Build x64
         run: |
-          msbuild "vs.proj/nppColdFusion.vcxproj" `
+          msbuild "${{ env.SOLUTION_FILE }}" `
+            /t:nppColdFusion `
             /p:Configuration="Unicode Release" `
             /p:Platform="x64" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
-            /p:SolutionDir="$env:SYSTEM_DEFAULTWORKINGDIRECTORY/vs.proj/" `
             /verbosity:detailed `
             /maxcpucount
 
@@ -140,12 +140,12 @@ jobs:
 
       - name: Build Win32 (project only, not solution)
         run: |
-          msbuild "vs.proj/nppColdFusion.vcxproj" `
+          msbuild "${{ env.SOLUTION_FILE }}" `
+            /t:nppColdFusion `
             /p:Configuration="Unicode Release" `
             /p:Platform="Win32" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
-            /p:SolutionDir="$env:SYSTEM_DEFAULTWORKINGDIRECTORY/vs.proj/" `
             /verbosity:detailed `
             /maxcpucount
 
@@ -218,12 +218,12 @@ jobs:
 
       - name: Build Tests (x64)
         run: |
-          msbuild "tests/nppColdFusionTests.vcxproj" `
+          msbuild "${{ env.SOLUTION_FILE }}" `
+            /t:nppColdFusionTests `
             /p:Configuration="Debug" `
             /p:Platform="x64" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
-            /p:SolutionDir="$env:SYSTEM_DEFAULTWORKINGDIRECTORY/vs.proj/" `
             /verbosity:minimal `
             /maxcpucount
 
