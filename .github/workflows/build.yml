@@ -56,13 +56,11 @@ jobs:
 
       - name: Verify x64 build outputs
         run: |
-          $dllPath = "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll"
-          $xmlPath = "src\nppColdFusion.xml"
-          $db3Path = "src\nppColdFusion.db3"
+          $dllPath = "vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll"
+          $xmlPath = "src\\nppColdFusion.xml"
 
           if (-not (Test-Path $dllPath)) { Write-Error "DLL not found at $dllPath"; exit 1 }
           if (-not (Test-Path $xmlPath)) { Write-Error "XML not found at $xmlPath"; exit 1 }
-          if (-not (Test-Path $db3Path)) { Write-Error "DB3 not found at $db3Path"; exit 1 }
 
           Write-Host "All x64 artifacts found"
 
@@ -70,17 +68,16 @@ jobs:
         shell: powershell
         run: |
           $ws = $env:GITHUB_WORKSPACE
-          $x64Dir = Join-Path $ws "artifacts\x64"
-          $sharedDir = Join-Path $ws "artifacts\shared"
+          $x64Dir = Join-Path $ws "artifacts\\x64"
+          $sharedDir = Join-Path $ws "artifacts\\shared"
           New-Item -ItemType Directory -Force -Path $x64Dir | Out-Null
           New-Item -ItemType Directory -Force -Path $sharedDir | Out-Null
 
           # x64 DLL
-          Copy-Item (Join-Path $ws "vs.proj\x64\Unicode ${{ env.CONFIGURATION }}\nppColdFusion.dll") (Join-Path $x64Dir "nppColdFusion.dll")
+          Copy-Item (Join-Path $ws "vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll") (Join-Path $x64Dir "nppColdFusion.dll")
 
-          # Shared assets (xml, db3)
-          Copy-Item (Join-Path $ws "src\nppColdFusion.xml") (Join-Path $sharedDir "nppColdFusion.xml")
-          Copy-Item (Join-Path $ws "src\nppColdFusion.db3") (Join-Path $sharedDir "nppColdFusion.db3")
+          # Shared assets (xml only - db3 removed, legacy)
+          Copy-Item (Join-Path $ws "src\\nppColdFusion.xml") (Join-Path $sharedDir "nppColdFusion.xml")
 
           Write-Host "x64 artifacts prepared in $x64Dir"
           Write-Host "Shared artifacts prepared in $sharedDir"
@@ -149,11 +146,9 @@ jobs:
         run: |
           $dllPath = "vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll"
           $xmlPath = "src\\nppColdFusion.xml"
-          $db3Path = "src\\nppColdFusion.db3"
 
           if (-not (Test-Path $dllPath)) { Write-Error "DLL not found at $dllPath"; exit 1 }
           if (-not (Test-Path $xmlPath)) { Write-Error "XML not found at $xmlPath"; exit 1 }
-          if (-not (Test-Path $db3Path)) { Write-Error "DB3 not found at $db3Path"; exit 1 }
 
           Write-Host "All Win32 artifacts found"
 
@@ -161,11 +156,11 @@ jobs:
         shell: powershell
         run: |
           $ws = $env:GITHUB_WORKSPACE
-          $x86Dir = Join-Path $ws "artifacts\x86"
+          $x86Dir = Join-Path $ws "artifacts\\x86"
           New-Item -ItemType Directory -Force -Path $x86Dir | Out-Null
 
           # Win32 DLL (standard name)
-          Copy-Item (Join-Path $ws "vs.proj\Win32\Unicode Release\nppColdFusion.dll") (Join-Path $x86Dir "nppColdFusion.dll")
+          Copy-Item (Join-Path $ws "vs.proj\\Win32\\Unicode Release\\nppColdFusion.dll") (Join-Path $x86Dir "nppColdFusion.dll")
 
           Write-Host "Win32 artifacts prepared in $x86Dir"
           Get-ChildItem $x86Dir
@@ -208,22 +203,21 @@ jobs:
       - name: Prepare release package (classic structure)
         run: |
           mkdir -p release_artifacts/x64 release_artifacts/x86 release_artifacts/shared
-          
+
           # Architecture-specific DLLs (renamed for unique release asset names)
           cp artifacts/x64/nppColdFusion.dll release_artifacts/x64/nppColdFusion-x64.dll
           cp artifacts/x86/nppColdFusion.dll release_artifacts/x86/nppColdFusion-x86.dll
-          
-          # Shared assets
+
+          # Shared assets (db3 removed - legacy, not used by plugin)
           cp artifacts/shared/nppColdFusion.xml release_artifacts/shared/
-          cp artifacts/shared/nppColdFusion.db3 release_artifacts/shared/
-          
+
           # INSTALL.txt (generic for both architectures)
-          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml and nppColdFusion.db3 to:\n   %%AppData%%\\Notepad++\\plugins\\config\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\\n  Copy nppColdFusion.xml and nppColdFusion.db3 to <Notepad++>\\plugins\\config\\\n" > release_artifacts/shared/INSTALL.txt
-          
+          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\\\Notepad++\\\\plugins\\\\nppColdFusion\\\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml to:\n   %%AppData%%\\\\Notepad++\\\\plugins\\\\config\\\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\\\plugins\\\\nppColdFusion\\\\\n  Copy nppColdFusion.xml to <Notepad++>\\\\plugins\\\\config\\\\\n" > release_artifacts/shared/INSTALL.txt
+
           # SHA256SUMS.txt with all files
           cd release_artifacts
-          sha256sum x64/nppColdFusion-x64.dll x86/nppColdFusion-x86.dll shared/nppColdFusion.xml shared/nppColdFusion.db3 > shared/SHA256SUMS.txt
-          
+          sha256sum x64/nppColdFusion-x64.dll x86/nppColdFusion-x86.dll shared/nppColdFusion.xml > shared/SHA256SUMS.txt
+
           echo "=== Release package structure ==="
           find release_artifacts -type f | sort
           echo ""
@@ -252,7 +246,6 @@ jobs:
             release_artifacts/x64/nppColdFusion-x64.dll
             release_artifacts/x86/nppColdFusion-x86.dll
             release_artifacts/shared/nppColdFusion.xml
-            release_artifacts/shared/nppColdFusion.db3
             release_artifacts/shared/INSTALL.txt
             release_artifacts/shared/SHA256SUMS.txt
         env:
