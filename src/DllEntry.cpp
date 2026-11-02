@@ -119,7 +119,7 @@ extern "C" __declspec(dllexport) Lexilla::LexerFactoryFunction SCI_METHOD GetLex
 }
 
 ///extern "C" DLLAPI inline ILexer5 * WINAPI CreateLexer(const char* name)
-extern "C" __declspec(dllexport) inline Scintilla::ILexer5 * WINAPI CreateLexer(const char* name)
+extern "C" __declspec(dllexport) Scintilla::ILexer5 * WINAPI CreateLexer(const char* name)
 {
 	return nppColdFusionNS::LexerColdFusion::CreateLexer(name);
 }
