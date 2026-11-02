@@ -53,7 +53,7 @@ jobs:
       - name: Build x64
         run: |
           msbuild "vs.proj/nppColdFusion.vcxproj" `
-            /p:Configuration="Release" `
+            /p:Configuration="Unicode Release" `
             /p:Platform="x64" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
@@ -141,7 +141,7 @@ jobs:
       - name: Build Win32 (project only, not solution)
         run: |
           msbuild "vs.proj/nppColdFusion.vcxproj" `
-            /p:Configuration="Release" `
+            /p:Configuration="Unicode Release" `
             /p:Platform="Win32" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
