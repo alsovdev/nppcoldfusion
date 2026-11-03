@@ -67,8 +67,6 @@ public:
 public:
 	char * name;
 	cfattribute attributes[10];
-	//bool parameterrequired[10];
-	//cftypes returntype;
 };
 */
 class cffunction

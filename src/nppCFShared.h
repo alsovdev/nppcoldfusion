@@ -185,9 +185,6 @@ namespace nppColdFusionNS
 
         bool unregisterLexer(unsigned int const& lexID, unsigned int const& docID);
 
-        // void setDB(char* dbfile);  // REMOVED - no SQLite
-        // void cleanupDB();          // REMOVED - no SQLite
-
     protected:
         nppCFShared() {}
         nppCFShared(const nppCFShared&);

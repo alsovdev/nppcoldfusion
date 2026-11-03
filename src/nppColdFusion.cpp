@@ -767,8 +767,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 										newArgument.pos = sc.currentPos + a;
 										newArgument.setName(word);
 										argumentsNew.Set(sc.currentPos + a, newArgument);
-										//word = new char[100];
-										wordpos = 0;
+																				wordpos = 0;
 									}
 
 									if (ch == '=') {
@@ -800,8 +799,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								default:
 									if (prevch == ' ' && ch != ' ') {
 										// new word
-										//word = new char[100];
-										wordpos = 0;
+																				wordpos = 0;
 									}
 									if (ch != ' ') {
 										word[wordpos++] = ch;
@@ -832,8 +830,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							newFunc.pos = 0;
 							const bool argumentsChanged = currentCFFunction.arguments.Merge(argumentsNew, sc.currentPos);
 							const bool localsChanged = currentCFFunction.locals.Merge(localsNew, sc.currentPos);
-							///const bool bracketsChanged = currentCFFunction.bracketDepths.Merge(bracketDepthsNew, sc.currentPos);
-							if (localsChanged) {
+														if (localsChanged) {
 								currentCFFunction.dirtyLocals = true;
 							}
 							if (argumentsChanged) {
@@ -842,8 +839,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							cfUserFunctionsNew.Set(currentCFFunction.pos, currentCFFunction);
 							const bool cfUserFunctionsChanged = cfUserFunctions.Merge(cfUserFunctionsNew, sc.currentPos);
 							if (argumentsChanged || localsChanged || cfUserFunctionsChanged) {
-								//	styler.ChangeLexerState(startPos, sc.currentPos);
-							}
+															}
 							cfUserFunctionsNew.Set(sc.currentPos, newFunc);
 							currentCFFunction = newFunc;
 							argumentsNew = PublicSparseState<CFBaseType>();
@@ -914,8 +910,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0) || strcmp(s, "function") == 0) {
 										
 										/* Read Ahead to get name */
-										///bool inName = false;
-										int j = 0;
+																				int j = 0;
 										char sName[100];
 										for (int b = 2; b < max; b++) {
 											int ch = styler.SafeGetCharAt(sc.currentPos + b, '\0');
@@ -1163,8 +1158,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								cfUserFunctionsNew.Set(currentCFFunction.pos, currentCFFunction);
 								const bool cfUserFunctionsChanged = cfUserFunctions.Merge(cfUserFunctionsNew, sc.currentPos);
 								if (argumentsChanged || localsChanged || cfUserFunctionsChanged) {
-									//	styler.ChangeLexerState(startPos, sc.currentPos);
-								}
+																	}
 							}
 							cfUserFunctionsNew.Set(sc.currentPos, newFunc);
 							currentCFFunction = newFunc;
@@ -1187,11 +1181,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					}
 					else if (jsscriptcheck && scriptcheck && cfs->htmlNS->isTag(paddedText) && !inCFQuery) {
 						if (!status.tagClosing) {
-							//SparseState<std::string> rawSTNew(sc.currentPos);
-
+							
 							htmlTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)), s);
-							//const bool rawStringsChanged = htmlTags.Merge(rawSTNew, sc.currentPos + strnlen_s( s, sizeof( s ) ));
-						}
+													}
 						strcpy_s(status.currentHTMLTag.data(), status.currentHTMLTag.size(), s);
 						if (dostyling) {
 							if (!inJSBlock) {
@@ -1305,8 +1297,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									newArgument.pos = sc.currentPos;
 									newArgument.setName(sName);
 									argumentsNew.Set(sc.currentPos, newArgument);
-									//SparseState<CFBaseType>::stateVector argumentStates = currentCFFunction.arguments.getStates();
-								}
+																	}
 							}
 						}
 
@@ -1323,8 +1314,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					break;
 				}
 			}
-			//int i = 0;
-		}
+					}
 
 		if (sc.Match('>') && (sc.state == sID::CF_TAG || sc.state == sID::_DEFAULT || sc.state == sID::_TAG)) {
 			//if (/*&&*/ !status.inCFVal && !status.inSingleString  && !( status.inDoubleString && !status.inDoubleStringBeforeCFSet  /* && status.currentCFTag == '\0'*/ ) ) {
@@ -1348,8 +1338,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			if (state == sID::CF_TAG || (status.tagClosing && state == sID::_DEFAULT && strcmp(status.currentCFTag.data(), "cfscript") == 0)) {
 
 					std::string currentTag = coldFusionTags.ValueAt(sc.currentPos);
-					//SparseState<std::string> rawSTNew(sc.currentPos);
-
+					
 					auto j = strnlen_s(status.currentCFTag.data(), status.currentCFTag.size());
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
@@ -1377,25 +1366,18 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						if (status.tagOpening) {
 							inCFQuery = true;
 							cfQueryBlocksNew.Set(sc.currentPos, true);
-							//linestate = styler.GetLineState( currentLine );
-							//blocks[cfquery]->updatelinestate( linestate );
-							sc.ForwardSetState(sID::_DEFAULT);
+																					sc.ForwardSetState(sID::_DEFAULT);
 						}
 						else if (status.tagClosing && inCFQuery) {
 							inCFQuery = false;
 							cfQueryBlocksNew.Set(sc.currentPos, false);
-							//blocks[cfquery]->inBlock = 0;
-							//linestate = styler.GetLineState( currentLine );
-							//blocks[cfquery]->updatelinestate( linestate );
-							sc.ForwardSetState(status.stateHistory[status.lastState--]);
+																												sc.ForwardSetState(status.stateHistory[status.lastState--]);
 						}
 					}
 					else if ((strcmp(status.currentCFTag.data(), "cfoutput") == 0)) {
 						if (status.tagOpening) {
 							cfOutputDepth++;
-							//linestate = styler.GetLineState( currentLine );
-							//linestate = changestoredbitvalue( linestate, cfoutputdepth );
-							cfOutputDepthsNew.Set(sc.currentPos, cfOutputDepth);
+																					cfOutputDepthsNew.Set(sc.currentPos, cfOutputDepth);
 						}
 						else if (status.tagClosing && cfOutputDepth > 0) {
 							cfOutputDepth--;
@@ -1458,8 +1440,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						if (status.tagOpening) {
 							inJSBlock = true;
 							jsBlocksNew.Set(sc.currentPos, true);
-							//linestate = styler.GetLineState( currentLine );
-							//blocks[js]->updatelinestate( linestate );
+														//blocks[js]->updatelinestate( linestate );
 							sc.ForwardSetState(sID::_DEFAULT);
 						}
 						else if (status.tagClosing && inJSBlock) {
@@ -1554,8 +1535,7 @@ Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
 const char* SCI_METHOD LexerColdFusion::PropertyGet(const char* key) { return "";} ///
 
 CFUserFunction::CFUserFunction(unsigned int ipos) {
-	//arguments.states.empty();
-	pos = ipos;
+		pos = ipos;
 }
 
 CFUserFunction::CFUserFunction() {
