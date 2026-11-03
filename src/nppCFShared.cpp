@@ -230,11 +230,19 @@ nppCFShared* nppCFShared::Instance() {
     void BlockType::updateWordList(Lexilla::WordList& wl) {
         keywords.reset(new Lexilla::WordList);
         // Copy words from the provided WordList
-        for (size_t i = 0; i < wl.Length(); ++i) {
-            const char* word = wl[i];
+        // Build a space-separated string from the source WordList
+        std::string wordString;
+        for (int i = 0; i < wl.Length(); ++i) {
+            const char* word = wl.WordAt(i);
             if (word && word[0]) {
-                keywords->Add(word);
+                if (!wordString.empty()) {
+                    wordString += ' ';
+                }
+                wordString += word;
             }
+        }
+        if (!wordString.empty()) {
+            keywords->Set(wordString.c_str());
         }
     }
 
