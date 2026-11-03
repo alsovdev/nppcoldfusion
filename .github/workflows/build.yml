@@ -165,7 +165,7 @@ jobs:
   test:
     name: Run Tests (x64)
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     needs: [build-windows, build-win32]
     if: true
 
@@ -188,6 +188,16 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+
+      - name: Build Main Plugin (Debug, x64) - for test linking
+        run: |
+          msbuild "${{ env.PROJECT_FILE }}" `
+            /p:Configuration="Unicode Debug" `
+            /p:Platform="x64" `
+            /p:PlatformToolset=v143 `
+            /p:WindowsTargetPlatformVersion=10.0 `
+            /verbosity:minimal `
+            /maxcpucount
 
       - name: Build Tests (x64, Debug)
         run: |
