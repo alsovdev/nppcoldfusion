@@ -31,7 +31,7 @@ class CurrentCallTip
 {
 public:
 	int start;
-	std::array<int, Constants::TIP_DELIMITERS_SIZE> tipdelimiters{};
+	std::array<int, nppColdFusionNS::Constants::TIP_DELIMITERS_SIZE> tipdelimiters{};
 	char * text;
 };
 

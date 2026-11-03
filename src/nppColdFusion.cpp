@@ -1232,7 +1232,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 
 					s[i++] = '\0';
 
-					if (cfs->htmlNS->tagHasAttribute(status.currentHTMLTag, s)) {
+					if (cfs->htmlNS->tagHasAttribute(status.currentHTMLTag.data(), s)) {
 						sc.SetState(sID::_ATTRIBUTE);
 						sc.Forward(strnlen_s(s, 100));
 						sc.ForwardSetState(sID::_TAG);
@@ -1264,9 +1264,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 
 					s[i++] = '\0';
 
-					if (cfs->coldfusionNS->tagHasAttribute(status.currentCFTag, s)) {
+					if (cfs->coldfusionNS->tagHasAttribute(status.currentCFTag.data(), s)) {
 
-						if ((strcmp(status.currentCFTag, "cffunction") == 0 || strcmp(status.currentCFTag, "cfargument") == 0) && strcmp(s, "name") == 0) {
+						if ((strcmp(status.currentCFTag.data(), "cffunction") == 0 || strcmp(status.currentCFTag.data(), "cfargument") == 0) && strcmp(s, "name") == 0) {
 							/* Read Ahead to get name */
 							bool inName = false;
 							int j = 0;
@@ -1292,7 +1292,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							if (j > 0) {
 								sName[--j] = '\0';
 
-								if (strcmp(status.currentCFTag, "cffunction") == 0) {
+								if (strcmp(status.currentCFTag.data(), "cffunction") == 0) {
 									currentCFFunction.setName(sName);
 									currentCFFunction.pos = sc.currentPos;
 									currentCFFunction.arguments.setPositionFirst(sc.currentPos);
@@ -1353,7 +1353,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					auto j = strnlen_s(status.currentCFTag.data(), status.currentCFTag.size());
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
-						if (CF_SINGLE_TAGS.find(status.currentCFTag) == CF_SINGLE_TAGS.end()) {
+						if (CF_SINGLE_TAGS.find(std::string_view(status.currentCFTag.data())) == CF_SINGLE_TAGS.end()) {
 					if (status.tagOpening) {
 								if (!dostyling) {
 									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
@@ -1435,7 +1435,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			else if (state == sID::_TAG) {
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
 				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
-				if (HTML_SINGLE_TAGS.find(status.currentHTMLTag) == HTML_SINGLE_TAGS.end()) {
+				if (HTML_SINGLE_TAGS.find(std::string_view(status.currentHTMLTag.data())) == HTML_SINGLE_TAGS.end()) {
 							if (status.tagOpening) {
 								if (!dostyling) {
 									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
@@ -1470,7 +1470,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							sc.ForwardSetState(status.stateHistory[status.lastState--]);
 						}
 					}
-					else 	if ((strcmp(status.currentHTMLTag, "style") == 0)) {
+					else 	if ((strcmp(status.currentHTMLTag.data(), "style") == 0)) {
 						if (status.tagOpening) {
 							inCSSBlock = true;
 							cssBlocksNew.Set(sc.currentPos, true);
