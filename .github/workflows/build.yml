@@ -210,6 +210,18 @@ jobs:
             /verbosity:minimal `
             /maxcpucount
 
+      - name: Copy test fixtures to output directory
+        run: |
+          $fixturesSrc = "tests\\fixtures"
+          $fixturesDst = "vs.proj\\x64\\Debug\\Tests\\fixtures"
+          if (Test-Path $fixturesSrc) {
+            Copy-Item -Path $fixturesSrc -Destination $fixturesDst -Recurse -Force
+            Write-Host "Copied fixtures to $fixturesDst"
+            Get-ChildItem $fixturesDst
+          } else {
+            Write-Warning "Fixtures source not found at $fixturesSrc"
+          }
+
       - name: Run Tests (x64)
         run: |
           $testExe = "vs.proj\\x64\\Debug\\Tests\\nppColdFusionTests.exe"

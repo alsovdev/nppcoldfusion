@@ -173,6 +173,7 @@
     <ClCompile Include="test_lexer.cpp" />
     <ClCompile Include="test_functions.cpp" />
     <ClCompile Include="test_main.cpp" />
+    <ClCompile Include="test_integration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="test_common.h" />
