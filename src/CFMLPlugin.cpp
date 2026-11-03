@@ -838,7 +838,7 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
 	const char* expanded;
 
-	expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false); cfs.integrateWithFingerText, false).data();
+expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false).data();
 
 	if (expanded != 0 && strlen(expanded) > 1) {
 		char* texttoinsert = new char[strlen(expanded) + strlen(text) + 2];
