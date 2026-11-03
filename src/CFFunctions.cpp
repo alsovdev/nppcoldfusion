@@ -24,8 +24,9 @@ cfparameter::~cfparameter() {};
 cffunction::cffunction()
 {
 	name = "notafunction";
-	for ( int a = 0; a <=10; a++ ) {
+	for ( int a = 0; a < 10; a++ ) {
 		parameters[a] = cfparameter();
+		parameterrequired[a] = false;
 	}
 };
 cffunction::~cffunction() {};
