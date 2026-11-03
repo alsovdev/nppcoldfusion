@@ -229,7 +229,13 @@ nppCFShared* nppCFShared::Instance() {
 
     void BlockType::updateWordList(Lexilla::WordList& wl) {
         keywords.reset(new Lexilla::WordList);
-        // Copy from shared wordlist if needed
+        // Copy words from the provided WordList
+        for (size_t i = 0; i < wl.Length(); ++i) {
+            const char* word = wl[i];
+            if (word && word[0]) {
+                keywords->Add(word);
+            }
+        }
     }
 
     // CSSBlock
