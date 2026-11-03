@@ -1101,14 +1101,14 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				paddedText[i] = ' ';
 
 				if (status.tagOpening && status.currentHTMLTag[0] != '\0') {
-					status.preCFTagisHTMLTagOpening = true;
+					status.preCFTagIsHTMLTagOpening = true;
 				}
 
 				status.tagOpening = true;
 				status.tagClosing = false;
 				status.currentCFTag.fill(0);
 
-				if (!status.preCFTagisHTMLTagOpening) {
+				if (!status.preCFTagIsHTMLTagOpening) {
 					status.currentHTMLTag.fill(0);
 				}
 
@@ -1347,18 +1347,18 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 										if (!dostyling) {
 											auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
 											// Bounds check: prevent buffer overflow
-											if (status.currentopenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
-												status.openTagsPositions[status.currentopenTag] = curlen;
+											if (status.currentOpenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
+												status.openTagsPositions[status.currentOpenTag] = curlen;
 												strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentCFTag.data());
-												status.currentopenTag++;
+												status.currentOpenTag++;
 											}
 										}
 									}
 					if (status.tagClosing) {
 						if (!dostyling) {
-							if (status.currentopenTag > 0) {
-								status.currentopenTag--;
-								status.openTagsBuffer[status.openTagsPositions[status.currentopenTag]] = '\0';
+							if (status.currentOpenTag > 0) {
+								status.currentOpenTag--;
+								status.openTagsBuffer[status.openTagsPositions[status.currentOpenTag]] = '\0';
 							}
 						}
 					}
@@ -1406,7 +1406,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					}
 				}
 				if (status.tagClosing) {
-					status.tagOpening = status.preCFTagisHTMLTagOpening;
+					status.tagOpening = status.preCFTagIsHTMLTagOpening;
 					status.currentCFTag[0] = '\0';
 					status.tagClosing = false;
 				}
@@ -1425,18 +1425,18 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									if (!dostyling) {
 										auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
 										// Bounds check: prevent buffer overflow
-										if (status.currentopenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
-											status.openTagsPositions[status.currentopenTag] = curlen;
+										if (status.currentOpenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
+											status.openTagsPositions[status.currentOpenTag] = curlen;
 											strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentHTMLTag.data());
-											status.currentopenTag++;
+											status.currentOpenTag++;
 										}
 									}
 								}
 					if (status.tagClosing && !status.tagOpening) {
 						if (!dostyling) {
-							status.currentopenTag--;
-							if (status.currentopenTag > 0) {
-								status.openTagsBuffer[status.openTagsPositions[status.currentopenTag]] = '\0';
+							status.currentOpenTag--;
+							if (status.currentOpenTag > 0) {
+								status.openTagsBuffer[status.openTagsPositions[status.currentOpenTag]] = '\0';
 							}
 						}
 					}

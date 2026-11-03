@@ -36,20 +36,20 @@ namespace nppColdFusionNS
         bool tagOpening;
         std::array<int, Constants::MAX_STATE_HISTORY> stateHistory{};
         int lastState;
-        bool preCFTagisHTMLTagOpening;
+        bool preCFTagIsHTMLTagOpening;
         std::array<char, Constants::MAX_TAG_LENGTH> currentCFTag{};
         std::array<char, Constants::MAX_TAG_LENGTH> currentHTMLTag{};
         std::array<char, Constants::OPEN_TAGS_BUFFER_SIZE> openTagsBuffer{};
         std::array<int, Constants::MAX_OPEN_TAGS_POSITIONS> openTagsPositions{};
-        int currentopenTag;
+        int currentOpenTag;
 
         Status() {
             tagClosing = false;
             tagOpening = false;
             stateHistory[0] = 0;
             lastState = 0;
-            preCFTagisHTMLTagOpening = false;
-            currentopenTag = 0;
+            preCFTagIsHTMLTagOpening = false;
+            currentOpenTag = 0;
         }
         ~Status() {}
     };

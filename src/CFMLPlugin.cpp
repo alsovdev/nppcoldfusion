@@ -660,9 +660,9 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					wordtooffer[0] = '\0';
 					Status statustag = lexer->Colourise_Doc(currentpos - pos, pos, sciMsgr.getStyleAt(currentpos - pos), astyler, false);
 
-					if (statustag.currentopenTag > 0) {
+					if (statustag.currentOpenTag > 0) {
 								// Bounds check
-								size_t idx = statustag.currentopenTag - 1;
+								size_t idx = statustag.currentOpenTag - 1;
 								if (idx < statustag.openTagsPositions.size()) {
 									size_t pos = statustag.openTagsPositions[idx];
 									if (pos < statustag.openTagsBuffer.size()) {
@@ -696,11 +696,11 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						if (foundtag == true) {
 							Status statustag = lexer->Colourise_Doc(posstop, (tagendpos + 1) - posstop, sciMsgr.getStyleAt(posstop), astyler, false);
 
-							if (statustag.currentopenTag > 0) {
-											if (status.currentopenTag < 0) {
-												statustag.currentopenTag += status.currentopenTag;
+							if (statustag.currentOpenTag > 0) {
+											if (status.currentOpenTag < 0) {
+												statustag.currentOpenTag += status.currentOpenTag;
 												// Bounds check
-												size_t idx = statustag.currentopenTag;
+												size_t idx = statustag.currentOpenTag;
 												if (idx < statustag.openTagsPositions.size()) {
 													size_t pos = statustag.openTagsPositions[idx];
 													if (pos < statustag.openTagsBuffer.size()) {
@@ -708,9 +708,9 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 													}
 												}
 											}
-											if (statustag.currentopenTag > 0) {
+											if (statustag.currentOpenTag > 0) {
 												// Bounds check
-												size_t idx = statustag.currentopenTag - 1;
+												size_t idx = statustag.currentOpenTag - 1;
 												if (idx < statustag.openTagsPositions.size()) {
 													size_t pos = statustag.openTagsPositions[idx];
 													if (pos < statustag.openTagsBuffer.size()) {
