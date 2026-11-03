@@ -163,11 +163,11 @@ jobs:
           retention-days: 30
 
   test:
-    name: Run Tests (x64) - DISABLED
+    name: Run Tests (x64)
     runs-on: windows-latest
     timeout-minutes: 20
     needs: [build-windows, build-win32]
-    if: false
+    if: true
 
     steps:
       - name: Checkout repository
@@ -194,18 +194,18 @@ jobs:
         with:
           nuget-version: '6.x'
 
-      - name: Download and install GoogleTest
+      - name: Install GoogleTest via NuGet
         run: |
-          $url = "https://github.com/google/googletest/archive/refs/tags/v1.12.1.zip"
-          $zipPath = "$env:RUNNER_TEMP\googletest.zip"
-          Invoke-WebRequest -Uri $url -OutFile $zipPath
-          Expand-Archive -Path $zipPath -DestinationPath packages -Force
-          # Rename extracted folder from googletest-1.12.1 to googletest.1.12.1 (dot instead of dash)
-          if (Test-Path "packages\googletest-1.12.1") {
-            Move-Item "packages\googletest-1.12.1" "packages\googletest.1.12.1" -Force
+          nuget install googletest -Version 1.12.1 -OutputDirectory packages -ExcludeVersion
+          # NuGet package extracts to packages/googletest.1.12.1/build/native/include
+          # but our project expects packages/googletest.1.12.1/include
+          # Create symlink or copy for compatibility
+          if (Test-Path "packages\googletest.1.12.1\build\native\include") {
+            New-Item -ItemType Directory -Force -Path "packages\googletest.1.12.1\include" | Out-Null
+            Copy-Item "packages\googletest.1.12.1\build\native\include\*" "packages\googletest.1.12.1\include\" -Recurse -Force
           }
 
-      - name: Restore NuGet packages (includes GoogleTest)
+      - name: Restore NuGet packages
         run: nuget restore "${{ env.SOLUTION_FILE }}"
 
       - name: Build Tests (x64)
