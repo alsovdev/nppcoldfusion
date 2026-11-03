@@ -440,14 +440,14 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 								//strncpy_s( tagName,status.currentHTMLTag, 100 );
 								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_blue);
 								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-								expanded = cfs.htmlNS->listTagAttributes(tagName, true).data();
+								expanded = cfs.htmlNS->listTagAttributes(tagName, true);
 								//Sleep(100);
 							}
 							else {
 								//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
 								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_red);
 								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-								expanded = cfs.coldfusionNS->listTagAttributes(tagName, true).data();
+								expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
 								//Sleep(10);
 							}
 					if (expanded != 0 && strlen(expanded) > 1) {
@@ -837,7 +837,7 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
 	const char* expanded;
 
-expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false).data();
+expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);
 
 	if (expanded != 0 && strlen(expanded) > 1) {
 		// Use std::string to avoid manual memory management
