@@ -442,10 +442,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	std::shared_ptr<BlockType> jsblock = std::make_shared<JSBlock>();
 	std::shared_ptr<BlockType> cfscriptblock = std::make_shared<CFScriptBlock>();
 
-	static const int cfquery = 0;
-	static const int cfscript = 1;
-	static const int js = 2;
-	static const int css = 3;
+	using BlockId = nppCFShared::BlockTypeId;
 
 	std::vector<std::shared_ptr<BlockType>> blocks;
 
@@ -892,10 +889,10 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						s[a] = '\0';
 						bool handledkeyword = false;
 						// temp override
-						blocks[cfscript]->inBlock = inCFScript;
-						blocks[cfquery]->inBlock = inCFQuery;
-						blocks[js]->inBlock = inJSBlock;
-						blocks[css]->inBlock = inCSSBlock;
+						blocks[static_cast<size_t>(BlockId::CFScript)]->inBlock = inCFScript;
+						blocks[static_cast<size_t>(BlockId::CFQuery)]->inBlock = inCFQuery;
+						blocks[static_cast<size_t>(BlockId::JS)]->inBlock = inJSBlock;
+						blocks[static_cast<size_t>(BlockId::CSS)]->inBlock = inCSSBlock;
 						for (auto& thisblock : blocks) {
 							if (thisblock->inBlock &&
 								thisblock->validateforkeyword(sc, inCFSet)) {
@@ -999,7 +996,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							}
 						}
 						if ((inCFSet) &&
-							blocks[cfscript]->validateforkeyword(sc)) {
+							blocks[static_cast<size_t>(BlockId::CFScript)]->validateforkeyword(sc)) {
 
 							if (strcmp(s, "var") == 0) {
 								int statebefore = sc.state;
@@ -1043,7 +1040,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								handledkeyword = true;
 								break;
 							}
-							else if (blocks[cfscript]->hasOperator(s)) {
+							else if (blocks[static_cast<size_t>(BlockId::CFScript)]->hasOperator(s)) {
 								int statebefore = sc.state;
 								if (dostyling) {
 									sc.SetState(sID::_OPERATOR);
@@ -1055,11 +1052,11 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								}
 								break;
 							}
-							else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == blocks[cfscript]->getKeywordState()) ||
-								(blocks[cfscript]->hasKeyword(s)))) {
+							else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState()) ||
+								(blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)))) {
 								int statebefore = sc.state;
 								if (dostyling) {
-									sc.SetState(blocks[cfscript]->getKeywordState());
+									sc.SetState(blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState());
 								}
 								handledkeyword = true;
 								sc.Forward(a - 1);
@@ -1446,7 +1443,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						if (status.tagOpening) {
 							inJSBlock = true;
 							jsBlocksNew.Set(sc.currentPos, true);
-														//blocks[js]->updatelinestate( linestate );
+														//blocks[static_cast<size_t>(BlockId::JS)]->updatelinestate( linestate );
 							sc.ForwardSetState(sID::_DEFAULT);
 						}
 						else if (status.tagClosing && inJSBlock) {
@@ -1463,7 +1460,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							cssBlocksNew.Set(sc.currentPos, true);
 							sc.ForwardSetState(sID::_DEFAULT);
 						}
-						else if (status.tagClosing && blocks[css]->inBlock) {
+						else if (status.tagClosing && blocks[static_cast<size_t>(BlockId::CSS)]->inBlock) {
 							inCSSBlock = false;
 							cssBlocksNew.Set(sc.currentPos, false);
 							sc.ForwardSetState(status.stateHistory[status.lastState--]);

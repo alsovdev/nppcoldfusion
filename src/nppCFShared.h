@@ -54,10 +54,12 @@ namespace nppColdFusionNS
         ~Status() {}
     };
 
-    static const int B_CFQUERY = 0;
-    static const int B_CFSCRIPT = 1;
-    static const int B_JS = 2;
-    static const int B_CSS = 3;
+    enum class BlockTypeId {
+        CFQuery = 0,
+        CFScript = 1,
+        JS = 2,
+        CSS = 3
+    };
 
     class DBNamespace
     {
