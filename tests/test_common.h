@@ -17,7 +17,7 @@ namespace nppColdFusionNS {
 }
 
 // Helper to check if string contains substring (case-insensitive)
-bool ContainsIgnoreCase(std::string_view haystack, std::string_view needle) {
+inline bool ContainsIgnoreCase(std::string_view haystack, std::string_view needle) {
     if (needle.empty()) return true;
     if (haystack.size() < needle.size()) return false;
     
