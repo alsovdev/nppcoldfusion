@@ -14,6 +14,7 @@ on:
 
 env:
   SOLUTION_FILE: vs.proj/nppColdFusion.sln
+  PROJECT_FILE: vs.proj/nppColdFusion.vcxproj
   CONFIGURATION: Release
 
 jobs:
@@ -42,21 +43,10 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-        with:
-          nuget-version: '6.x'
-
-      - name: Install GoogleTest (needed for test project in solution)
-        run: nuget install googletest -Version 1.12.1 -OutputDirectory packages
-
-      - name: Restore NuGet packages
-        run: nuget restore "${{ env.SOLUTION_FILE }}"
-
-      - name: Build x64
+      - name: Build x64 (project directly, not solution)
         run: |
-          msbuild "${{ env.SOLUTION_FILE }}" `
-            /p:Configuration="Release" `
+          msbuild "${{ env.PROJECT_FILE }}" `
+            /p:Configuration="Unicode Release" `
             /p:Platform="x64" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
@@ -65,7 +55,7 @@ jobs:
 
       - name: Verify x64 build outputs
         run: |
-          $dllPath = "vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll"
+          $dllPath = "vs.proj\\x64\\Unicode Release\\nppColdFusion.dll"
           $xmlPath = "src\\nppColdFusion.xml"
 
           if (-not (Test-Path $dllPath)) { Write-Error "DLL not found at $dllPath"; exit 1 }
@@ -83,7 +73,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path $sharedDir | Out-Null
 
           # x64 DLL
-          Copy-Item (Join-Path $ws "vs.proj\\x64\\Unicode ${{ env.CONFIGURATION }}\\nppColdFusion.dll") (Join-Path $x64Dir "nppColdFusion.dll")
+          Copy-Item (Join-Path $ws "vs.proj\\x64\\Unicode Release\\nppColdFusion.dll") (Join-Path $x64Dir "nppColdFusion.dll")
 
           # Shared assets (xml only - db3 removed, legacy)
           Copy-Item (Join-Path $ws "src\\nppColdFusion.xml") (Join-Path $sharedDir "nppColdFusion.xml")
@@ -132,21 +122,10 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-        with:
-          nuget-version: '6.x'
-
-      - name: Install GoogleTest (needed for test project in solution)
-        run: nuget install googletest -Version 1.12.1 -OutputDirectory packages
-
-      - name: Restore NuGet packages
-        run: nuget restore "${{ env.SOLUTION_FILE }}"
-
-      - name: Build Win32 (project only, not solution)
+      - name: Build Win32 (project directly, not solution)
         run: |
-          msbuild "${{ env.SOLUTION_FILE }}" `
-            /p:Configuration="Release" `
+          msbuild "${{ env.PROJECT_FILE }}" `
+            /p:Configuration="Unicode Release" `
             /p:Platform="Win32" `
             /p:PlatformToolset=v143 `
             /p:WindowsTargetPlatformVersion=10.0 `
@@ -280,7 +259,7 @@ jobs:
           cp artifacts/shared/nppColdFusion.xml release_artifacts/shared/
 
           # INSTALL.txt (generic for both architectures)
-          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\\\Notepad++\\\\plugins\\\\nppColdFusion\\\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml to:\n   %%AppData%%\\\\Notepad++\\\\plugins\\\\config\\\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\\\plugins\\\\nppColdFusion\\\\\n  Copy nppColdFusion.xml to <Notepad++>\\\\plugins\\\\config\\\\\n" > release_artifacts/shared/INSTALL.txt
+          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml to:\n   %AppData%\\Notepad++\\plugins\\config\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\\n  Copy nppColdFusion.xml to <Notepad++>\\plugins\\config\\\n" > release_artifacts/shared/INSTALL.txt
 
           # SHA256SUMS.txt with all files
           cd release_artifacts
