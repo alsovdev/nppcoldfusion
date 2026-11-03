@@ -18,22 +18,71 @@
 
 
 #include "nppColdFusion.h"
-#include "DllEntry.h" ///*** 
+#include "DllEntry.h"
+#include <unordered_set>
+#include <string_view> ///*** 
 namespace sID = nppColdFusionNS::Styles;		//  All of the style state codes.
 namespace lex = nppColdFusionNS;				//  This lexer's namespace.
 
 using namespace nppColdFusionNS;
 const Lexilla::CharacterSet setTagContinue(Lexilla::CharacterSet::setAlphaNum, ".-_:!#[", 0x80, true);
 
-static const char* nppColdFusionNS::LexerName() {
+// Static tag sets for O(1) lookup instead of strstr
+static const std::unordered_set<std::string_view> CF_SINGLE_TAGS = {
+    "meta", "link", "img", "area", "br", "hr", "input",
+    "cfabort", "cfajaximport", "cfajaxproxy", "cfapplet",
+    "cfapplication", "cfargument", "cfassociate", "cfbreak",
+    "cfcache", "cfcalendar", "cfchartdata", "cfchartseries",
+    "cfcol", "cfcollection", "cfcontent", "cfcontinue",
+    "cfcookie", "cfdbinfo", "cfdirectory", "cfdiv",
+    "cfdump", "cferror", "cfexchangecalendar", "cfexchangeconnection",
+    "cfexchangecontact", "cfexchangefilter", "cfexchangemail",
+    "cfexchangetask", "cfexit", "cffeed", "cffile",
+    "cfflush", "cfftp", "cfgridcolumn", "cfgridrow",
+    "cfgridupdate", "cfheader", "cfhtmlhead", "cfhttp",
+    "cfhttpparam", "cfimage", "cfimport", "cfinclude",
+    "cfindex", "cfinput", "cfinsert", "cfinvoke",
+    "cfinvokeargument", "cfldap", "cflocation", "cflog",
+    "cfloginuser", "cflogout", "cfmailparam", "cfmodule",
+    "cfntauthenticate", "cfobject", "cfobjectcache", "cfparam",
+    "cfpdf", "cfpdfformparam", "cfpdfparam", "cfpop",
+    "cfpresenter", "cfprint", "cfprocessingdirective", "cfprocparam",
+    "cfprocresult", "cfproperty", "cfqueryparam", "cfregistry",
+    "cfreport", "cfreportparam", "cfrethrow", "cfreturn",
+    "cfschedule", "cfsearch", "cfset", "cfsetting",
+    "cfsilent", "cfslider", "cfsprydataset", "cfstoredproc",
+    "cftextinput", "cfthrow", "cftrace", "cftreeitem",
+    "cfupdate", "cfwddx", "cfzip", "cfzipparam",
+    "cfwebsocket", "cfclient", "cfpdfform", "cfpdfformparam", "cfpdfsubform"
+};
+
+static const std::unordered_set<std::string_view> HTML_SINGLE_TAGS = {
+    "meta", "link", "img", "area", "br", "hr", "input"
+};
+
+static const std::unordered_set<std::string_view> CF_ELSE_TAGS = {
+    "cfelse", "cfelseif"
+};
+
+static const std::unordered_set<std::string_view> CF_IF_ELSE_TAGS = {
+    "cfif", "cfelse", "cfelseif"
+};
+
+
+namespace {
+    const std::string LEXER_NAME_UTF8 = []() {
 #ifdef UNICODE
-	// Convert wide string to UTF-8 for Lexilla API
-	static char utf8Name[64];
-	wcstombs_s(nullptr, utf8Name, sizeof(utf8Name), nppColdFusionNS::LEXER_NAME, _TRUNCATE);
-	return utf8Name;
+        char buffer[64];
+        wcstombs_s(nullptr, buffer, sizeof(buffer), nppColdFusionNS::LEXER_NAME, _TRUNCATE);
+        return std::string(buffer);
 #else
-	return nppColdFusionNS::LEXER_NAME;
+        return std::string(nppColdFusionNS::LEXER_NAME);
 #endif
+    }();
+}
+
+static const char* nppColdFusionNS::LexerName() {
+    return LEXER_NAME_UTF8.c_str();
 }
 
 LexerColdFusion::LexerColdFusion() {
@@ -254,15 +303,15 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 					tagCF[tagCFpos] = ' ';
 					tagCF[tagCFpos + 1] = '\0';
 					nppCFShared& ref = *nppCFShared::Instance();
-					if (chPrev != '/' && strstr("meta link img area br hr input cfabort cfajaximport cfajaxproxy cfapplet cfapplication cfargument cfassociate cfbreak cfcache cfcalendar cfchartdata cfchartseries cfcol cfcollection cfcontent cfcontinue cfcookie cfdbinfo cfdirectory cfdiv cfdump cferror cfexchangecalendar cfexchangeconnection cfexchangecontact cfexchangefilter cfexchangemail cfexchangetask cfexit cffeed cffile cfflush cfftp cfgridcolumn cfgridrow cfgridupdate cfheader cfhtmlhead cfhttp cfhttpparam cfimage cfimport cfinclude cfindex cfinput cfinsert cfinvoke cfinvokeargument cfldap cflocation cflog cfloginuser cflogout cfmailparam cfmodule cfntauthenticate cfobject cfobjectcache cfparam cfpdf cfpdfformparam cfpdfparam cfpop cfpresenter cfprint cfprocessingdirective cfprocparam cfprocresult cfproperty cfqueryparam cfregistry cfreport cfreportparam cfrethrow cfreturn cfschedule cfsearch cfset cfsetting cfsilent cfslider cfsprydataset cfstoredproc cftextinput cfthrow cftrace cftreeitem cfupdate cfwddx cfzip cfzipparam cfwebsocket cfclient cfpdfform cfpdfformparam cfpdfsubform", tagCF) == NULL && !cfs->coldfusionNS->isCustomTag(tagCF)) {
+					if (chPrev != '/' && !CF_SINGLE_TAGS.contains(tagCF) && !cfs->coldfusionNS->isCustomTag(tagCF)) {
 						if (tagCFClosing) {
 							levelNext--;
 						}
 						else {
-							if (strstr("cfelse cfelseif ", tagCF) != NULL) {
+							if (CF_ELSE_TAGS.contains(tagCF)) {
 								levelNext--;
 							}
-							if (strstr("cfif cfelse cfelseif ", tagCF) != NULL) {
+							if (CF_IF_ELSE_TAGS.contains(tagCF)) {
 								if (levelMinCurrent > levelNext) {
 									levelMinCurrent = levelNext;
 								}
@@ -295,7 +344,7 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 					tagHTMLcomplete = true;
 					tagHTML[tagHTMLpos] = ' ';
 					tagHTML[tagHTMLpos + 1] = '\0';
-					if (chPrev != '/' && strstr("meta link img area br hr input ", tagHTML) == NULL) {
+					if (chPrev != '/' && !HTML_SINGLE_TAGS.contains(tagHTML)) {
 						if (tagHTMLClosing) {
 							levelNext--;
 						}
@@ -1303,7 +1352,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				auto j = strnlen_s(status.currentCFTag, sizeof(status.currentCFTag));
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
-						if (strstr("cfabort cfajaximport cfajaxproxy cfapplet cfapplication cfargument cfassociate cfbreak cfcache cfcalendar cfchartdata cfchartseries cfcol cfcollection cfcontent cfcontinue cfcookie cfdbinfo cfdirectory cfdiv cfdump cfelse cfelseif cferror cfexchangecalendar cfexchangeconnection cfexchangecontact cfexchangefilter cfexchangemail cfexchangetask cfexit cffeed cffile cfflush cfftp cfgridcolumn cfgridrow cfgridupdate cfheader cfhtmlhead cfhttp cfhttpparam cfimage cfimport cfinclude cfindex cfinput cfinsert cfinvoke cfinvokeargument cfldap cflocation cflog cfloginuser cflogout cfmailparam cfmodule cfntauthenticate cfobject cfobjectcache cfparam cfpdf cfpdfformparam cfpdfparam cfpop cfpresenter cfprint cfprocessingdirective cfprocparam cfprocresult cfproperty cfqueryparam cfregistry cfreport cfreportparam cfrethrow cfreturn cfschedule cfsearch cfset cfsetting cfsilent cfslider cfsprydataset cfstoredproc cftextinput cfthrow cftrace cftreeitem cfupdate cfwddx cfzip cfzipparam cfwebsocket cfclient cfpdfform cfpdfformparam cfpdfsubform", status.currentCFTag) == NULL) {
+						if (!CF_SINGLE_TAGS.contains(status.currentCFTag)) {
 					if (status.tagOpening) {
 						if (!dostyling) {
 							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
@@ -1385,7 +1434,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			else if (state == sID::_TAG) {
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
 				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
-				if (strstr("meta link img area br hr input ", status.currentHTMLTag) == NULL) {
+				if (!HTML_SINGLE_TAGS.contains(status.currentHTMLTag)) {
 					if (status.tagOpening) {
 						if (!dostyling) {
 							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
