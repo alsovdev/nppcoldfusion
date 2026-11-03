@@ -268,7 +268,7 @@ jobs:
           cp artifacts/shared/nppColdFusion.xml release_artifacts/shared/
 
           # INSTALL.txt (generic for both architectures)
-          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %ProgramFiles%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml to:\n   %AppData%\\Notepad++\\plugins\\config\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\\n  Copy nppColdFusion.xml to <Notepad++>\\plugins\\config\\\n" > release_artifacts/shared/INSTALL.txt
+          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll (x64 or x86) to that folder\n3. Copy nppColdFusion.xml to:\n   %%AppData%%\\Notepad++\\plugins\\config\\\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll to <Notepad++>\\plugins\\nppColdFusion\\\n  Copy nppColdFusion.xml to <Notepad++>\\plugins\\config\\\n" > release_artifacts/shared/INSTALL.txt
 
           # SHA256SUMS.txt with all files
           cd release_artifacts
