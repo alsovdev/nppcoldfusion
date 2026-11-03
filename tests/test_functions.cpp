@@ -1,17 +1,14 @@
-// test_functions.cpp - Tests for CFFunctions functionality
+// test_functions.cpp - Tests for CFFunctions functionality (Doctest)
 #include "test_common.h"
 #include "../src/CFFunctions.h"
 #include "../src/CFFunctions.cpp"  // Include implementation for testing
 
 // Test CFFunctions parameters array bounds (T8)
-TEST_F(FunctionsTest, CFFunctionsParametersArrayBounds) {
+TEST_CASE("CFFunctions parameters array bounds") {
     // Verify the parameters array size matches the loop bounds
     // HIGH-08: off-by-one in CFFunctions.cpp:615
     // Original: for (int a = 0; a <= 10; a++) - 11 iterations for 10-element array
     // Fixed: for (int a = 0; a < 10; a++) - 10 iterations
-    
-    // The fix should be in CFFunctions.cpp
-    // This test verifies the expected behavior
     
     constexpr int EXPECTED_PARAM_COUNT = 10;
     
@@ -19,29 +16,29 @@ TEST_F(FunctionsTest, CFFunctionsParametersArrayBounds) {
     cffunction func;
     
     // Verify name initialization
-    EXPECT_STREQ(func.name.c_str(), "notafunction");
+    CHECK(strcmp(func.name.c_str(), "notafunction") == 0);
     
     // Verify parameters array has correct size (10)
     // This is a compile-time check - if the array is std::array<cfparameter, 10>
     // or cfparameter parameters[10], the loop should use < 10 not <= 10
     
-    SUCCEED() << "Parameters array bounds verified (loop should use < 10)";
+    CHECK(true); // Verified by code inspection
 }
 
 // Test getfunction returns valid objects (HIGH-07 object slicing check)
-TEST_F(FunctionsTest, GetFunctionNoObjectSlicing) {
+TEST_CASE("GetFunction no object slicing") {
     // Test that getfunction returns proper derived types
     // If cffunction is polymorphic, returning by value causes slicing
     
     cffunction absFunc = getfunction("abs");
-    EXPECT_STREQ(absFunc.name.c_str(), "abs");
+    CHECK(strcmp(absFunc.name.c_str(), "abs") == 0);
     
     cffunction unknownFunc = getfunction("nonexistent");
-    EXPECT_STREQ(unknownFunc.name.c_str(), "notafunction");
+    CHECK(strcmp(unknownFunc.name.c_str(), "notafunction") == 0);
 }
 
 // Test parameter structure initialization
-TEST_F(FunctionsTest, ParameterInitialization) {
+TEST_CASE("Parameter initialization") {
     cffunction func;
     
     // Check default parameter values
@@ -50,11 +47,11 @@ TEST_F(FunctionsTest, ParameterInitialization) {
         // This is a structural test
     }
     
-    SUCCEED() << "Parameter initialization verified";
+    CHECK(true); // Verified by construction
 }
 
 // Test function registry (if implemented)
-TEST_F(FunctionsTest, FunctionRegistry) {
+TEST_CASE("Function registry lookup") {
     // Test that all expected functions are registered
     const char* expectedFunctions[] = {
         "abs", "arraylen", "arrayavg", "arraymax", "arraymin",
@@ -106,7 +103,6 @@ TEST_F(FunctionsTest, FunctionRegistry) {
     for (const char* fname : expectedFunctions) {
         cffunction func = getfunction(fname);
         // Should not crash
+        CHECK(strlen(func.name.c_str()) > 0);
     }
-    
-    SUCCEED() << "Function registry lookup verified";
 }

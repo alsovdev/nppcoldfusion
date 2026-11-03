@@ -1,10 +1,11 @@
-// test_common.h - Common test utilities and mocks
+// test_common.h - Common test utilities and mocks for Doctest
 #pragma once
 
-#include <gtest/gtest.h>
+#include "doctest.h"
 #include <string>
 #include <string_view>
 #include <vector>
+#include <algorithm>
 
 // Forward declarations for plugin types
 namespace nppColdFusionNS {
@@ -15,38 +16,27 @@ namespace nppColdFusionNS {
     enum class StyleId : int;
 }
 
-// Test fixture for autocomplete tests
-class AutoCompleteTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        // Initialize plugin shared instance
-        // nppCFShared& cfs = nppCFShared::Instance();
-    }
-    
-    void TearDown() override {
-        // Cleanup
-    }
-};
-
-// Test fixture for lexer tests
-class LexerTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-    }
-    
-    void TearDown() override {
-    }
-};
-
-// Test fixture for CFFunctions tests
-class FunctionsTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-    }
-    
-    void TearDown() override {
-    }
-};
-
 // Helper to check if string contains substring (case-insensitive)
-bool ContainsIgnoreCase(std::string_view haystack, std::string_view needle);
+bool ContainsIgnoreCase(std::string_view haystack, std::string_view needle) {
+    if (needle.empty()) return true;
+    if (haystack.size() < needle.size()) return false;
+    
+    for (size_t i = 0; i <= haystack.size() - needle.size(); ++i) {
+        bool match = true;
+        for (size_t j = 0; j < needle.size(); ++j) {
+            char h = haystack[i + j];
+            char n = needle[j];
+            if (h >= 'A' && h <= 'Z') h = h - 'A' + 'a';
+            if (n >= 'A' && n <= 'Z') n = n - 'A' + 'a';
+            if (h != n) {
+                match = false;
+                break;
+            }
+        }
+        if (match) return true;
+    }
+    return false;
+}
+
+// Doctest doesn't need test fixtures with SetUp/TearDown for these simple tests
+// We'll use plain TEST_CASE instead

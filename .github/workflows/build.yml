@@ -189,26 +189,7 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2
-        with:
-          nuget-version: '6.x'
-
-      - name: Install GoogleTest via NuGet
-        run: |
-          nuget install googletest -Version 1.12.1 -OutputDirectory packages -ExcludeVersion
-          # NuGet package extracts to packages/googletest.1.12.1/build/native/include
-          # but our project expects packages/googletest.1.12.1/include
-          # Create symlink or copy for compatibility
-          if (Test-Path "packages\googletest.1.12.1\build\native\include") {
-            New-Item -ItemType Directory -Force -Path "packages\googletest.1.12.1\include" | Out-Null
-            Copy-Item "packages\googletest.1.12.1\build\native\include\*" "packages\googletest.1.12.1\include\" -Recurse -Force
-          }
-
-      - name: Restore NuGet packages
-        run: nuget restore "${{ env.SOLUTION_FILE }}"
-
-      - name: Build Tests (x64)
+      - name: Build Tests (x64, Debug)
         run: |
           msbuild "${{ env.SOLUTION_FILE }}" `
             /t:nppColdFusionTests `

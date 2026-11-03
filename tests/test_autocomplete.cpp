@@ -1,4 +1,4 @@
-// test_autocomplete.cpp - Tests for autocomplete functionality
+// test_autocomplete.cpp - Tests for autocomplete functionality (Doctest)
 #include "test_common.h"
 #include "../src/nppCFShared.h"
 #include "../src/AutoCompleteData.h"
@@ -7,7 +7,7 @@ using namespace nppColdFusionNS;
 using namespace AutoCompleteData;
 
 // Test that tag attribute cache returns different attributes for different tags
-TEST_F(AutoCompleteTest, TagAttributesCacheDifferentTags) {
+TEST_CASE("Tag attributes cache different tags") {
     // This test requires the plugin to be initialized
     // We test the logic that different tags should have different attributes
     
@@ -19,20 +19,20 @@ TEST_F(AutoCompleteTest, TagAttributesCacheDifferentTags) {
     
     // This is a structural test - the actual implementation test
     // would need the full plugin initialization
-    SUCCEED() << "Cache key includes tag name (verified in code review)";
+    CHECK(true); // Verified in code review
 }
 
 // Test that autocomplete lists are generated correctly
-TEST_F(AutoCompleteTest, AutocompleteListsGenerated) {
+TEST_CASE("Autocomplete lists generated") {
     // Test that buildTagList and buildKeywordList produce valid output
     // for all namespaces
     
     // This would require the full DBNamespace initialization
-    SUCCEED() << "Autocomplete list generation tested via integration";
+    CHECK(true); // Tested via integration
 }
 
 // Test deep tag nesting doesn't overflow (T3)
-TEST_F(AutoCompleteTest, DeepTagNestingNoOverflow) {
+TEST_CASE("Deep tag nesting no overflow") {
     // The Status struct has MAX_STATE_HISTORY = 32
     // Deep nesting beyond 32 should be handled gracefully
     
@@ -40,16 +40,16 @@ TEST_F(AutoCompleteTest, DeepTagNestingNoOverflow) {
     constexpr int MAX_OPEN_TAGS = 25;
     
     // Verify constants are defined
-    EXPECT_EQ(MAX_STATE_HISTORY, 32);
-    EXPECT_EQ(MAX_OPEN_TAGS, 25);
+    CHECK(MAX_STATE_HISTORY == 32);
+    CHECK(MAX_OPEN_TAGS == 25);
     
     // Test that bounds checking exists in push/pop operations
     // (verified by code inspection of Status struct methods)
-    SUCCEED() << "Bounds constants verified";
+    CHECK(true);
 }
 
 // Test StyleId enum values are unique (T6)
-TEST_F(AutoCompleteTest, StyleIdValuesUnique) {
+TEST_CASE("StyleId values unique") {
     // Verify no duplicate style IDs
     // This is tested by the enum class in Styles.h
     using StyleId = nppColdFusionNS::Styles::StyleId;
@@ -129,5 +129,5 @@ TEST_F(AutoCompleteTest, StyleIdValuesUnique) {
     // Check for duplicates
     std::sort(values.begin(), values.end());
     auto it = std::adjacent_find(values.begin(), values.end());
-    EXPECT_EQ(it, values.end()) << "Duplicate StyleId values found!";
+    CHECK(it == values.end()); // No duplicates
 }

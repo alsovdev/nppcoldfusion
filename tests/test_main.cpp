@@ -1,7 +1,5 @@
-// test_main.cpp - GoogleTest entry point
-#include <gtest/gtest.h>
+// test_main.cpp - Doctest entry point
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest.h"
 
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+// Doctest will auto-generate main() and run all test cases

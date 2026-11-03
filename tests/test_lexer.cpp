@@ -1,4 +1,4 @@
-// test_lexer.cpp - Tests for lexer functionality
+// test_lexer.cpp - Tests for lexer functionality (Doctest)
 #include "test_common.h"
 #include "../src/nppColdFusion.h"
 #include "../src/nppCFShared.h"
@@ -7,69 +7,65 @@
 using namespace nppColdFusionNS;
 
 // Test LexerName returns valid UTF-8 (T5)
-TEST_F(LexerTest, LexerNameReturnsValidUTF8) {
+TEST_CASE("LexerName returns valid UTF-8") {
     const char* name = LexerName();
-    ASSERT_NE(name, nullptr);
-    EXPECT_STREQ(name, "coldfusion");
+    REQUIRE(name != nullptr);
+    CHECK(strcmp(name, "coldfusion") == 0);
     
     // Verify it's valid UTF-8 (ASCII subset)
     for (const char* p = name; *p; ++p) {
-        EXPECT_GE(static_cast<unsigned char>(*p), 0x20);
-        EXPECT_LE(static_cast<unsigned char>(*p), 0x7E);
+        CHECK(static_cast<unsigned char>(*p) >= 0x20);
+        CHECK(static_cast<unsigned char>(*p) <= 0x7E);
     }
 }
 
 // Test LexerName is cached (not re-converted each call) - P3
-TEST_F(LexerTest, LexerNameIsCached) {
+TEST_CASE("LexerName is cached") {
     const char* name1 = LexerName();
     const char* name2 = LexerName();
     
     // Should return the same pointer (static storage)
-    EXPECT_EQ(name1, name2);
-    EXPECT_STREQ(name1, "coldfusion");
+    CHECK(name1 == name2);
+    CHECK(strcmp(name1, "coldfusion") == 0);
 }
 
 // Test lexer factory creation
-TEST_F(LexerTest, CreateLexerReturnsValidPointer) {
+TEST_CASE("CreateLexer returns valid pointer") {
     void* lexer = CreateLexer();
-    EXPECT_NE(lexer, nullptr);
-    
+    CHECK(lexer != nullptr);
     // Clean up - lexer is owned by caller in Lexilla model
-    // But we can't easily delete it without the factory
     // This is just a smoke test
-    SUCCEED() << "CreateLexer returns non-null";
 }
 
 // Test GetLexerFactory returns valid function pointer
-TEST_F(LexerTest, GetLexerFactoryReturnsValid) {
+TEST_CASE("GetLexerFactory returns valid") {
     LexerFactoryFunction factory = GetLexerFactory();
-    EXPECT_NE(factory, nullptr);
+    CHECK(factory != nullptr);
     
     // Call factory to create lexer
     void* lexer = factory();
-    EXPECT_NE(lexer, nullptr);
+    CHECK(lexer != nullptr);
 }
 
 // Test Status struct bounds (T7)
-TEST_F(LexerTest, StatusStructBounds) {
+TEST_CASE("Status struct bounds constants") {
     using namespace Styles;
     
-    // Verify constants exist
+    // Verify constants exist and match expected values
     constexpr int MAX_STATE_HISTORY = 32;
     constexpr int MAX_OPEN_TAGS = 25;
     constexpr int MAX_TAG_NAME_LENGTH = 100;
     constexpr int MAX_OPEN_TAGS_BUFFER = 512;
     
-    // These should match what's in nppCFShared.h
-    EXPECT_EQ(MAX_STATE_HISTORY, 32);
-    EXPECT_EQ(MAX_OPEN_TAGS, 25);
-    EXPECT_EQ(MAX_TAG_NAME_LENGTH, 100);
-    EXPECT_EQ(MAX_OPEN_TAGS_BUFFER, 512);
+    CHECK(MAX_STATE_HISTORY == 32);
+    CHECK(MAX_OPEN_TAGS == 25);
+    CHECK(MAX_TAG_NAME_LENGTH == 100);
+    CHECK(MAX_OPEN_TAGS_BUFFER == 512);
 }
 
 // Test lexer state transitions don't crash
-TEST_F(LexerTest, LexerStateTransitions) {
+TEST_CASE("Lexer state transitions - smoke test") {
     // This would require a full lexer instance and document
     // Integration test - smoke test only
-    SUCCEED() << "Lexer state transitions tested via integration";
+    CHECK(true);
 }
