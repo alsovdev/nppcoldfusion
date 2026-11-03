@@ -2,6 +2,7 @@
 #include "test_common.h"
 #include "../src/nppCFShared.h"
 #include "../src/AutoCompleteData.h"
+#include "../src/Styles.h"
 
 using namespace nppColdFusionNS;
 using namespace AutoCompleteData;
@@ -36,10 +37,8 @@ TEST_CASE("Deep tag nesting no overflow") {
     // The Status struct has MAX_STATE_HISTORY = 32
     // Deep nesting beyond 32 should be handled gracefully
     
-    constexpr int MAX_STATE_HISTORY = 32;
-    constexpr int MAX_OPEN_TAGS = 25;
+    using namespace Constants;
     
-    // Verify constants are defined
     CHECK(MAX_STATE_HISTORY == 32);
     CHECK(MAX_OPEN_TAGS == 25);
     
@@ -48,82 +47,82 @@ TEST_CASE("Deep tag nesting no overflow") {
     CHECK(true);
 }
 
-// Test StyleId enum values are unique (T6)
-TEST_CASE("StyleId values unique") {
-    // Verify no duplicate style IDs
-    // This is tested by the enum class in Styles.h
-    using StyleId = nppColdFusionNS::Styles::StyleId;
+// Test Styles constants are unique (T6)
+TEST_CASE("Styles constants unique") {
+    // Verify no duplicate style constants
+    using namespace Styles;
     
-    // Count unique values
+    // Collect all constant values
     std::vector<int> values = {
-        static_cast<int>(StyleId::DEFAULT),
-        static_cast<int>(StyleId::TAG),
-        static_cast<int>(StyleId::CF_TAG),
-        static_cast<int>(StyleId::ATTRIBUTE),
-        static_cast<int>(StyleId::ATTRIBUTEUNKNOWN),
-        static_cast<int>(StyleId::NUMBER),
-        static_cast<int>(StyleId::DOUBLESTRING),
-        static_cast<int>(StyleId::SINGLESTRING),
-        static_cast<int>(StyleId::OPERATOR),
-        static_cast<int>(StyleId::COMMENT),
-        static_cast<int>(StyleId::COMMENTBLOCK),
-        static_cast<int>(StyleId::TAGEND),
-        static_cast<int>(StyleId::CF_COMMENT),
-        static_cast<int>(StyleId::CF_VALUE),
-        static_cast<int>(StyleId::CF_FUNCTION),
-        static_cast<int>(StyleId::CF_KEYWORD),
-        static_cast<int>(StyleId::CF_ATTRIBUTE),
-        static_cast<int>(StyleId::CF_ATTRIBUTEBAD),
-        static_cast<int>(StyleId::LOCAL_VARIABLE),
-        static_cast<int>(StyleId::QUESTION),
-        static_cast<int>(StyleId::CFS_RESERVED),
-        static_cast<int>(StyleId::XCCOMMENT),
-        static_cast<int>(StyleId::SQL_KEYWORD),
-        static_cast<int>(StyleId::JS_KEYWORD),
-        static_cast<int>(StyleId::CSS_KEYWORD),
-        static_cast<int>(StyleId::CSS_PROPERTY),
-        static_cast<int>(StyleId::CF_TAGUNKNOWN),
-        static_cast<int>(StyleId::CF_NUMBER),
-        static_cast<int>(StyleId::CF_DOUBLESTRING),
-        static_cast<int>(StyleId::CF_SINGLESTRING),
-        static_cast<int>(StyleId::CF_OTHER),
-        static_cast<int>(StyleId::CF_ENTITY),
-        static_cast<int>(StyleId::CF_TAGEND),
-        static_cast<int>(StyleId::CF_XMLSTART),
-        static_cast<int>(StyleId::CF_XMLEND),
-        static_cast<int>(StyleId::CF_SCRIPT),
-        static_cast<int>(StyleId::CF_OUTPUT),
-        static_cast<int>(StyleId::CF_QUERY),
-        static_cast<int>(StyleId::CF_CDATA),
-        static_cast<int>(StyleId::CF_QUESTION),
-        static_cast<int>(StyleId::CF_XCCOMMENT),
+        _DEFAULT,
+        _TAG,
+        CF_TAG,
+        _TAGUNKNOWN,
+        _ATTRIBUTE,
+        _ATTRIBUTEUNKNOWN,
+        _NUMBER,
+        _DOUBLESTRING,
+        _SINGLESTRING,
+        _OPERATOR,
+        _COMMENT,
+        _COMMENTBLOCK,
+        _TAGEND,
+        CF_COMMENT,
+        CF_VALUE,
+        CF_FUNCTION,
+        CF_KEYWORD,
+        CF_ATTRIBUTE,
+        CF_ATTRIBUTEBAD,
+        LOCAL_VARIABLE,
+        _QUESTION,
+        CFS_RESERVED,
+        _XCCOMMENT,
+        SQL_KEYWORD,
+        JS_KEYWORD,
+        CSS_KEYWORD,
+        CSS_PROPERTY,
+        CF_TAGUNKNOWN,
+        CF_NUMBER,
+        CF_DOUBLESTRING,
+        CF_SINGLESTRING,
+        CF_OTHER,
+        CF_ENTITY,
+        CF_TAGEND,
+        CF_XMLSTART,
+        CF_XMLEND,
+        CF_SCRIPT,
+        CF_OUTPUT,
+        CF_QUERY,
+        CF_CDATA,
+        CF_QUESTION,
+        CF_XCCOMMENT,
         // JavaScript styles
-        static_cast<int>(StyleId::J_START),
-        static_cast<int>(StyleId::J_DEFAULT),
-        static_cast<int>(StyleId::J_COMMENT),
-        static_cast<int>(StyleId::J_COMMENTLINE),
-        static_cast<int>(StyleId::J_COMMENTDOC),
-        static_cast<int>(StyleId::J_NUMBER),
-        static_cast<int>(StyleId::J_WORD),
-        static_cast<int>(StyleId::J_KEYWORD),
-        static_cast<int>(StyleId::J_DOUBLESTRING),
-        static_cast<int>(StyleId::J_SINGLESTRING),
-        static_cast<int>(StyleId::J_SYMBOLS),
-        static_cast<int>(StyleId::J_STRINGEOL),
-        static_cast<int>(StyleId::J_REGEX),
+        J_START,
+        J_DEFAULT,
+        J_COMMENT,
+        J_COMMENTLINE,
+        J_COMMENTDOC,
+        J_NUMBER,
+        J_WORD,
+        J_KEYWORD,
+        J_DOUBLESTRING,
+        J_SINGLESTRING,
+        J_SYMBOLS,
+        J_STRINGEOL,
+        J_REGEX,
         // Java styles
-        static_cast<int>(StyleId::JA_START),
-        static_cast<int>(StyleId::JA_COMMENT),
-        static_cast<int>(StyleId::JA_COMMENTLINE),
-        static_cast<int>(StyleId::JA_COMMENTDOC),
-        static_cast<int>(StyleId::JA_NUMBER),
-        static_cast<int>(StyleId::JA_WORD),
-        static_cast<int>(StyleId::JA_KEYWORD),
-        static_cast<int>(StyleId::JA_DOUBLESTRING),
-        static_cast<int>(StyleId::JA_SINGLESTRING),
-        static_cast<int>(StyleId::JA_SYMBOLS),
-        static_cast<int>(StyleId::JA_STRINGEOL),
-        static_cast<int>(StyleId::JA_REGEX),
+        JA_START,
+        JA_COMMENT,
+        JA_COMMENTLINE,
+        JA_COMMENTDOC,
+        JA_NUMBER,
+        JA_WORD,
+        JA_KEYWORD,
+        JA_DOUBLESTRING,
+        JA_SINGLESTRING,
+        JA_SYMBOLS,
+        JA_STRINGEOL,
+        JA_REGEX,
     };
     
     // Check for duplicates

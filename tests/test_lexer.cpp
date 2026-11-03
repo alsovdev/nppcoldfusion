@@ -30,42 +30,53 @@ TEST_CASE("LexerName is cached") {
 }
 
 // Test lexer factory creation
-TEST_CASE("CreateLexer returns valid pointer") {
-    void* lexer = CreateLexer();
+TEST_CASE("LexerColdFusion factory creation") {
+    // Test the static factory method
+    ILexer5* lexer = LexerColdFusion::LexerFactory();
     CHECK(lexer != nullptr);
-    // Clean up - lexer is owned by caller in Lexilla model
-    // This is just a smoke test
+    delete lexer; // Clean up
 }
 
-// Test GetLexerFactory returns valid function pointer
-TEST_CASE("GetLexerFactory returns valid") {
-    LexerFactoryFunction factory = GetLexerFactory();
-    CHECK(factory != nullptr);
-    
-    // Call factory to create lexer
-    void* lexer = factory();
+// Test LexerColdFusion CreateLexer
+TEST_CASE("LexerColdFusion CreateLexer") {
+    ILexer5* lexer = LexerColdFusion::CreateLexer("ColdFusion");
     CHECK(lexer != nullptr);
+    delete lexer;
 }
 
 // Test Status struct bounds (T7)
 TEST_CASE("Status struct bounds constants") {
-    using namespace Styles;
+    using namespace Constants;
     
     // Verify constants exist and match expected values
-    constexpr int MAX_STATE_HISTORY = 32;
-    constexpr int MAX_OPEN_TAGS = 25;
-    constexpr int MAX_TAG_NAME_LENGTH = 100;
-    constexpr int MAX_OPEN_TAGS_BUFFER = 512;
-    
     CHECK(MAX_STATE_HISTORY == 32);
     CHECK(MAX_OPEN_TAGS == 25);
-    CHECK(MAX_TAG_NAME_LENGTH == 100);
-    CHECK(MAX_OPEN_TAGS_BUFFER == 512);
+    CHECK(MAX_TAG_LENGTH == 100);
+    CHECK(OPEN_TAGS_BUFFER_SIZE == 512);
+    CHECK(MAX_OPEN_TAGS_POSITIONS == 25);
 }
 
-// Test lexer state transitions don't crash
-TEST_CASE("Lexer state transitions - smoke test") {
-    // This would require a full lexer instance and document
-    // Integration test - smoke test only
-    CHECK(true);
+// Test BlockTypeId enum values
+TEST_CASE("BlockTypeId enum values") {
+    using BlockId = BlockTypeId;
+    
+    CHECK(static_cast<int>(BlockId::CFQuery) == 0);
+    CHECK(static_cast<int>(BlockId::CFScript) == 1);
+    CHECK(static_cast<int>(BlockId::JS) == 2);
+    CHECK(static_cast<int>(BlockId::CSS) == 3);
+}
+
+// Test Styles constants are accessible
+TEST_CASE("Styles constants accessible") {
+    using namespace Styles;
+    
+    // Just verify some constants compile and have expected values
+    CHECK(_DEFAULT == 0);
+    CHECK(_TAG == 1);
+    CHECK(CF_TAG == 2);
+    CHECK(CF_FUNCTION == 14);
+    CHECK(CF_KEYWORD == 15);
+    CHECK(SQL_KEYWORD == 22);
+    CHECK(JS_KEYWORD == 23);
+    CHECK(CSS_KEYWORD == 24);
 }
