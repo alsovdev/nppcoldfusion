@@ -195,7 +195,7 @@ jobs:
 
       - name: Download and install GoogleTest
         run: |
-          $url = "https://github.com/google/googletest/releases/download/v1.12.1/googletest-1.12.1.zip"
+          $url = "https://github.com/google/googletest/archive/refs/tags/v1.12.1.zip"
           $zipPath = "$env:RUNNER_TEMP\googletest.zip"
           Invoke-WebRequest -Uri $url -OutFile $zipPath
           Expand-Archive -Path $zipPath -DestinationPath packages -Force
