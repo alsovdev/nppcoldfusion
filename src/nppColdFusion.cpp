@@ -87,7 +87,7 @@ static const char* nppColdFusionNS::LexerName() {
 }
 
 LexerColdFusion::LexerColdFusion() {
-	cfs = nppCFShared::Instance();
+	cfs = &nppCFShared::Instance();
 	isScriptCFC = false;
 	hasDeterminedType = false;
 	sharedid = cfs->registerLexer(this);
@@ -300,12 +300,12 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 					tagCFcomplete = true;
 				}
 				else if (ch == '>') {
-					tagCFcomplete = true;
-					tagCF[tagCFpos] = ' ';
-					tagCF[tagCFpos + 1] = '\0';
-					nppCFShared& ref = *nppCFShared::Instance();
-					if (chPrev != '/' && CF_SINGLE_TAGS.find(tagCF) == CF_SINGLE_TAGS.end() && !cfs->coldfusionNS->isCustomTag(tagCF)) {
-						if (tagCFClosing) {
+				                tagCFcomplete = true;
+				                tagCF[tagCFpos] = ' ';
+				                tagCF[tagCFpos + 1] = '\0';
+				                nppCFShared& ref = *nppCFShared::Instance();
+				                if (chPrev != '/' && CF_SINGLE_TAGS.find(tagCF) == CF_SINGLE_TAGS.end() && !cfs->coldfusionNS->isCustomTag(tagCF)) {
+				                    if (tagCFClosing) {
 							levelNext--;
 						}
 						else {

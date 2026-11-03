@@ -137,20 +137,6 @@ namespace nppColdFusionNS
         }
     };
 
-    template <typename Tx>
-    class SafeScalar
-    {
-        Tx* Pointer;
-    public:
-        SafeScalar(Tx* Pointer) : Pointer(Pointer) { }
-        ~SafeScalar() {
-            delete Pointer;
-        }
-        operator Tx* () {
-            return Pointer;
-        }
-    };
-    
     class BlockType;
     class nppCFShared
     {
@@ -161,7 +147,7 @@ namespace nppColdFusionNS
         docLinks doclinks;
         lexLinks lexlinks;
     public:
-        static nppCFShared* Instance();
+        static nppCFShared& Instance();
 
         bool nppReady;
         char* originallists[10];
@@ -192,9 +178,6 @@ namespace nppColdFusionNS
         nppCFShared() {}
         nppCFShared(const nppCFShared&);
         nppCFShared& operator= (const nppCFShared&);
-
-    private:
-        static nppCFShared* pinstance;
     };
 
     class BlockType
