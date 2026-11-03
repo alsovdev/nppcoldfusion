@@ -193,8 +193,16 @@ jobs:
         with:
           nuget-version: '6.x'
 
-      - name: Install GoogleTest
-        run: nuget install googletest -Version 1.12.1 -OutputDirectory packages
+      - name: Download and install GoogleTest
+        run: |
+          $url = "https://github.com/google/googletest/releases/download/v1.12.1/googletest-1.12.1.zip"
+          $zipPath = "$env:RUNNER_TEMP\googletest.zip"
+          Invoke-WebRequest -Uri $url -OutFile $zipPath
+          Expand-Archive -Path $zipPath -DestinationPath packages -Force
+          # Rename extracted folder from googletest-1.12.1 to googletest.1.12.1 (dot instead of dash)
+          if (Test-Path "packages\googletest-1.12.1") {
+            Move-Item "packages\googletest-1.12.1" "packages\googletest.1.12.1" -Force
+          }
 
       - name: Restore NuGet packages (includes GoogleTest)
         run: nuget restore "${{ env.SOLUTION_FILE }}"
