@@ -442,7 +442,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	std::shared_ptr<BlockType> jsblock = std::make_shared<JSBlock>();
 	std::shared_ptr<BlockType> cfscriptblock = std::make_shared<CFScriptBlock>();
 
-	using BlockId = nppCFShared::BlockTypeId;
+	using BlockId = BlockTypeId;
 
 	std::vector<std::shared_ptr<BlockType>> blocks;
 
