@@ -3,7 +3,7 @@
 #include "../src/nppColdFusion.h"
 #include "../src/nppCFShared.h"
 #include "../src/Styles.h"
-#include "ILexer.h"  // For ILexer5 (via AdditionalIncludeDirectories)
+#include "ILexer.h"  // For Scintilla::ILexer5 (via AdditionalIncludeDirectories)
 
 using namespace nppColdFusionNS;
 
@@ -33,14 +33,14 @@ TEST_CASE("LexerName is cached") {
 // Test lexer factory creation
 TEST_CASE("LexerColdFusion factory creation") {
     // Test the static factory method
-    ILexer5* lexer = LexerColdFusion::LexerFactory();
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
     CHECK(lexer != nullptr);
     delete lexer; // Clean up
 }
 
 // Test LexerColdFusion CreateLexer
 TEST_CASE("LexerColdFusion CreateLexer") {
-    ILexer5* lexer = LexerColdFusion::CreateLexer("ColdFusion");
+    Scintilla::ILexer5* lexer = LexerColdFusion::CreateLexer("ColdFusion");
     CHECK(lexer != nullptr);
     delete lexer;
 }
