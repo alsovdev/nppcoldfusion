@@ -3,11 +3,11 @@
 ![Build Status](https://github.com/alsovdev/nppcoldfusion/actions/workflows/build.yml/badge.svg)
 ![Latest Release](https://img.shields.io/github/v/release/alsovdev/nppcoldfusion)
 ![License](https://img.shields.io/github/license/alsovdev/nppcoldfusion)
-![Platform](https://img.shields.io/badge/platform-Windows%20x64-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20x64%20%7C%20x86-blue)
 
 ---
 
-**nppColdFusion** — плагин для **Notepad++** (x64, версия 8+), обеспечивающий полную поддержку **ColdFusion / CFML** (файлы `.cfm`, `.cfc`, `.cfml`):
+**nppColdFusion** — плагин для **Notepad++** (x64, x86, версия 8+), обеспечивающий полную поддержку **ColdFusion / CFML** (файлы `.cfm`, `.cfc`, `.cfml`):
 
 - ✅ **Синтаксическая подсветка** — CF-теги, CFScript, HTML, JavaScript, CSS, SQL (в `<cfquery>`)
 - ✅ **Свертка кода (folding)** — CF-теги (`<cfif>`/`</cfif>`), HTML-теги, JS/CSS блоки, `{}` в CFScript
@@ -23,21 +23,23 @@
 
 ## 📥 Установка
 
-### Через Plugin Admin (рекомендуется, после добавления в nppPluginList)
-
-1. Откройте **Plugins → Plugin Admin**
-2. Найдите **nppColdFusion**
-3. Установите и перезапустите Notepad++
-
 ### Вручную (текущий способ)
 
 1. Скачайте артефакты с последнего [релиза](https://github.com/alsovdev/nppcoldfusion/releases/latest):
-   - `nppColdFusion.dll`
-   - `nppColdFusion.xml`
-   - `nppColdFusion.db3`
-2. Создайте папку: `%ProgramFiles%\Notepad++\plugins\nppColdFusion\`
-3. Скопируйте `nppColdFusion.dll` в эту папку
-4. Скопируйте `nppColdFusion.xml` и `nppColdFusion.db3` в: `%AppData%\Notepad++\plugins\config\`
+   - **x64** (Notepad++ 64-bit): `nppColdFusion-x64.dll`
+   - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`
+   - **Shared**: `nppColdFusion.xml`, `INSTALL.txt`, `SHA256SUMS.txt`
+
+2. **Выберите свою архитектуру** и скопируйте DLL:
+   ```
+   %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll
+   ```
+   (Создайте папку `nppColdFusion`, если её нет)
+
+3. Скопируйте `nppColdFusion.xml` в:
+   ```
+   %AppData%\Notepad++\plugins\config\nppColdFusion.xml
+   ```
 
 #### Для Portable-версии Notepad++
 
@@ -48,17 +50,29 @@
     ├── nppColdFusion/
     │   └── nppColdFusion.dll
     └── config/
-        ├── nppColdFusion.xml
-        └── nppColdFusion.db3
+        └── nppColdFusion.xml
+```
+
+### Проверка установки
+
+1. Перезапустите Notepad++
+2. Откройте **Plugins → nppColdFusion → About** — должна отображаться версия (например, `v0.9.4`)
+3. Откройте файл `.cfm` или `.cfc` — синтаксическая подсветка должна включиться автоматически
+
+### Проверка целостности (опционально)
+
+Сравните с `SHA256SUMS.txt` из релиза:
+```cmd
+certutil -hashfile nppColdFusion.dll SHA256
 ```
 
 ---
 
 ## 🖥 Требования
 
-- **Notepad++ 8.0+** (x64)
-- **Windows 10/11** (x64)
-- **Visual C++ Redistributable 2015-2022** (обычно уже есть в системе)
+- **Notepad++ 8.0+** (x64 или x86)
+- **Windows 10/11** (x64 или x86)
+- **Visual C++ Redistributable 2015-2022** (обычно уже установлен)
 
 ---
 
@@ -78,11 +92,11 @@ cd nppcoldfusion
 # Генерация данных автодополнения из YAML
 python scripts/generate_autocomplete.py
 # Откройте vs.proj\nppColdFusion.sln в Visual Studio 2022
-# Выберите конфигурацию: Unicode Release | x64
+# Выберите конфигурацию: Unicode Release | x64  (или Win32 для x86)
 # Build → Build Solution
 ```
 
-Артефакты появятся в `vs.proj\x64\Release\`.
+Артефакты появятся в `vs.proj\x64\Unicode Release\` (или `Win32\Unicode Release\`).
 
 ### Автоматическая сборка (CI)
 
@@ -100,7 +114,7 @@ GitHub Actions настроен для автоматической сборки
 
 **GNU General Public License v2.0 or later** — см. [LICENSE](LICENSE)
 
-Оригинальный автор: **Ben Bluemel** (2011), email: ben1982@gmail.com  
+Оригинальный автор: **Ben Bluemel** (2011), email: ben1982@gmail.com
 Текущий мейнтейнер: **smishchuk** — форк для x64 и Notepad++ 8+ (Lexilla API)
 
 ---
