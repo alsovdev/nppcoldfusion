@@ -85,7 +85,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src;..\src\Lexer\lexlib;..\src\Lexer\scintilla;..\src\npp\MISC\Common;..\src\npp\MISC\PluginManager;..\src\npp\WinControls;..\src\npp\WinControls\StaticDialog;..\tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;DOCTEST_CONFIG_DISABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
@@ -106,7 +106,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src;..\src\Lexer\lexlib;..\src\Lexer\scintilla;..\src\npp\MISC\Common;..\src\npp\MISC\PluginManager;..\src\npp\WinControls;..\src\npp\WinControls\StaticDialog;..\tests;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;DOCTEST_CONFIG_DISABLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
