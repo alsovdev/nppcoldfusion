@@ -3,7 +3,7 @@
 #include "../src/nppColdFusion.h"
 #include "../src/nppCFShared.h"
 #include "../src/Styles.h"
-#include "../src/Lexer/scintilla/ILexer.h"  // For ILexer5
+#include "ILexer.h"  // For ILexer5 (via AdditionalIncludeDirectories)
 
 using namespace nppColdFusionNS;
 
