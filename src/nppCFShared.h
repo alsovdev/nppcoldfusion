@@ -23,6 +23,8 @@
 #include "core/SciMessager.h"
 #include "nppColdFusion.h"
 #include "AutoCompleteData.h"
+#include "Constants.h"
+#include <array>
 
 namespace nppColdFusionNS
 {
@@ -32,13 +34,13 @@ namespace nppColdFusionNS
     public:
         bool tagClosing;
         bool tagOpening;
-        int stateHistory[32];
+        std::array<int, Constants::MAX_STATE_HISTORY> stateHistory{};
         int lastState;
         bool preCFTagisHTMLTagOpening;
-        char currentCFTag[100];
-        char currentHTMLTag[100];
-        char openTagsBuffer[512];
-        int openTagsPositions[25];
+        std::array<char, Constants::MAX_TAG_LENGTH> currentCFTag{};
+        std::array<char, Constants::MAX_TAG_LENGTH> currentHTMLTag{};
+        std::array<char, Constants::OPEN_TAGS_BUFFER_SIZE> openTagsBuffer{};
+        std::array<int, Constants::MAX_OPEN_TAGS_POSITIONS> openTagsPositions{};
         int currentopenTag;
 
         Status() {
@@ -48,8 +50,6 @@ namespace nppColdFusionNS
             lastState = 0;
             preCFTagisHTMLTagOpening = false;
             currentopenTag = 0;
-            currentCFTag[0] = '\0';
-            currentHTMLTag[0] = '\0';
         }
         ~Status() {}
     };

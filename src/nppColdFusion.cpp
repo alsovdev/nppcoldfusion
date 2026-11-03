@@ -19,6 +19,7 @@
 
 #include "nppColdFusion.h"
 #include "DllEntry.h"
+#include "Constants.h"
 #include <unordered_set>
 #include <string_view> ///*** 
 namespace sID = nppColdFusionNS::Styles;		//  All of the style state codes.
@@ -434,7 +435,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 {
 	Status status = Status();
 
-	status.openTagsBuffer[0] = '\0';
+	status.openTagsBuffer.fill(0);
 
 	std::shared_ptr<BlockType> cfqueryblock = std::make_shared<CFQueryBlock>();
 	std::shared_ptr<BlockType> cssblock = std::make_shared<CSSBlock>();
@@ -1098,25 +1099,25 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 		}
 
 		if (sc.Match('<') && !inCFSet && sc.state != sID::CF_VALUE && sc.state != sID::_COMMENT && (sc.state != sID::_COMMENTBLOCK || inJSBlock)) {
-			char s[100];
-			char paddedText[102];
+				char s[100];
+				char paddedText[102];
 
-			int i = 0;
-			paddedText[i] = ' ';
+				int i = 0;
+				paddedText[i] = ' ';
 
-			if (status.tagOpening && status.currentHTMLTag[0] != '\0') {
-				status.preCFTagisHTMLTagOpening = true;
-			}
+				if (status.tagOpening && status.currentHTMLTag[0] != '\0') {
+					status.preCFTagisHTMLTagOpening = true;
+				}
 
-			status.tagOpening = true;
-			status.tagClosing = false;
-			ZeroMemory(status.currentCFTag, sizeof(status.currentCFTag));
+				status.tagOpening = true;
+				status.tagClosing = false;
+				status.currentCFTag.fill(0);
 
-			if (!status.preCFTagisHTMLTagOpening) {
-				ZeroMemory(status.currentHTMLTag, sizeof(status.currentHTMLTag));
-			}
+				if (!status.preCFTagisHTMLTagOpening) {
+					status.currentHTMLTag.fill(0);
+				}
 
-			int max = 100;
+				int max = 100;
 			if ((startPos - sc.currentPos) + length < 100) {
 				max = (startPos - sc.currentPos) + length;
 			}
@@ -1145,7 +1146,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						if (!status.tagClosing) {
 							cfTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)) + 1, s);
 						}
-						strcpy_s(status.currentCFTag, sizeof(s), s);
+						strcpy_s(status.currentCFTag.data(), status.currentCFTag.size(), s);
 
 						if (strcmp(s, "cffunction") == 0 && dostyling) {
 							CFUserFunction newFunc(sc.currentPos);
@@ -1191,7 +1192,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							htmlTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)), s);
 							//const bool rawStringsChanged = htmlTags.Merge(rawSTNew, sc.currentPos + strnlen_s( s, sizeof( s ) ));
 						}
-						strcpy_s(status.currentHTMLTag, sizeof(s), s);
+						strcpy_s(status.currentHTMLTag.data(), status.currentHTMLTag.size(), s);
 						if (dostyling) {
 							if (!inJSBlock) {
 								status.stateHistory[++status.lastState] = sc.state;
@@ -1214,7 +1215,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			}
 		}
 
-		if (sc.state == sID::_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentHTMLTag != 0 && sc.Match(' ') && !sc.Match(" #")) {
+		if (sc.state == sID::_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentHTMLTag[0] != '\0' && sc.Match(' ') && !sc.Match(" #")) {
 			char s[100];
 			int i = 0;
 			int max = 100;
@@ -1246,7 +1247,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				}
 			}
 		}
-		if (sc.state == sID::CF_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentCFTag != 0 && (sc.Match(' ') || sc.Match('\t'))) {
+		if (sc.state == sID::CF_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentCFTag[0] != '\0' && (sc.Match(' ') || sc.Match('\t'))) {
 			char s[100];
 			int i = 0;
 			int max = 100;
@@ -1344,23 +1345,23 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				state = styler.StyleAt(sc.currentPos);
 			}
 
-			if (state == sID::CF_TAG || (status.tagClosing && state == sID::_DEFAULT && strcmp(status.currentCFTag, "cfscript") == 0)) {
+			if (state == sID::CF_TAG || (status.tagClosing && state == sID::_DEFAULT && strcmp(status.currentCFTag.data(), "cfscript") == 0)) {
 
-				std::string currentTag = coldFusionTags.ValueAt(sc.currentPos);
-				//SparseState<std::string> rawSTNew(sc.currentPos);
+					std::string currentTag = coldFusionTags.ValueAt(sc.currentPos);
+					//SparseState<std::string> rawSTNew(sc.currentPos);
 
-				auto j = strnlen_s(status.currentCFTag, sizeof(status.currentCFTag));
+					auto j = strnlen_s(status.currentCFTag.data(), status.currentCFTag.size());
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
 						if (CF_SINGLE_TAGS.find(status.currentCFTag) == CF_SINGLE_TAGS.end()) {
 					if (status.tagOpening) {
-						if (!dostyling) {
-							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
-							status.openTagsPositions[status.currentopenTag] = curlen;
-							strcpy_s(&status.openTagsBuffer[curlen], sizeof(status.openTagsBuffer) - curlen, status.currentCFTag);
-							status.currentopenTag++;
-						}
-					}
+								if (!dostyling) {
+									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
+									status.openTagsPositions[status.currentopenTag] = curlen;
+									strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentCFTag.data());
+									status.currentopenTag++;
+								}
+							}
 					if (status.tagClosing) {
 						if (!dostyling) {
 							if (status.currentopenTag > 0) {
@@ -1372,7 +1373,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				}
 				status.currentCFTag[j] = '\0';
 				if (dostyling) {
-					if ((strcmp(status.currentCFTag, "cfquery") == 0)) {
+							if ((strcmp(status.currentCFTag.data(), "cfquery") == 0)) {
 						if (status.tagOpening) {
 							inCFQuery = true;
 							cfQueryBlocksNew.Set(sc.currentPos, true);
@@ -1389,7 +1390,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							sc.ForwardSetState(status.stateHistory[status.lastState--]);
 						}
 					}
-					else if ((strcmp(status.currentCFTag, "cfoutput") == 0)) {
+					else if ((strcmp(status.currentCFTag.data(), "cfoutput") == 0)) {
 						if (status.tagOpening) {
 							cfOutputDepth++;
 							//linestate = styler.GetLineState( currentLine );
@@ -1403,7 +1404,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						}
 						sc.ForwardSetState(status.stateHistory[status.lastState--]);
 					}
-					else if ((strcmp(status.currentCFTag, "cfscript") == 0)) {
+					else if ((strcmp(status.currentCFTag.data(), "cfscript") == 0)) {
 						if (status.tagOpening) {
 							inCFScript = true;
 							scriptBlocksNew.Set(sc.currentPos, true);
@@ -1435,14 +1436,14 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
 				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
 				if (HTML_SINGLE_TAGS.find(status.currentHTMLTag) == HTML_SINGLE_TAGS.end()) {
-					if (status.tagOpening) {
-						if (!dostyling) {
-							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
-							status.openTagsPositions[status.currentopenTag] = curlen;
-							strcpy_s(&status.openTagsBuffer[curlen], sizeof(status.openTagsBuffer) - curlen, status.currentHTMLTag);
-							status.currentopenTag++;
-						}
-					}
+							if (status.tagOpening) {
+								if (!dostyling) {
+									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
+									status.openTagsPositions[status.currentopenTag] = curlen;
+									strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentHTMLTag.data());
+									status.currentopenTag++;
+								}
+							}
 					if (status.tagClosing && !status.tagOpening) {
 						if (!dostyling) {
 							status.currentopenTag--;
@@ -1453,7 +1454,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					}
 				}
 				if (dostyling) {
-					if ((strcmp(status.currentHTMLTag, "script") == 0)) {
+					if ((strcmp(status.currentHTMLTag.data(), "script") == 0)) {
 						if (status.tagOpening) {
 							inJSBlock = true;
 							jsBlocksNew.Set(sc.currentPos, true);

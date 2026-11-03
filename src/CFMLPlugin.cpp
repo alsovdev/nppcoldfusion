@@ -16,6 +16,7 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "CFMLPlugin.h"
+#include "Constants.h"
 //#include <Windows.h> //for Sleep only, this does work
 
 
@@ -361,7 +362,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 	char wordstartchar = sciMsgr.getCharAt(wordstart - 1);
 	CFUserFunction func = lexer->cfUserFunctions.ValueAt(currentpos);
 
-	if (!inCFSet && (status.tagOpening == true || style == Styles::_TAG || style == Styles::CF_TAG || style == Styles::CF_ATTRIBUTEBAD || (style == Styles::_DOUBLESTRING && status.currentCFTag[0] != 0))) {
+	if (!inCFSet && (status.tagOpening == true || style == Styles::_TAG || style == Styles::CF_TAG || style == Styles::CF_ATTRIBUTEBAD || (style == Styles::_DOUBLESTRING && status.currentCFTag[0] != '\0'))) {
 
 
 		int charssince = currentpos - wordstart;
@@ -375,19 +376,19 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 			int searchpos = sciMsgr.SendSciMsg(SCI_WORDSTARTPOSITION, (WPARAM)wordstart - 2, (LPARAM)true);
 
 			int j = 0;
-			char previousword[512];
+			char previousword[Constants::OPEN_TAGS_BUFFER_SIZE];
 			for (int i = searchpos; i < searchstartpos; i++) {
 				previousword[j++] = (char) ::CharLowerA((LPSTR)sciMsgr.getCharAt(i));
 			}
 			previousword[j++] = '\0';
 
-			if (status.tagOpening == true && (status.currentCFTag[0] != 0 || status.currentHTMLTag[0] != 0)) {
-						char tagName[100];
-						strncpy_s(tagName, status.currentCFTag, 100);
+			if (status.tagOpening == true && (status.currentCFTag[0] != '\0' || status.currentHTMLTag[0] != '\0')) {
+						char tagName[Constants::MAX_TAG_LENGTH];
+						strncpy_s(tagName, status.currentCFTag.data(), Constants::MAX_TAG_LENGTH);
 
 						const char* expanded;
-						if (status.currentHTMLTag[0] != 0) {
-							strncpy_s(tagName, status.currentHTMLTag, 100);
+						if (status.currentHTMLTag[0] != '\0') {
+							strncpy_s(tagName, status.currentHTMLTag.data(), Constants::MAX_TAG_LENGTH);
 							expanded = cfs.htmlNS->listAttributeValues(tagName, previousword);
 						}
 						else {
@@ -410,8 +411,8 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 		}
 		else if (wordstartchar == ' ' && prevch != '>') {
 
-			char wordtooffer[100];
-			char tagName[100];
+			char wordtooffer[Constants::MAX_TAG_LENGTH];
+			char tagName[Constants::MAX_TAG_LENGTH];
 
 			wordtooffer[0] = '\0';
 
@@ -475,7 +476,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 			int searchpos = sciMsgr.SendSciMsg(SCI_WORDSTARTPOSITION, (WPARAM)currentpos - 1, (LPARAM)true);
 
 			int j = 0;
-			char previousword[512];
+			char previousword[Constants::OPEN_TAGS_BUFFER_SIZE];
 			for (int i = searchpos; i < searchstartpos; i++) {
 				previousword[j++] = (char) ::CharLowerA((LPSTR)sciMsgr.getCharAt(i));
 			}
@@ -544,7 +545,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				int searchpos = sciMsgr.SendSciMsg(SCI_WORDSTARTPOSITION, (WPARAM)wordstart - 1, (LPARAM)true);
 
 				int j = 0;
-				char previousword[512];
+				char previousword[Constants::OPEN_TAGS_BUFFER_SIZE];
 				for (int i = searchpos; i < searchstartpos; i++) {
 					previousword[j++] = (char) ::CharLowerA((LPSTR)sciMsgr.getCharAt(i));
 				}
@@ -655,7 +656,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 
 				if (firstch == '/') {
 					bool foundtag = false;
-					char wordtooffer[100];
+					char wordtooffer[Constants::MAX_TAG_LENGTH];
 					wordtooffer[0] = '\0';
 					Status statustag = lexer->Colourise_Doc(currentpos - pos, pos, sciMsgr.getStyleAt(currentpos - pos), astyler, false);
 
