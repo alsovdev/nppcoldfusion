@@ -81,7 +81,7 @@ namespace nppColdFusionNS
         }
 
         bool isTag(const char* tag);
-        std::string_view listTagAttributes(const char* tag, bool onlyrequired = false, bool hasFingerText = false, bool forautoc = false);
+        const char* listTagAttributes(const char* tag, bool onlyrequired = false, bool hasFingerText = false, bool forautoc = false);
 
         bool tagHasAttribute(const char* tag, const char* attribute);
         std::string_view listAttributeValues(const char* tag, const char* attribute);

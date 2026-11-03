@@ -303,7 +303,7 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 				                tagCFcomplete = true;
 				                tagCF[tagCFpos] = ' ';
 				                tagCF[tagCFpos + 1] = '\0';
-				                nppCFShared& ref = *nppCFShared::Instance();
+				                nppCFShared& ref = nppCFShared::Instance();
 				                if (chPrev != '/' && CF_SINGLE_TAGS.find(tagCF) == CF_SINGLE_TAGS.end() && !cfs->coldfusionNS->isCustomTag(tagCF)) {
 				                    if (tagCFClosing) {
 							levelNext--;
