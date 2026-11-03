@@ -1,4 +1,5 @@
 //this file is part of nppColdFusion
+#include <string_view>
 //Copyright (C)2011 Ben Bluemel ( ben1982@gmail.com )
 //
 //This program is free software; you can redistribute it and/or
@@ -71,8 +72,8 @@ namespace nppColdFusionNS
         DBNamespace() : ns(0), namespace_id(AutoCompleteData::NamespaceId::COUNT) { }
         DBNamespace(AutoCompleteData::NamespaceId nid) : ns(0), namespace_id(nid) { }
 
-        const char* listAllTags(bool forautoc = false);
-        const char* listAllKeywords(bool lowered = false, bool forautoc = false);
+        std::string_view listAllTags(bool forautoc = false);
+        std::string_view listAllKeywords(bool lowered = false, bool forautoc = false);
 
         bool isKeyword(const char* keyword);
         virtual bool isCustomTag(const char* tag) {
@@ -80,10 +81,10 @@ namespace nppColdFusionNS
         }
 
         bool isTag(const char* tag);
-        const char* listTagAttributes(const char* tag, bool onlyrequired = false, bool hasFingerText = false, bool forautoc = false);
+        std::string_view listTagAttributes(const char* tag, bool onlyrequired = false, bool hasFingerText = false, bool forautoc = false);
 
         bool tagHasAttribute(const char* tag, const char* attribute);
-        const char* listAttributeValues(const char* tag, const char* attribute);
+        std::string_view listAttributeValues(const char* tag, const char* attribute);
     };
 
     class CFNamespace : public DBNamespace

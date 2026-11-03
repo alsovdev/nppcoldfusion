@@ -389,10 +389,10 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 						const char* expanded;
 						if (status.currentHTMLTag[0] != '\0') {
 							strncpy_s(tagName, status.currentHTMLTag.data(), Constants::MAX_TAG_LENGTH);
-							expanded = cfs.htmlNS->listAttributeValues(tagName, previousword);
+							expanded = cfs.htmlNS->listAttributeValues(tagName, previousword).data();
 						}
 						else {
-							expanded = cfs.coldfusionNS->listAttributeValues(tagName, previousword);
+							expanded = cfs.coldfusionNS->listAttributeValues(tagName, previousword).data();
 						}
 						if (cfs.completeCFsqltype && charssince == 0 && strcmp(previousword, "cfsqltype") == 0) {
 							sciMsgr.SendSciMsg(SCI_ADDTEXT, (WPARAM)7, (LPARAM)"cf_sql_");
@@ -440,14 +440,14 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 								//strncpy_s( tagName,status.currentHTMLTag, 100 );
 								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_blue);
 								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-								expanded = cfs.htmlNS->listTagAttributes(tagName, true);
+								expanded = cfs.htmlNS->listTagAttributes(tagName, true).data();
 								//Sleep(100);
 							}
 							else {
 								//LRESULT res = sciMsgr.SendSciMsg(SCI_CLEARREGISTEREDIMAGES, (WPARAM)0, (LPARAM)"");
 								sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_red);
 								sciMsgr.SendSciMsg(SCI_AUTOCSETTYPESEPARATOR, (WPARAM)0x3f, (LPARAM)"");
-								expanded = cfs.coldfusionNS->listTagAttributes(tagName, true);
+								expanded = cfs.coldfusionNS->listTagAttributes(tagName, true).data();
 								//Sleep(10);
 							}
 					if (expanded != 0 && strlen(expanded) > 1) {
@@ -528,7 +528,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 
 				if (charssince > 1 && charssince < 15) {
 								char sqkw_copy[2048];
-								strncpy_s(sqkw_copy, cfs.sqlNS->listAllKeywords(), sizeof(sqkw_copy));
+								strncpy_s(sqkw_copy, cfs.sqlNS->listAllKeywords().data(), sizeof(sqkw_copy));
 								::CharUpperA(sqkw_copy);
 								sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 								sciMsgr.autoCSetIgnoreCase(true);
@@ -575,8 +575,8 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				int charssince = currentpos - wordstart;
 
 				if (charssince > 1 && charssince < 15) {
-					const char* cff = cfs.coldfusionNS->listAllKeywords(false, true);
-					const char* cffl = cfs.coldfusionNS->listAllKeywords(true);
+					const char* cff = cfs.coldfusionNS->listAllKeywords(false, true).data();
+					const char* cffl = cfs.coldfusionNS->listAllKeywords(true).data();
 					const char* loweredword;
 					char thisword[20];
 					int a = 0;
@@ -612,7 +612,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				int charssince = currentpos - wordstart;
 
 				if (charssince > 1 && charssince < 15) {
-					const char* sqkw = cfs.javascriptNS->listAllKeywords();
+					const char* sqkw = cfs.javascriptNS->listAllKeywords().data();
 					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);
@@ -749,7 +749,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				else if (charssince > 1 && !inCFScript) {
 					if (firstch == 'c' && secndch == 'f') {
 						//WordList &cfkeywords = *cfs.wordlists[1];
-						const char* cfkw = cfs.coldfusionNS->listAllTags(true);
+						const char* cfkw = cfs.coldfusionNS->listAllTags(true).data();
 						//sciMsgr.SendSciMsg(SCI_AUTOCSETMAXHEIGHT, (WPARAM) 10);
 						int keytakeover = SCK_TAB + (SCMOD_SHIFT << 16);
 						sciMsgr.SendSciMsg(SCI_CLEARCMDKEY, (WPARAM)keytakeover);
@@ -766,7 +766,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					}
 					else if (!inJSBlock && !inCFQuery) {
 						//WordList &htmlkeywords = *cfs.wordlists[0];
-						const char* htkw = cfs.htmlNS->listAllTags(true);
+						const char* htkw = cfs.htmlNS->listAllTags(true).data();
 						//sciMsgr.SendSciMsg(SCI_AUTOCSETMAXHEIGHT, (WPARAM) 10);
 						//sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM) 0, (LPARAM) ' ');
 						sciMsgr.SendSciMsg(SCI_REGISTERIMAGE, (WPARAM)1, (LPARAM)tags_blue);
@@ -838,7 +838,7 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
 	const char* expanded;
 
-	expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);
+	expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false); cfs.integrateWithFingerText, false).data();
 
 	if (expanded != 0 && strlen(expanded) > 1) {
 		char* texttoinsert = new char[strlen(expanded) + strlen(text) + 2];

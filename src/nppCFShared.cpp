@@ -1,4 +1,5 @@
 //this file is part of nppColdFusion
+#include <string_view>
 //Copyright (C)2011 Ben Bluemel ( ben1982@gmail.com )
 //
 //This program is free software; you can redistribute it and/or
@@ -76,25 +77,25 @@ nppCFShared* nppCFShared::Instance() {
         return result;
     }
 
-    const char* DBNamespace::listAllTags(bool forautoc) {
+    std::string_view DBNamespace::listAllTags(bool forautoc) {
         static thread_local std::string cached_tags[6]; // ns 1-5
         if (ns > 0 && ns <= 5) {
             if (cached_tags[ns].empty()) {
                 cached_tags[ns] = buildTagList(namespace_id, forautoc);
             }
-            return cached_tags[ns].c_str();
+            return cached_tags[ns];
         }
         return "";
     }
 
-    const char* DBNamespace::listAllKeywords(bool lowered, bool forautoc) {
+    std::string_view DBNamespace::listAllKeywords(bool lowered, bool forautoc) {
         static thread_local std::string cached_keywords[6][2]; // ns 1-5, lowered/normal
         if (ns > 0 && ns <= 5) {
             int idx = lowered ? 1 : 0;
             if (cached_keywords[ns][idx].empty()) {
                 cached_keywords[ns][idx] = buildKeywordList(namespace_id, lowered, forautoc);
             }
-            return cached_keywords[ns][idx].c_str();
+            return cached_keywords[ns][idx];
         }
         return "";
     }
@@ -127,7 +128,7 @@ nppCFShared* nppCFShared::Instance() {
         return false;
     }
 
-    const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
+    std::string_view DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
         static thread_local std::string cached_attrs[6][2][2]; // ns, onlyrequired, hasFingerText
         // Simple cache key
         int onlyreq_idx = onlyrequired ? 1 : 0;
@@ -159,7 +160,7 @@ nppCFShared* nppCFShared::Instance() {
                     }
                 }
             }
-            return cached_attrs[ns][onlyreq_idx][finger_idx].c_str();
+            return cached_attrs[ns][onlyreq_idx][finger_idx];
         }
         return "";
     }
@@ -175,7 +176,7 @@ nppCFShared* nppCFShared::Instance() {
         return false;
     }
 
-    const char* DBNamespace::listAttributeValues(const char* tag, const char* attribute) {
+    std::string_view DBNamespace::listAttributeValues(const char* tag, const char* attribute) {
         // Not implemented in new system - return empty
         return "";
     }
