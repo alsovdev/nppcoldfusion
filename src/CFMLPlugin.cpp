@@ -661,11 +661,18 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 					Status statustag = lexer->Colourise_Doc(currentpos - pos, pos, sciMsgr.getStyleAt(currentpos - pos), astyler, false);
 
 					if (statustag.currentopenTag > 0) {
-						strcpy_s(wordtooffer, 100, &statustag.openTagsBuffer[statustag.openTagsPositions[status.currentopenTag - 1]]);
-						if (wordtooffer[strnlen(wordtooffer, 100) - 1] == ' ') {
-							wordtooffer[strnlen(wordtooffer, 100) - 1] = '\0';
-						}
-					}
+								// Bounds check
+								size_t idx = statustag.currentopenTag - 1;
+								if (idx < statustag.openTagsPositions.size()) {
+									size_t pos = statustag.openTagsPositions[idx];
+									if (pos < statustag.openTagsBuffer.size()) {
+										strcpy_s(wordtooffer, Constants::MAX_TAG_LENGTH, &statustag.openTagsBuffer[pos]);
+										if (wordtooffer[strnlen(wordtooffer, Constants::MAX_TAG_LENGTH) - 1] == ' ') {
+											wordtooffer[strnlen(wordtooffer, Constants::MAX_TAG_LENGTH) - 1] = '\0';
+										}
+									}
+								}
+							}
 					else {
 
 						int foldparentline = sciMsgr.SendSciMsg(SCI_GETFOLDPARENT, (WPARAM)line);
@@ -690,17 +697,31 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 							Status statustag = lexer->Colourise_Doc(posstop, (tagendpos + 1) - posstop, sciMsgr.getStyleAt(posstop), astyler, false);
 
 							if (statustag.currentopenTag > 0) {
-								if (status.currentopenTag < 0) {
-									statustag.currentopenTag += status.currentopenTag;
-									statustag.openTagsBuffer[statustag.openTagsPositions[statustag.currentopenTag]] = '\0';
-								}
-								if (statustag.currentopenTag > 0) {
-									strcpy_s(wordtooffer, 100, &statustag.openTagsBuffer[statustag.openTagsPositions[statustag.currentopenTag - 1]]);
-									if (wordtooffer[strnlen(wordtooffer, 100) - 1] == ' ') {
-										wordtooffer[strnlen(wordtooffer, 100) - 1] = '\0';
-									}
-								}
-							}
+											if (status.currentopenTag < 0) {
+												statustag.currentopenTag += status.currentopenTag;
+												// Bounds check
+												size_t idx = statustag.currentopenTag;
+												if (idx < statustag.openTagsPositions.size()) {
+													size_t pos = statustag.openTagsPositions[idx];
+													if (pos < statustag.openTagsBuffer.size()) {
+														statustag.openTagsBuffer[pos] = '\0';
+													}
+												}
+											}
+											if (statustag.currentopenTag > 0) {
+												// Bounds check
+												size_t idx = statustag.currentopenTag - 1;
+												if (idx < statustag.openTagsPositions.size()) {
+													size_t pos = statustag.openTagsPositions[idx];
+													if (pos < statustag.openTagsBuffer.size()) {
+														strcpy_s(wordtooffer, Constants::MAX_TAG_LENGTH, &statustag.openTagsBuffer[pos]);
+														if (wordtooffer[strnlen(wordtooffer, Constants::MAX_TAG_LENGTH) - 1] == ' ') {
+															wordtooffer[strnlen(wordtooffer, Constants::MAX_TAG_LENGTH) - 1] = '\0';
+														}
+													}
+												}
+											}
+										}
 							/*
 							int stophere = true;
 

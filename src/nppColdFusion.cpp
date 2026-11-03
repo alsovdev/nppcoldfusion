@@ -1343,14 +1343,17 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
 						if (CF_SINGLE_TAGS.find(std::string_view(status.currentCFTag.data())) == CF_SINGLE_TAGS.end()) {
-					if (status.tagOpening) {
-								if (!dostyling) {
-									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
-									status.openTagsPositions[status.currentopenTag] = curlen;
-									strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentCFTag.data());
-									status.currentopenTag++;
-								}
-							}
+									if (status.tagOpening) {
+										if (!dostyling) {
+											auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
+											// Bounds check: prevent buffer overflow
+											if (status.currentopenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
+												status.openTagsPositions[status.currentopenTag] = curlen;
+												strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentCFTag.data());
+												status.currentopenTag++;
+											}
+										}
+									}
 					if (status.tagClosing) {
 						if (!dostyling) {
 							if (status.currentopenTag > 0) {
@@ -1418,14 +1421,17 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
 				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
 				if (HTML_SINGLE_TAGS.find(std::string_view(status.currentHTMLTag.data())) == HTML_SINGLE_TAGS.end()) {
-							if (status.tagOpening) {
-								if (!dostyling) {
-									auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
-									status.openTagsPositions[status.currentopenTag] = curlen;
-									strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentHTMLTag.data());
-									status.currentopenTag++;
+								if (status.tagOpening) {
+									if (!dostyling) {
+										auto curlen = strnlen(status.openTagsBuffer.data(), status.openTagsBuffer.size());
+										// Bounds check: prevent buffer overflow
+										if (status.currentopenTag < Constants::MAX_OPEN_TAGS_POSITIONS && curlen < status.openTagsBuffer.size()) {
+											status.openTagsPositions[status.currentopenTag] = curlen;
+											strcpy_s(&status.openTagsBuffer[curlen], status.openTagsBuffer.size() - curlen, status.currentHTMLTag.data());
+											status.currentopenTag++;
+										}
+									}
 								}
-							}
 					if (status.tagClosing && !status.tagOpening) {
 						if (!dostyling) {
 							status.currentopenTag--;
