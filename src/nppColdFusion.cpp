@@ -303,15 +303,15 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 					tagCF[tagCFpos] = ' ';
 					tagCF[tagCFpos + 1] = '\0';
 					nppCFShared& ref = *nppCFShared::Instance();
-					if (chPrev != '/' && !CF_SINGLE_TAGS.contains(tagCF) && !cfs->coldfusionNS->isCustomTag(tagCF)) {
+					if (chPrev != '/' && CF_SINGLE_TAGS.find(tagCF) == CF_SINGLE_TAGS.end() && !cfs->coldfusionNS->isCustomTag(tagCF)) {
 						if (tagCFClosing) {
 							levelNext--;
 						}
 						else {
-							if (CF_ELSE_TAGS.contains(tagCF)) {
+							if (CF_ELSE_TAGS.find(tagCF) != CF_ELSE_TAGS.end()) {
 								levelNext--;
 							}
-							if (CF_IF_ELSE_TAGS.contains(tagCF)) {
+							if (CF_IF_ELSE_TAGS.find(tagCF) != CF_IF_ELSE_TAGS.end()) {
 								if (levelMinCurrent > levelNext) {
 									levelMinCurrent = levelNext;
 								}
@@ -344,7 +344,7 @@ void SCI_METHOD LexerColdFusion::Fold(Sci_PositionU startPos, Sci_Position lengt
 					tagHTMLcomplete = true;
 					tagHTML[tagHTMLpos] = ' ';
 					tagHTML[tagHTMLpos + 1] = '\0';
-					if (chPrev != '/' && !HTML_SINGLE_TAGS.contains(tagHTML)) {
+					if (chPrev != '/' && HTML_SINGLE_TAGS.find(tagHTML) == HTML_SINGLE_TAGS.end()) {
 						if (tagHTMLClosing) {
 							levelNext--;
 						}
@@ -1352,7 +1352,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				auto j = strnlen_s(status.currentCFTag, sizeof(status.currentCFTag));
 						status.currentCFTag[j] = ' ';
 						status.currentCFTag[j + 1] = '\0';
-						if (!CF_SINGLE_TAGS.contains(status.currentCFTag)) {
+						if (CF_SINGLE_TAGS.find(status.currentCFTag) == CF_SINGLE_TAGS.end()) {
 					if (status.tagOpening) {
 						if (!dostyling) {
 							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
@@ -1434,7 +1434,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			else if (state == sID::_TAG) {
 				std::string currentTag = htmlTags.ValueAt(sc.currentPos);
 				Lexilla::SparseState<std::string> htmlTagsNew(sc.currentPos);
-				if (!HTML_SINGLE_TAGS.contains(status.currentHTMLTag)) {
+				if (HTML_SINGLE_TAGS.find(status.currentHTMLTag) == HTML_SINGLE_TAGS.end()) {
 					if (status.tagOpening) {
 						if (!dostyling) {
 							auto curlen = strnlen(status.openTagsBuffer, sizeof(status.openTagsBuffer));
