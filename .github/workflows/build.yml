@@ -47,6 +47,9 @@ jobs:
         with:
           nuget-version: '6.x'
 
+      - name: Install GoogleTest (needed for test project in solution)
+        run: nuget install googletest -Version 1.14.0 -OutputDirectory packages
+
       - name: Restore NuGet packages
         run: nuget restore "${{ env.SOLUTION_FILE }}"
 
@@ -133,6 +136,9 @@ jobs:
         uses: NuGet/setup-nuget@v2
         with:
           nuget-version: '6.x'
+
+      - name: Install GoogleTest (needed for test project in solution)
+        run: nuget install googletest -Version 1.14.0 -OutputDirectory packages
 
       - name: Restore NuGet packages
         run: nuget restore "${{ env.SOLUTION_FILE }}"
