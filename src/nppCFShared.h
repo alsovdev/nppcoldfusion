@@ -1,5 +1,4 @@
 //this file is part of nppColdFusion
-#include <string_view>
 //Copyright (C)2011 Ben Bluemel ( ben1982@gmail.com )
 //
 //This program is free software; you can redistribute it and/or
@@ -22,10 +21,10 @@
 #include "nppLexCommon.h"
 #include "core/NppMessager.h"
 #include "core/SciMessager.h"
-#include "nppColdFusion.h"
 #include "AutoCompleteData.h"
 #include "Constants.h"
 #include <array>
+#include <string_view>
 
 namespace nppColdFusionNS
 {
@@ -200,11 +199,11 @@ namespace nppColdFusionNS
 
         int getKeywordState() const;
 
-        virtual bool hasKeyword(char* /*s*/) {
+        virtual bool hasKeyword(const char* /*s*/) {
             return false;
         }
 
-        virtual bool hasOperator(char* /*s*/) {
+        virtual bool hasOperator(const char* /*s*/) {
             return false;
         }
 
@@ -235,7 +234,7 @@ namespace nppColdFusionNS
             keywordstate = Styles::CSS_KEYWORD;
         }
         bool validateforkeyword(Lexilla::StyleContext& sc) override;
-        bool hasKeyword(char* keyword) override;
+        bool hasKeyword(const char* keyword) override;
     };
 
     class JSBlock : public BlockType
@@ -246,7 +245,7 @@ namespace nppColdFusionNS
             keywordstate = Styles::JS_KEYWORD;
         }
         bool validateforkeyword(Lexilla::StyleContext& sc) override;
-        bool hasKeyword(char* keyword) override;
+        bool hasKeyword(const char* keyword) override;
     };
 
     class CFScriptBlock : public BlockType
@@ -257,8 +256,8 @@ namespace nppColdFusionNS
             keywordstate = Styles::CF_FUNCTION;
         }
         bool validateforkeyword(Lexilla::StyleContext& sc) override;
-        bool hasKeyword(char* keyword) override;
-        bool hasOperator(char* operatorword) override;
+        bool hasKeyword(const char* keyword) override;
+        bool hasOperator(const char* operatorword) override;
         bool hasReservedWord(const char* reservedword) override;
     };
 
@@ -270,11 +269,15 @@ namespace nppColdFusionNS
             keywordstate = Styles::SQL_KEYWORD;
         }
         bool validateforkeyword(Lexilla::StyleContext& sc) override;
-        bool hasKeyword(char* keyword) override;
+        bool hasKeyword(const char* keyword) override;
     };
 
-    /* XPM */
-    static const char* tags_red[] = {
+    // XPM arrays moved to nppCFShared.cpp
+    extern const char* tags_red[];
+    extern const char* tags_blue[];
+    extern const char* shield[];
+    extern const char* tag_green[];
+    extern const char* cf_func[];
         /* columns rows colors chars-per-pixel */
         "16 16 32 1 ",
         "  c #DB4040",

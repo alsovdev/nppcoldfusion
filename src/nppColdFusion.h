@@ -40,7 +40,7 @@ namespace nppColdFusionNS
 {
 	constexpr const TCHAR* LEXER_NAME = STRINGIFY("ColdFusion");
 	constexpr const TCHAR* PLUGIN_NAME = STRINGIFY("nppColdFusion");
-	constexpr const TCHAR* PLUGIN_VERSION = STRINGIFY("0.9.1");
+	constexpr const TCHAR* PLUGIN_VERSION = STRINGIFY("0.9.6");
 	constexpr const TCHAR* PLUGIN_STATUS_TEXT = STRINGIFY("ColdFusion Lexer for Notepad++");
 
 	typedef struct {
@@ -91,15 +91,6 @@ namespace nppColdFusionNS
 			}
 
 	};
-	/*
-	template <typename T>
-	class PublicSparseState : public Lexilla::SparseState<T> {
-	public:
-		PublicSparseState() { }
-		~PublicSparseState() { }
-		const Lexilla::SparseState<T>stateVector getStates() { return this->states; }
-		void setPositionFirst(int positionFirst_) { this->positionFirst = positionFirst_; }
-	};*/
 	template <typename T>
 	class PublicSparseState : public Lexilla::SparseState<T> {
 	public:
@@ -159,24 +150,23 @@ namespace nppColdFusionNS
 			return sortedLocals;
 		}
 
-		std::string getArgumentssSorted(const char* append = "\0") {
+		std::string getArgumentsSorted(const char* append = "\0") {
 			if (dirtyArguments || append[0] != '\0') {
 				sortedArguments.assign(getSortedList(arguments, append));
 			}
 			return sortedArguments;
 		}
 
-		bool hasLocalVar(char* var) {
-
-			stateVector states = locals.getStates();
-			for (stateVector::iterator thisstate = states.begin(); thisstate != states.end(); ++thisstate) {
-				if ((*thisstate).value.nameLowered == var) {
-					return true;
+		bool hasLocalVar(const char* var) {
+				stateVector states = locals.getStates();
+				for (stateVector::iterator thisstate = states.begin(); thisstate != states.end(); ++thisstate) {
+					if ((*thisstate).value.nameLowered == std::string(var)) {
+						return true;
+					}
 				}
+				return false;
 			}
-			return false;
-		};
-		~CFUserFunction();
+			~CFUserFunction();
 	};
 
 	class nppCFShared;

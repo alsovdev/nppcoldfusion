@@ -1531,32 +1531,64 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 
 
 int SCI_METHOD LexerColdFusion::NamedStyles() {
-    return 27;
+    return 22; // Number of styles defined in nppColdFusion.xml
 }
 
 const char* SCI_METHOD LexerColdFusion::NameOfStyle(int style) {
+    // Must match nppColdFusion.xml WordsStyle name attributes exactly
+    // Ordered by styleID from XML (with gaps removed for contiguous 0-based index)
     static const char* styleNames[] = {
-        "DEFAULT", "TAG", "CFTAG", "ATTRIBUTE", "ATTRIBUTEUNKNOWN",
-        "NUMBER", "DOUBLESTRING", "SINGLESTRING", "OPERATOR", "COMMENT",
-        "COMMENTBLOCK", "TAGEND", "CFCOMMENT", "CFVALUE", "CFFUNCTION",
-        "CFKEYWORD", "CFATTRIBUTE", "CFATTRIBUTEBAD", "LOCALVARS", "CFSRESERVED",
-        "SQLKEYWORD", "JSKEYWORD", "CSSKEYWORD", "CSSPROPERTY",
-        "CF_TAGUNKNOWN", "CF_NUMBER", "CF_DOUBLESTRING", "CF_SINGLESTRING"
+        "DEFAULT",           // styleID 0
+        "TAG",               // styleID 1
+        "CFTAG",             // styleID 2
+        "ATTRIBUTE",         // styleID 3
+        "ATTRIBUTEUNKNOWN",  // styleID 4
+        "NUMBER",            // styleID 5
+        "DOUBLESTRING",      // styleID 6
+        "SINGLESTRING",      // styleID 7
+        "OPERATOR",          // styleID 8
+        "COMMENT",           // styleID 9
+        "COMMENTBLOCK",      // styleID 10
+        "CFCOMMENT",         // styleID 12
+        "CFVALUE",           // styleID 13
+        "CFFUNCTION",        // styleID 14
+        "CFATTRIBUTE",       // styleID 15
+        "CFATTRIBUTEBAD",    // styleID 16
+        "LOCALVARS",         // styleID 17
+        "CFSRESERVED",       // styleID 19
+        "SQLKEYWORDS",       // styleID 21
+        "JSKEYWORDS",        // styleID 22
+        "CSSKEYWORDS",       // styleID 23
     };
-    if (style >= 0 && style < 27) return styleNames[style];
+    if (style >= 0 && style < 22) return styleNames[style];
     return "";
 }
 
 const char* SCI_METHOD LexerColdFusion::DescriptionOfStyle(int style) {
     static const char* styleDescs[] = {
-        "Default text", "HTML tag", "CFML tag", "Attribute name", "Unknown attribute",
-        "Number", "Double-quoted string", "Single-quoted string", "Operator", "Comment",
-        "Block comment", "Tag end", "CFML comment", "CFML value", "CFML function",
-        "CFML keyword", "CFML attribute", "Bad CFML attribute", "Local variables", "CFML reserved",
-        "SQL keyword", "JavaScript keyword", "CSS keyword", "CSS property",
-        "Unknown CF tag", "CF number", "CF double-quoted string", "CF single-quoted string"
+        "Default text",           // DEFAULT
+        "HTML tag",               // TAG
+        "CFML tag",               // CFTAG
+        "Attribute name",         // ATTRIBUTE
+        "Unknown attribute",      // ATTRIBUTEUNKNOWN
+        "Number",                 // NUMBER
+        "Double-quoted string",   // DOUBLESTRING
+        "Single-quoted string",   // SINGLESTRING
+        "Operator",               // OPERATOR
+        "Comment",                // COMMENT
+        "Block comment",          // COMMENTBLOCK
+        "CFML comment",           // CFCOMMENT
+        "CFML value",             // CFVALUE
+        "CFML function",          // CFFUNCTION
+        "CFML attribute",         // CFATTRIBUTE
+        "Bad CFML attribute",     // CFATTRIBUTEBAD
+        "Local variables",        // LOCALVARS
+        "CFML reserved",          // CFSRESERVED
+        "SQL keywords",           // SQLKEYWORDS
+        "JavaScript keywords",    // JSKEYWORDS
+        "CSS keywords",           // CSSKEYWORDS
     };
-    if (style >= 0 && style < 27) return styleDescs[style];
+    if (style >= 0 && style < 22) return styleDescs[style];
     return "";
 }
 

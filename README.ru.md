@@ -26,20 +26,19 @@
 ### Вручную (текущий способ)
 
 1. Скачайте артефакты с последнего [релиза](https://github.com/alsovdev/nppcoldfusion/releases/latest):
-   - **x64** (Notepad++ 64-bit): `nppColdFusion-x64.dll`
-   - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`
-   - **Shared**: `nppColdFusion.xml`, `INSTALL.txt`, `SHA256SUMS.txt`
+   - **x64** (Notepad++ 64-bit): `nppColdFusion-x64.dll`, `nppColdFusion.xml`, `INSTALL.txt`
+   - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`, `nppColdFusion.xml`, `INSTALL.txt`
+   - **Shared**: `SHA256SUMS.txt`
 
-2. **Выберите свою архитектуру** и скопируйте DLL:
+2. **Выберите свою архитектуру** и скопируйте **оба** файла — DLL и XML:
    ```
    %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll
+   %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.xml
    ```
    (Создайте папку `nppColdFusion`, если её нет)
 
-3. Скопируйте `nppColdFusion.xml` в:
-   ```
-   %AppData%\Notepad++\plugins\config\nppColdFusion.xml
-   ```
+3. **Оба файла должны быть в одной папке** с DLL.
+   Если `nppColdFusion.xml` отсутствует, плагин использует встроенные цвета по умолчанию.
 
 #### Для Portable-версии Notepad++
 
@@ -47,9 +46,8 @@
 <Notepad++>/
 ├── notepad++.exe
 └── plugins/
-    ├── nppColdFusion/
-    │   └── nppColdFusion.dll
-    └── config/
+    └── nppColdFusion/
+        ├── nppColdFusion.dll
         └── nppColdFusion.xml
 ```
 

@@ -26,20 +26,19 @@
 ### Manual (current way)
 
 1. Download artifacts from the latest [release](https://github.com/alsovdev/nppcoldfusion/releases/latest):
-   - **x64** (Notepad++ 64-bit): `nppColdFusion-x64.dll`
-   - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`
-   - **Shared**: `nppColdFusion.xml`, `INSTALL.txt`, `SHA256SUMS.txt`
+   - **x64** (Notepad++ 64-bit): `nppColdFusion-x64.dll`, `nppColdFusion.xml`, `INSTALL.txt`
+   - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`, `nppColdFusion.xml`, `INSTALL.txt`
+   - **Shared**: `SHA256SUMS.txt`
 
-2. **Choose your architecture** and copy the DLL:
+2. **Choose your architecture** and copy **both** DLL and XML:
    ```
    %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll
+   %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.xml
    ```
    (Create the `nppColdFusion` folder if it doesn't exist)
 
-3. Copy `nppColdFusion.xml` to:
-   ```
-   %AppData%\Notepad++\plugins\config\nppColdFusion.xml
-   ```
+3. **Both files must be in the same folder** as the DLL.
+   If `nppColdFusion.xml` is missing, the plugin uses built-in default colors.
 
 #### For Portable Notepad++
 
@@ -47,9 +46,8 @@
 <Notepad++>/
 ├── notepad++.exe
 └── plugins/
-    ├── nppColdFusion/
-    │   └── nppColdFusion.dll
-    └── config/
+    └── nppColdFusion/
+        ├── nppColdFusion.dll
         └── nppColdFusion.xml
 ```
 

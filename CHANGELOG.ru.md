@@ -21,7 +21,7 @@
 
 - **Стили по умолчанию в плагине** (работает без XML):
   - Реализованы `NamedStyles()`, `NameOfStyle()`, `DescriptionOfStyle()`, `TagsOfStyle()` в лексере
-  - 27 стилей с именами и описаниями, соответствующими nppColdFusion.xml
+  - **22 стиля** с именами и описаниями, соответствующими nppColdFusion.xml
   - Если nppColdFusion.xml отсутствует, используются встроенные цвета по умолчанию
 
 - **XML конфиг в той же папке что и DLL**:
@@ -41,7 +41,7 @@
 
 ### Покрытие тестами
 
-- **21 тест проходит** (7 lexer + 4 functions + 4 autocomplete + 6 integration)
+- **27 тестов проходит** (7 lexer + 4 functions + 4 autocomplete + 12 integration)
 - Doctest v2.4.11 (header-only, без внешних зависимостей)
 - Тесты запускаются при каждом push в master
 

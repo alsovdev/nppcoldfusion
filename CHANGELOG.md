@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Default styles in plugin** (works without XML):
   - Implemented `NamedStyles()`, `NameOfStyle()`, `DescriptionOfStyle()`, `TagsOfStyle()` in lexer
-  - 27 styles with names and descriptions matching nppColdFusion.xml
+  - **22 styles** with names and descriptions matching nppColdFusion.xml
   - If nppColdFusion.xml is missing, default colors from plugin are used
 
 - **XML config file in same folder as DLL**:
@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Test Coverage
 
-- **21 tests passing** (7 lexer + 4 functions + 4 autocomplete + 6 integration)
+- **27 tests passing** (7 lexer + 4 functions + 4 autocomplete + 12 integration)
 - Doctest v2.4.11 (header-only, no external deps)
 - Tests run on every push to master
 

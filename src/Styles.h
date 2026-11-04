@@ -184,7 +184,7 @@ const int CF_CDATA           = static_cast<int>(StyleId::CF_CDATA);
 const int CF_QUESTION        = static_cast<int>(StyleId::CF_QUESTION);
 const int CF_XCCOMMENT       = static_cast<int>(StyleId::CF_XCCOMMENT);
 
-};  // End namespace Style
+} // namespace Styles
 
-};
+} // namespace nppColdFusionNS
 #endif
