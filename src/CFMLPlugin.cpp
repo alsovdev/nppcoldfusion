@@ -962,7 +962,8 @@ void CFMLPlugin::aboutDlg()
 
 	::MessageBox(cfs.m_nppMsgr.getNppWnd(),
 		TEXT("nppColdFusion by Ben Bluemel\n")
-		TEXT("Fork maintained by alsovdev\n")
+		TEXT("Fork by smishchuk (x64, Notepad++ 8+ Lexilla)\n")
+		TEXT("Maintained by alsovdev\n")
 		TEXT("https://github.com/alsovdev/nppcoldfusion\n\n")
 		TEXT("Based on original by Ben Bluemel (ben1982@gmail.com)\n"),
 		nppColdFusionNS::PLUGIN_VERSION,
