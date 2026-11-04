@@ -1014,7 +1014,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 												handledkeyword = true;
 												break;
 								}
-								else if (thisblock->hasKeyword(s))) {
+								else if (thisblock->hasKeyword(s)) {
 													int statebefore = sc.state;
 													if (dostyling) {
 														sc.SetState(thisblock->getKeywordState());
@@ -1104,7 +1104,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 										}
 										break;
 							}
-							else if ((blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)))) {
+							else if (blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)) {
 										int statebefore = sc.state;
 										if (dostyling) {
 											sc.SetState(blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState());
