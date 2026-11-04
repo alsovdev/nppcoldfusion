@@ -67,6 +67,7 @@ enum class StyleId : int
     XCCOMMENT         = 102,
     LOCAL_VARIABLE    = 103,  // Internal: was 18, now LOCALVARS=17 in XML
     CSS_PROPERTY      = 104,  // Internal: was 25
+    CF_KEYWORD        = 105,  // Internal: CFScript keywords (not in XML)
     CF_TAGUNKNOWN     = 130,
     CF_NUMBER         = 133,
     CF_DOUBLESTRING   = 134,
@@ -142,6 +143,7 @@ const int SQL_KEYWORD        = static_cast<int>(StyleId::SQL_KEYWORD);
 const int JS_KEYWORD         = static_cast<int>(StyleId::JS_KEYWORD);
 const int CSS_KEYWORD        = static_cast<int>(StyleId::CSS_KEYWORD);
 const int CSS_PROPERTY       = static_cast<int>(StyleId::CSS_PROPERTY);
+const int CF_KEYWORD         = static_cast<int>(StyleId::CF_KEYWORD);
 
 const int J_START            = static_cast<int>(StyleId::J_START);
 const int J_DEFAULT          = static_cast<int>(StyleId::J_DEFAULT);
