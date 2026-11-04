@@ -420,47 +420,6 @@ Sci_Position SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 		strcpy_s(cfs->loweredlists[n], wllength, loweredwl);
 		strcpy_s(cfs->originallists[n], wllength, wl);
 		delete[] loweredwl;
-
-		// Populate BlockType keywords from word lists
-		// Word list indices from XML config:
-		// 1 = CF tags, 6 = SQL keywords, 5 = JS keywords, 7 = CSS keywords
-		if (n == 6) { // SQL keywords for CFQueryBlock
-			Lexilla::WordList wl_obj;
-			wl_obj.Set(wl);
-			for (auto& block : cfs->blocks) {
-				if (dynamic_cast<CFQueryBlock*>(block.get())) {
-					block->updateWordList(wl_obj);
-				}
-			}
-		}
-		else if (n == 5) { // JS keywords for JSBlock
-			Lexilla::WordList wl_obj;
-			wl_obj.Set(wl);
-			for (auto& block : cfs->blocks) {
-				if (dynamic_cast<JSBlock*>(block.get())) {
-					block->updateWordList(wl_obj);
-				}
-			}
-		}
-		else if (n == 7) { // CSS keywords for CSSBlock
-			Lexilla::WordList wl_obj;
-			wl_obj.Set(wl);
-			for (auto& block : cfs->blocks) {
-				if (dynamic_cast<CSSBlock*>(block.get())) {
-					block->updateWordList(wl_obj);
-				}
-			}
-		}
-		else if (n == 1) { // CF tags for CFScriptBlock (reserved words)
-			Lexilla::WordList wl_obj;
-			wl_obj.Set(wl);
-			for (auto& block : cfs->blocks) {
-				if (dynamic_cast<CFScriptBlock*>(block.get())) {
-					block->updateWordList(wl_obj);
-				}
-			}
-		}
-
 		return 0;
 	}
 
@@ -504,6 +463,29 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	blocks.push_back(cfscriptblock);
 	blocks.push_back(jsblock);
 	blocks.push_back(cssblock);
+
+	// Populate BlockType keywords from stored word lists (set via WordListSet)
+	// Index 1 = CF tags, 5 = JS keywords, 6 = SQL keywords, 7 = CSS keywords
+	if (cfs->loweredlists[6]) {
+		Lexilla::WordList wl;
+		wl.Set(cfs->loweredlists[6]);
+		cfqueryblock->updateWordList(wl);
+	}
+	if (cfs->loweredlists[5]) {
+		Lexilla::WordList wl;
+		wl.Set(cfs->loweredlists[5]);
+		jsblock->updateWordList(wl);
+	}
+	if (cfs->loweredlists[7]) {
+		Lexilla::WordList wl;
+		wl.Set(cfs->loweredlists[7]);
+		cssblock->updateWordList(wl);
+	}
+	if (cfs->loweredlists[1]) {
+		Lexilla::WordList wl;
+		wl.Set(cfs->loweredlists[1]);
+		cfscriptblock->updateWordList(wl);
+	}
 
 	int currentLine = styler.GetLine(startPos);
 	int linestate = 0;
