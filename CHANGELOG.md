@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.6] - 2026-11-03
+
+### Added
+
+- **Integration tests with real CFM/CFC files** from open source projects:
+  - Taffy framework (atuttle/Taffy): 14 files including Application.cfc, resource CFCs, consumer examples
+  - Lucee docs (lucee/lucee-docs): 4 files including build scripts
+  - Lexer tokenizes all 18 fixtures without crashing
+  - Tests verify CFML constructs: component, function, cfquery, cfargument, cfoutput, cfloop, cfset, cffile
+
+- **Default styles in plugin** (works without XML):
+  - Implemented `NamedStyles()`, `NameOfStyle()`, `DescriptionOfStyle()`, `TagsOfStyle()` in lexer
+  - 27 styles with names and descriptions matching nppColdFusion.xml
+  - If nppColdFusion.xml is missing, default colors from plugin are used
+
+- **XML config file in same folder as DLL**:
+  - Release structure changed: XML placed alongside DLL in x64/ and x86/ folders
+  - Updated INSTALL.txt with new installation instructions
+  - If XML missing, plugin uses built-in default colors
+
+### Changed
+
+- **Merged feature branches**: feat/boost-cleanup, feat/fix-review-issues, feat/v0.9.4-all-fixes
+  - Boost completely removed from project
+  - x64 crash fixed (TargetMachine=MachineX64 + export fix)
+  - Review fixes applied: Instance() ref return, std::array revert, critical issues
+  - P9-P11 fixes: naming consistency, string_view cache, BlockType::updateWordList
+  - DLL renamed in release for unique asset names (x64, x86 suffixes)
+  - db3 removed from release artifacts (legacy, not used)
+
+### Test Coverage
+
+- **21 tests passing** (7 lexer + 4 functions + 4 autocomplete + 6 integration)
+- Doctest v2.4.11 (header-only, no external deps)
+- Tests run on every push to master
+
 ## [0.9.2] - 2026-11-02
 
 ### Changed

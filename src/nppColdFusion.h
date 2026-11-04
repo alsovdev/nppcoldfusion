@@ -229,6 +229,10 @@ namespace nppColdFusionNS
 		//int SCI_METHOD GetIdentifier();
 		//const char* SCI_METHOD PropertyGet(const char* key);
 		int SCI_METHOD Version() const override;
+		int SCI_METHOD NamedStyles() override;
+		const char* SCI_METHOD NameOfStyle(int style) override;
+		const char* SCI_METHOD DescriptionOfStyle(int style) override;
+		const char* SCI_METHOD TagsOfStyle(int style) override;
 	};
 
 	LRESULT nppMessageProc(UINT Message, WPARAM wParam, LPARAM lParam);

@@ -9,6 +9,42 @@
 
 ---
 
+## [0.9.6] - 2026-11-03
+
+### Добавлено
+
+- **Интеграционные тесты с реальными CFM/CFC файлами** из open source проектов:
+  - Taffy framework (atuttle/Taffy): 14 файлов включая Application.cfc, ресурсные CFC, примеры consumer
+  - Lucee docs (lucee/lucee-docs): 4 файла включая build-скрипты
+  - Лексер токенизирует все 18 фикстур без крашей
+  - Тесты проверяют CFML конструкции: component, function, cfquery, cfargument, cfoutput, cfloop, cfset, cffile
+
+- **Стили по умолчанию в плагине** (работает без XML):
+  - Реализованы `NamedStyles()`, `NameOfStyle()`, `DescriptionOfStyle()`, `TagsOfStyle()` в лексере
+  - 27 стилей с именами и описаниями, соответствующими nppColdFusion.xml
+  - Если nppColdFusion.xml отсутствует, используются встроенные цвета по умолчанию
+
+- **XML конфиг в той же папке что и DLL**:
+  - Структура релиза изменена: XML кладется рядом с DLL в папки x64/ и x86/
+  - Обновлен INSTALL.txt с новыми инструкциями по установке
+  - Если XML отсутствует, плагин использует встроенные цвета по умолчанию
+
+### Изменено
+
+- **Объединены feature-ветки**: feat/boost-cleanup, feat/fix-review-issues, feat/v0.9.4-all-fixes
+  - Boost полностью удален из проекта
+  - Исправлен x64 краш (TargetMachine=MachineX64 + исправление экспорта)
+  - Применены правки из ревью: Instance() возвращает ref, откат std::array, критические исправления
+  - P9-P11: naming consistency, string_view кэш, BlockType::updateWordList
+  - DLL переименованы в релизе для уникальных имен (x64, x86 суффиксы)
+  - db3 удален из артефактов релиза (legacy, не используется)
+
+### Покрытие тестами
+
+- **21 тест проходит** (7 lexer + 4 functions + 4 autocomplete + 6 integration)
+- Doctest v2.4.11 (header-only, без внешних зависимостей)
+- Тесты запускаются при каждом push в master
+
 ## [0.9.2] - 2026-11-02
 
 ### Изменено

@@ -1530,6 +1530,40 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 }
 
 
+int SCI_METHOD LexerColdFusion::NamedStyles() {
+    return 27;
+}
+
+const char* SCI_METHOD LexerColdFusion::NameOfStyle(int style) {
+    static const char* styleNames[] = {
+        "DEFAULT", "TAG", "CFTAG", "ATTRIBUTE", "ATTRIBUTEUNKNOWN",
+        "NUMBER", "DOUBLESTRING", "SINGLESTRING", "OPERATOR", "COMMENT",
+        "COMMENTBLOCK", "TAGEND", "CFCOMMENT", "CFVALUE", "CFFUNCTION",
+        "CFKEYWORD", "CFATTRIBUTE", "CFATTRIBUTEBAD", "LOCALVARS", "CFSRESERVED",
+        "SQLKEYWORD", "JSKEYWORD", "CSSKEYWORD", "CSSPROPERTY",
+        "CF_TAGUNKNOWN", "CF_NUMBER", "CF_DOUBLESTRING", "CF_SINGLESTRING"
+    };
+    if (style >= 0 && style < 27) return styleNames[style];
+    return "";
+}
+
+const char* SCI_METHOD LexerColdFusion::DescriptionOfStyle(int style) {
+    static const char* styleDescs[] = {
+        "Default text", "HTML tag", "CFML tag", "Attribute name", "Unknown attribute",
+        "Number", "Double-quoted string", "Single-quoted string", "Operator", "Comment",
+        "Block comment", "Tag end", "CFML comment", "CFML value", "CFML function",
+        "CFML keyword", "CFML attribute", "Bad CFML attribute", "Local variables", "CFML reserved",
+        "SQL keyword", "JavaScript keyword", "CSS keyword", "CSS property",
+        "Unknown CF tag", "CF number", "CF double-quoted string", "CF single-quoted string"
+    };
+    if (style >= 0 && style < 27) return styleDescs[style];
+    return "";
+}
+
+const char* SCI_METHOD LexerColdFusion::TagsOfStyle(int style) {
+    return "";
+}
+
 Scintilla::ILexer5* SCI_METHOD LexerColdFusion::CreateLexer(const char* name)
 {
 	return (strcmp(name, LexerName()) == 0) ? LexerColdFusion::LexerFactory() : nullptr;
