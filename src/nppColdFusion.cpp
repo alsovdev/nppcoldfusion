@@ -458,19 +458,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	/*incfset.value	= getstoredbitvalue( linestate, incfset );
 	status.inCFSet			= incfset.value;
 	*/
-	// On N++ startup with file already open, scintilla window may not be ready
-	// We can still colourise - just skip the outsideeditingrange optimization
-	HWND scintillaWnd = cfs->m_nppMsgr.getCurrentScintillaWnd();
-	unsigned int currenteditpos = 0;
-	bool outsideeditingrange = true; // Default to true if no window
-	if (scintillaWnd) {
-		CSciMessager sciMsgr(scintillaWnd);
-		currenteditpos = sciMsgr.getCurrentPos();
-		outsideeditingrange = false;
-		if ((startPos < currenteditpos - min(currenteditpos, 100) || startPos > currenteditpos + 100)) {
-			outsideeditingrange = true;
-		}
-	}
+	// No scintilla window access in lexer - use IDocument* directly
+	// outsideeditingrange optimization removed: it breaks startup with files already open
+	// Just always colourise the full range
 	Lexilla::SparseState<std::string> cfTagsNew(startPos);
 	Lexilla::SparseState<std::string> htmlTagsNew(startPos);
 
@@ -520,11 +510,6 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	//
 	while (sc.More()) {
 		unsigned int loopstartpos = sc.currentPos;
-		if (!outsideeditingrange) {
-			if ((loopstartpos < currenteditpos - min(currenteditpos, 100) || loopstartpos > currenteditpos + 100)) {
-				outsideeditingrange = true;
-			}
-		}
 		if (dostyling) {
 			if (sc.atLineEnd) {
 				// Update the line state, so it can be seen by next line
@@ -974,7 +959,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									handledkeyword = true;
 									break;
 								}
-								else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == thisblock->getKeywordState()) ||
+								else if ((styler.StyleAt(sc.currentPos) == thisblock->getKeywordState() ||
 									thisblock->hasKeyword(s))) {
 									int statebefore = sc.state;
 									if (dostyling) {
@@ -1058,7 +1043,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								}
 								break;
 							}
-							else if (((outsideeditingrange && styler.StyleAt(sc.currentPos) == blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState()) ||
+							else if ((styler.StyleAt(sc.currentPos) == blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState() ||
 								(blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)))) {
 								int statebefore = sc.state;
 								if (dostyling) {
@@ -1140,7 +1125,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					bool scriptcheck = (!inCFScript || (strcmp(s, "cfscript") == 0 && status.tagClosing));
 					bool jsscriptcheck = (!inJSBlock || (strcmp(s, "script") == 0 && status.tagClosing));
 
-					if (scriptcheck && ((outsideeditingrange && styler.StyleAt(sc.currentPos) == sID::CF_TAG) || cfs->coldfusionNS->isTag(paddedText))) {
+					if (scriptcheck && (styler.StyleAt(sc.currentPos) == sID::CF_TAG || cfs->coldfusionNS->isTag(paddedText))) {
 						if (!status.tagClosing) {
 							cfTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)) + 1, s);
 						}
