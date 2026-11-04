@@ -459,7 +459,12 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	/*incfset.value	= getstoredbitvalue( linestate, incfset );
 	status.inCFSet			= incfset.value;
 	*/
-	CSciMessager sciMsgr(cfs->m_nppMsgr.getCurrentScintillaWnd());
+	// Safety check: on N++ startup with file already open, scintilla window may not be ready
+	HWND scintillaWnd = cfs->m_nppMsgr.getCurrentScintillaWnd();
+	if (!scintillaWnd) {
+		return status;
+	}
+	CSciMessager sciMsgr(scintillaWnd);
 	unsigned int currenteditpos = sciMsgr.getCurrentPos();
 	bool outsideeditingrange = false;
 	if ((startPos < currenteditpos - min(currenteditpos, 100) || startPos > currenteditpos + 100)) {

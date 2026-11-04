@@ -325,8 +325,12 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 		return;
 	}
 
-
-	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
+	// Safety check: scintilla window may not be ready on startup
+	HWND scintillaWnd = m_nppMsgr.getCurrentScintillaWnd();
+	if (!scintillaWnd) {
+		return;
+	}
+	CSciMessager sciMsgr(scintillaWnd);
 
 	bool activeac = sciMsgr.isAutoCActive();
 
@@ -824,7 +828,9 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 }
 void CFMLPlugin::ResetShiftTab()
 {
-	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
+	HWND scintillaWnd = m_nppMsgr.getCurrentScintillaWnd();
+	if (!scintillaWnd) return;
+	CSciMessager sciMsgr(scintillaWnd);
 	int keytakeover = SCK_TAB + (SCMOD_SHIFT << 16);
 	sciMsgr.SendSciMsg(SCI_CLEARCMDKEY, (WPARAM)keytakeover);
 	sciMsgr.SendSciMsg(SCI_ASSIGNCMDKEY, (WPARAM)keytakeover, SCI_BACKTAB);
@@ -834,7 +840,9 @@ void CFMLPlugin::OnSciAutoCSelection(int pos, const char* text)
 {
 
 	nppCFShared& cfs = nppCFShared::Instance();
-	CSciMessager sciMsgr(m_nppMsgr.getCurrentScintillaWnd());
+	HWND scintillaWnd = m_nppMsgr.getCurrentScintillaWnd();
+	if (!scintillaWnd) return;
+	CSciMessager sciMsgr(scintillaWnd);
 	const char* expanded;
 
 expanded = cfs.coldfusionNS->listTagAttributes(text, true, cfs.isFingerTextInstalled && cfs.integrateWithFingerText, false);
@@ -954,9 +962,9 @@ void CFMLPlugin::aboutDlg()
 
 	::MessageBox(cfs.m_nppMsgr.getNppWnd(),
 		TEXT("nppColdFusion by Ben Bluemel\n")
-		TEXT("updated by Msyu from v0.8.1\n")
-		TEXT("http://bitbucket.org/bbluemel/nppcoldfusion/ - \n")
-		TEXT("(not available anymore)\n\n"),
+		TEXT("Fork maintained by alsovdev\n")
+		TEXT("https://github.com/alsovdev/nppcoldfusion\n\n")
+		TEXT("Based on original by Ben Bluemel (ben1982@gmail.com)\n"),
 		nppColdFusionNS::PLUGIN_VERSION,
 		MB_OK);
 }
@@ -964,7 +972,9 @@ void CFMLPlugin::wrapIn(const char* before, const char* after)
 {
 	nppCFShared& cfs = nppCFShared::Instance();
 
-	CSciMessager sciMsgr(cfs.m_nppMsgr.getCurrentScintillaWnd());
+	HWND scintillaWnd = cfs.m_nppMsgr.getCurrentScintillaWnd();
+	if (!scintillaWnd) return;
+	CSciMessager sciMsgr(scintillaWnd);
 
 	int startpos = sciMsgr.getSelectionStart();
 	int endpos = sciMsgr.getSelectionEnd();
