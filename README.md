@@ -49,9 +49,11 @@
 > Notepad++ searches for the lexer XML in **`plugins\Config\`** at load time — **not** next to the DLL.
 >
 > - **DLL** → `%ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll`
-> - **XML** → `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml`
+> - **XML** → `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml` **(recommended, always works)**
 >
-> The `plugins\Config\` folder under Program Files requires admin rights to write. The AppData location is user-writable and works without elevation. This is the recommended and reliable path.
+> The `plugins\Config\` folder under Program Files requires admin rights to write. The AppData location is user-writable and works without elevation.
+>
+> **Note**: Since Notepad++ v8.9.3, N++ may automatically copy `*.model.xml` files from the installation directory to AppData on first run. If you place `nppColdFusion.xml` in `%ProgramFiles%\Notepad++\plugins\Config\`, it *might* be copied to AppData automatically — but this is not guaranteed for plugin lexer XMLs. The AppData path is the reliable choice.
 >
 > If you use portable Notepad++, place both files in `<Notepad++>\plugins\nppColdFusion\`.
 

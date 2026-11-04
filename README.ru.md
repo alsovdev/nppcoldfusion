@@ -49,9 +49,11 @@
 > Notepad++ ищет XML лексера в **`plugins\Config\`** при загрузке — **не** рядом с DLL.
 >
 > - **DLL** → `%ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll`
-> - **XML** → `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml`
+> - **XML** → `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml` **(рекомендуется, всегда работает)**
 >
-> Папка `plugins\Config\` в Program Files требует прав администратора для записи. AppData доступен для записи пользователем и работает без повышения прав. Это рекомендуемый и надежный путь.
+> Папка `plugins\Config\` в Program Files требует прав администратора для записи. AppData доступен для записи пользователем и работает без повышения прав.
+>
+> **Примечание**: Начиная с Notepad++ v8.9.3, N++ может автоматически копировать файлы `*.model.xml` из папки установки в AppData при первом запуске. Если положить `nppColdFusion.xml` в `%ProgramFiles%\Notepad++\plugins\Config\`, он *может* скопироваться в AppData автоматически — но для XML плагинов-лексеров это не гарантируется. Путь через AppData — самый надежный.
 >
 > Для portable-версии Notepad++ положите оба файла в `<Notepad++>\plugins\nppColdFusion\`.
 
