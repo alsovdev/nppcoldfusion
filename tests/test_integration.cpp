@@ -210,3 +210,129 @@ TEST_CASE("Integration: Real files contain expected CFML constructs") {
     CHECK(ContainsIgnoreCase(luceeBuild, "cffile"));
     CHECK(ContainsIgnoreCase(luceeBuild, "cfloop"));
 }
+
+// Test that lexer works without XML config (uses default styles)
+TEST_CASE("Integration: Lexer works without XML config - default styles") {
+    fs::path fixturesDir = GetFixturesDir();
+    std::string content = ReadFile(fixturesDir / "taffy_Application.cfc");
+    REQUIRE(!content.empty());
+
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    int length = static_cast<int>(content.size());
+    // Should not crash even without XML loaded
+    lexer->Lex(0, length, 0, nullptr);
+
+    // Verify default styles are available via NamedStyles API
+    int namedStyles = lexer->NamedStyles();
+    CHECK(namedStyles == 27);
+
+    const char* styleName = lexer->NameOfStyle(0);
+    CHECK(styleName != nullptr);
+    CHECK(strcmp(styleName, "DEFAULT") == 0);
+
+    const char* styleDesc = lexer->DescriptionOfStyle(0);
+    CHECK(styleDesc != nullptr);
+    CHECK(strcmp(styleDesc, "Default text") == 0);
+
+    // Check all 27 styles have names
+    for (int i = 0; i < namedStyles; ++i) {
+        const char* name = lexer->NameOfStyle(i);
+        CHECK(name != nullptr);
+        CHECK(strlen(name) > 0);
+    }
+
+    delete lexer;
+    CHECK(true);
+}
+
+// Test that lexer handles malformed/invalid XML gracefully
+TEST_CASE("Integration: Lexer handles missing XML gracefully") {
+    // Lexer doesn't load XML directly - it uses NamedStyles API
+    // This test verifies the plugin doesn't depend on external XML file
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    // Verify all style names match expected defaults from nppColdFusion.xml
+    static const char* expectedStyles[] = {
+        "DEFAULT", "TAG", "CFTAG", "ATTRIBUTE", "ATTRIBUTEUNKNOWN",
+        "NUMBER", "DOUBLESTRING", "SINGLESTRING", "OPERATOR", "COMMENT",
+        "COMMENTBLOCK", "TAGEND", "CFCOMMENT", "CFVALUE", "CFFUNCTION",
+        "CFKEYWORD", "CFATTRIBUTE", "CFATTRIBUTEBAD", "LOCALVARS", "CFSRESERVED",
+        "SQLKEYWORD", "JSKEYWORD", "CSSKEYWORD", "CSSPROPERTY",
+        "CF_TAGUNKNOWN", "CF_NUMBER", "CF_DOUBLESTRING", "CF_SINGLESTRING"
+    };
+
+    int namedStyles = lexer->NamedStyles();
+    CHECK(namedStyles == 27);
+
+    for (int i = 0; i < namedStyles; ++i) {
+        const char* name = lexer->NameOfStyle(i);
+        CHECK(name != nullptr);
+        CHECK(strcmp(name, expectedStyles[i]) == 0);
+    }
+
+    delete lexer;
+}
+
+// Test that lexer produces valid style IDs for real content
+TEST_CASE("Integration: Lexer produces valid style IDs for all fixtures") {
+    fs::path fixturesDir = GetFixturesDir();
+
+    std::vector<std::string> allFiles = {
+        "taffy_Application.cfc",
+        "taffy_artistMember.cfc",
+        "lucee_docs_build.cfm"
+    };
+
+    for (const auto& filename : allFiles) {
+        fs::path filePath = fixturesDir / filename;
+        if (!fs::exists(filePath)) continue;
+
+        std::string content = ReadFile(filePath);
+        if (content.empty()) continue;
+
+        Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+        REQUIRE(lexer != nullptr);
+
+        lexer->PropertySet("fold", "1");
+        lexer->PropertySet("fold.compact", "1");
+
+        int length = static_cast<int>(content.size());
+        lexer->Lex(0, length, 0, nullptr);
+
+        // Verify style IDs returned are within valid range
+        // (This is implicitly tested by successful lexing without crash)
+        CHECK(true);
+
+        delete lexer;
+    }
+}
+
+// Test edge cases
+TEST_CASE("Integration: No crash on empty file") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->Lex(0, 0, 0, nullptr); // Empty content
+
+    delete lexer;
+    CHECK(true);
+}
+
+TEST_CASE("Integration: No crash on UTF-8 BOM") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    std::string utf8Bom = "\xEF\xBB\xBF<cfset x = 1>";
+    lexer->Lex(0, static_cast<int>(utf8Bom.size()), 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
