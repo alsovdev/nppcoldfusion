@@ -30,14 +30,17 @@
    - **x86** (Notepad++ 32-bit): `nppColdFusion-x86.dll`, `nppColdFusion.xml`, `INSTALL.txt`
    - **Shared**: `SHA256SUMS.txt`
 
-2. **Choose your architecture** and copy **both** DLL and XML:
+2. **Rename the DLL** to match the plugin folder name:
+   - Rename `nppColdFusion-x64.dll` → `nppColdFusion.dll` (for x64)
+   - Rename `nppColdFusion-x86.dll` → `nppColdFusion.dll` (for x86)
+
+3. **Copy both DLL and XML to the plugin folder** (create it if needed):
    ```
    %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll
    %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.xml
    ```
-   (Create the `nppColdFusion` folder if it doesn't exist)
 
-3. **Both files must be in the same folder** as the DLL.
+4. **XML file is REQUIRED by Notepad++** — it must have the same name as the DLL (`nppColdFusion.xml` for `nppColdFusion.dll`). Both files must be in the same folder as the DLL.
 
 > ⚠️ **Important: XML file is REQUIRED by Notepad++ for lexer plugins**
 >
@@ -46,6 +49,16 @@
 > If the XML is missing, Notepad++ will show an error dialog: "`nppColdFusion.xml is missing`" and **disable the plugin**. The plugin cannot work without it.
 >
 > Built-in default colors (via `ILexer5::NamedStyles` API) are used **only when Notepad++ reads the XML** — they serve as fallback values for the Style Configurator, not as a replacement for the XML file.
+
+#### Alternative: Place XML in AppData (recommended for installed Notepad++)
+
+If Notepad++ is installed in `Program Files` (requires admin rights to write), place the XML in your user profile instead — it will be preserved across plugin updates:
+
+```
+%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml
+```
+
+Notepad++ checks this location automatically if the XML is not found next to the DLL. The DLL itself still needs to be in the plugin folder.
 
 #### For Portable Notepad++
 
@@ -57,16 +70,6 @@
         ├── nppColdFusion.dll
         └── nppColdFusion.xml
 ```
-
-### Alternative: AppData (for installed Notepad++ in Program Files)
-
-If Notepad++ is installed in `Program Files` (requires admin rights to write), you can place the XML in your user profile instead — it will be preserved across plugin updates:
-
-```
-%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml
-```
-
-Notepad++ checks this location automatically if the XML is not found next to the DLL. The DLL itself still needs to be in the plugin folder.
 
 ### Verify Installation
 
