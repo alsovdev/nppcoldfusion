@@ -8,6 +8,21 @@
 **In English: [CHANGELOG.md](CHANGELOG.md)**
 
 ---
+## [0.9.7] - 2026-11-04
+
+### Исправлено
+
+- **Обработка кириллицы/Unicode в лексере** — `IsAWordChar` теперь разрешает Unicode-символы (≥0x80) как часть слова; добавлен `SafeMakeLowerCase`, который lowercases только ASCII, а Unicode пропускает неизменным; предотвращает краши при вводе кириллицы внутри `<cfquery>`
+- **Подсветка SQL-ключевых слов внутри `<cfquery>`** — реализован `DescribeWordListSets()` для передачи списков ключевых слов из Notepad++; `WordListSet()` сохраняет списки; `Colourise_Doc` заполняет ключевые слова BlockType; `CFQueryBlock::validateforkeyword` теперь находит ключевые слова в состоянии `_DEFAULT`
+- **Автокомплит cfelse/cfelseif** — изменено `closing_required: false` в `data/tags.yaml`; больше не генерирует `</cfelse>` или `</cfelseif>`
+- **Границы массивов** — увеличены `originallists`/`loweredlists` с 10 до 31 для соответствия `numWordLists = 31` (KEYWORDSET_MAX+1)
+- **Синтаксические ошибки** — убраны лишние скобки в `Colourise_Doc` (строки 1017, 1107)
+- **Проверки границ Forward** — добавлены проверки `a>0` на всех вызовах `sc.Forward(a-1)` (8 мест) для предотвращения крашей на неполных словах
+
+### Изменено
+
+- **Версия плагина** — 0.9.6 → 0.9.7 в `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION)
+- **Документация** — уточнено: XML конфиг должен лежать в `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml` (единственный надежный путь); обновлены README.md и README.ru.md
 
 ## [0.9.6] - 2026-11-03
 

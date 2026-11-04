@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.7] - 2026-11-04
+
+### Fixed
+
+- **Cyrillic/Unicode handling in lexer** — `IsAWordChar` now allows Unicode characters (≥0x80) as word characters; added `SafeMakeLowerCase` wrapper that only lowercases ASCII and passes Unicode through unchanged; prevents crashes when typing Cyrillic inside `<cfquery>`
+- **SQL keyword highlighting inside `<cfquery>`** — implemented `DescribeWordListSets()` so Notepad++ sends keyword lists; `WordListSet()` stores lists; `Colourise_Doc` populates BlockType keywords from stored lists; `CFQueryBlock::validateforkeyword` now detects keywords in `_DEFAULT` state
+- **cfelse/cfelseif autocomplete** — changed `closing_required: false` in `data/tags.yaml`; no longer generates `</cfelse>` or `</cfelseif>`
+- **Array bounds** — increased `originallists`/`loweredlists` arrays from 10 to 31 to match `numWordLists = 31` (KEYWORDSET_MAX+1)
+- **Syntax errors** — removed extra parentheses in `Colourise_Doc` (lines 1017, 1107)
+- **Forward bounds checks** — added `a>0` guards on all `sc.Forward(a-1)` calls (8 locations) to prevent crashes on incomplete words
+
+### Changed
+
+- **Plugin version** — 0.9.6 → 0.9.7 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION)
+- **Documentation** — clarified XML config must go to `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml` (only reliable path); updated README.md and README.ru.md
+
 ## [0.9.6] - 2026-11-03
 
 ### Added
