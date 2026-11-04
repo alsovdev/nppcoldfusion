@@ -261,22 +261,21 @@ jobs:
 
       - name: Prepare release package (classic structure)
         run: |
-          mkdir -p release_artifacts/x64 release_artifacts/x86
+          mkdir -p release_artifacts/x64 release_artifacts/x86 release_artifacts/shared
 
-          # Architecture-specific DLLs with XML in same folder
+          # Architecture-specific DLLs
           cp artifacts/x64/nppColdFusion.dll release_artifacts/x64/nppColdFusion-x64.dll
-          cp artifacts/shared/nppColdFusion.xml release_artifacts/x64/
-          
           cp artifacts/x86/nppColdFusion.dll release_artifacts/x86/nppColdFusion-x86.dll
-          cp artifacts/shared/nppColdFusion.xml release_artifacts/x86/
 
-          # INSTALL.txt (generic for both architectures)
-          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll AND nppColdFusion.xml (both from x64 or x86 folder) to that folder\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll AND nppColdFusion.xml to <Notepad++>\\plugins\\nppColdFusion\\\n\nNote: nppColdFusion.xml must be in the same folder as the DLL.\nIf XML is missing, default colors from the plugin will be used.\n" > release_artifacts/x64/INSTALL.txt
-          cp release_artifacts/x64/INSTALL.txt release_artifacts/x86/INSTALL.txt
+          # Shared XML and INSTALL.txt (identical for both architectures)
+          cp artifacts/shared/nppColdFusion.xml release_artifacts/shared/
+          
+          # INSTALL.txt
+          printf "nppColdFusion ${{ github.ref_name }} - Installation Instructions\n====================================================\n\n1. Create folder: %%ProgramFiles%%\\Notepad++\\plugins\\nppColdFusion\\\n2. Copy nppColdFusion.dll (x64 or x86) AND nppColdFusion.xml from shared/ to that folder\n\nFor Portable Notepad++:\n  Copy nppColdFusion.dll AND nppColdFusion.xml to <Notepad++>\\plugins\\nppColdFusion\\\n\nNote: nppColdFusion.xml must be in the same folder as the DLL.\nIf XML is missing, default colors from the plugin will be used.\n" > release_artifacts/shared/INSTALL.txt
 
           # SHA256SUMS.txt with all files
           cd release_artifacts
-          sha256sum x64/nppColdFusion-x64.dll x64/nppColdFusion.xml x86/nppColdFusion-x86.dll x86/nppColdFusion.xml > SHA256SUMS.txt
+          sha256sum x64/nppColdFusion-x64.dll x86/nppColdFusion-x86.dll shared/nppColdFusion.xml > SHA256SUMS.txt
 
           echo "=== Release package structure ==="
           find release_artifacts -type f | sort
@@ -304,11 +303,9 @@ jobs:
           prerelease: false
           files: |
             release_artifacts/x64/nppColdFusion-x64.dll
-            release_artifacts/x64/nppColdFusion.xml
-            release_artifacts/x64/INSTALL.txt
             release_artifacts/x86/nppColdFusion-x86.dll
-            release_artifacts/x86/nppColdFusion.xml
-            release_artifacts/x86/INSTALL.txt
+            release_artifacts/shared/nppColdFusion.xml
+            release_artifacts/shared/INSTALL.txt
             release_artifacts/SHA256SUMS.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
