@@ -103,6 +103,8 @@ public:
 	void wrapCFDump();
 	void aboutDlg();
 	void wrapIn( const char * before, const char * after );
+	// XML auto-generation
+	void EnsureXmlConfigExists( const TCHAR* pluginConfigDir );
 protected:
 	// custom functions
 	void AutoBracketsFunc( int nBracketType );

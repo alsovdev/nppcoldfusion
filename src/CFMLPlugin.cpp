@@ -202,9 +202,9 @@ void CFMLPlugin::OnNppFileSaved()
 }
 void CFMLPlugin::OnNppReady()
 {
-	//ReadOptions();
-	//CXBracketsMenu::UpdateMenuState();
-	//UpdateFileType();
+	// ReadOptions();
+	// CXBracketsMenu::UpdateMenuState();
+	// UpdateFileType();
 
 	if (isNppWndUnicode) {
 		nppOriginalWndProc = (WNDPROC)SetWindowLongPtrW(
@@ -223,6 +223,10 @@ void CFMLPlugin::OnNppReady()
 	else {
 		cfs.isFingerTextInstalled = false;
 	}
+	
+	// Auto-generate XML config if missing (Notepad++ requires XML for lexer plugins)
+	EnsureXmlConfigExists(cfs.plugindir);
+
 	nppCFMenu::updateMenu();
 	cfs.nppReady = true;
 }
@@ -998,3 +1002,72 @@ void CFMLPlugin::wrapIn(const char* before, const char* after)
 
 
 }
+
+// Ensure XML config file exists for Notepad++ lexer plugin
+// Notepad++ requires an XML file with the same name as the DLL in the plugins config directory
+void CFMLPlugin::EnsureXmlConfigExists(const TCHAR* pluginConfigDir)
+{
+	if (!pluginConfigDir || pluginConfigDir[0] == _T('\0')) {
+		return;
+	}
+
+	TCHAR xmlPath[MAX_PATH];
+	_tcscpy_s(xmlPath, MAX_PATH, pluginConfigDir);
+	_tcscat_s(xmlPath, MAX_PATH, _T("\\nppColdFusion.xml"));
+
+	// Check if XML already exists
+	if (_taccess(xmlPath, 0) == 0) {
+		return; // XML exists, no need to generate
+	}
+
+	// Generate default XML from built-in styles
+	FILE* file = _tfopen(xmlPath, _T("w, ccs=UTF-8"));
+	if (!file) {
+		return; // Could not create file
+	}
+
+	// Write XML with default styles matching NamedStyles API
+	fprintf(file, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+	fprintf(file, "<NotepadPlus>\n");
+	fprintf(file, "    <Languages>\n");
+	fprintf(file, "        <Language name=\"ColdFusion\" ext=\"cfm cfc cfml\" commentStart=\"<!--\" commentEnd=\"-->\">\n");
+	fprintf(file, "            <Keywords name=\"0\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"1\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"2\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"3\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"4\">active after before first first-child first-letter first-line focus hover lang left link right visited</Keywords>\n");
+	fprintf(file, "            <Keywords name=\"5\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"6\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"7\"></Keywords>\n");
+	fprintf(file, "        </Language>\n");
+	fprintf(file, "    </Languages>\n");
+	fprintf(file, "    <LexerStyles>\n");
+	fprintf(file, "        <LexerType name=\"ColdFusion\" desc=\"ColdFusion\" excluded=\"no\">\n");
+	fprintf(file, "            <WordsStyle name=\"DEFAULT\" styleID=\"0\" fgColor=\"000000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"1\" fontSize=\"\" keywordClass=\"0\" />\n");
+	fprintf(file, "            <WordsStyle name=\"TAG\" styleID=\"1\" fgColor=\"0000FF\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"0\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFTAG\" styleID=\"2\" fgColor=\"804000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"1\" />\n");
+	fprintf(file, "            <WordsStyle name=\"ATTRIBUTE\" styleID=\"3\" fgColor=\"0080C0\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"ATTRIBUTEUNKNOWN\" styleID=\"4\" fgColor=\"FF0000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"NUMBER\" styleID=\"5\" fgColor=\"FF8000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"DOUBLESTRING\" styleID=\"6\" fgColor=\"8000FF\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"1\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"SINGLESTRING\" styleID=\"7\" fgColor=\"8000FF\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"1\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"OPERATOR\" styleID=\"8\" fgColor=\"000080\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"1\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"COMMENT\" styleID=\"9\" fgColor=\"008000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"COMMENTBLOCK\" styleID=\"10\" fgColor=\"008000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFCOMMENT\" styleID=\"12\" fgColor=\"408080\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"2\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFVALUE\" styleID=\"13\" fgColor=\"FF8000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFFUNCTION\" styleID=\"14\" fgColor=\"808000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"2\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFATTRIBUTE\" styleID=\"15\" fgColor=\"800080\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFATTRIBUTEBAD\" styleID=\"16\" fgColor=\"FF0000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"LOCALVARS\" styleID=\"17\" fgColor=\"000000\" bgColor=\"F2F2F2\" fontName=\"\" fontStyle=\"1\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CFSRESERVED\" styleID=\"19\" fgColor=\"804000\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" />\n");
+	fprintf(file, "            <WordsStyle name=\"SQLKEYWORDS\" styleID=\"21\" fgColor=\"0000FF\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"6\" />\n");
+	fprintf(file, "            <WordsStyle name=\"JSKEYWORDS\" styleID=\"22\" fgColor=\"871F78\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"5\" />\n");
+	fprintf(file, "            <WordsStyle name=\"CSSKEYWORDS\" styleID=\"23\" fgColor=\"871F78\" bgColor=\"FFFFFF\" fontName=\"\" fontStyle=\"0\" fontSize=\"\" keywordClass=\"7\" />\n");
+	fprintf(file, "        </LexerType>\n");
+	fprintf(file, "    </LexerStyles>\n");
+	fprintf(file, "</NotepadPlus>\n");
+
+	fclose(file);
+}
+

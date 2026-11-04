@@ -38,7 +38,14 @@
    (Create the `nppColdFusion` folder if it doesn't exist)
 
 3. **Both files must be in the same folder** as the DLL.
-   If `nppColdFusion.xml` is missing, the plugin uses built-in default colors.
+
+> ⚠️ **Important: XML file is REQUIRED by Notepad++ for lexer plugins**
+>
+> Per the [Notepad++ Plugin Development documentation](https://npp-user-manual.org/docs/plugins#lexer-plugin), when Notepad++ loads a lexer plugin it **expects the corresponding styles XML file to be present** in the plugin config directory. The XML file must have the same name as the DLL (e.g., `nppColdFusion.xml` for `nppColdFusion.dll`).
+>
+> If the XML is missing, Notepad++ will show an error dialog: "`nppColdFusion.xml is missing`" and **disable the plugin**. The plugin cannot work without it.
+>
+> Built-in default colors (via `ILexer5::NamedStyles` API) are used **only when Notepad++ reads the XML** — they serve as fallback values for the Style Configurator, not as a replacement for the XML file.
 
 #### For Portable Notepad++
 
