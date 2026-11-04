@@ -174,7 +174,37 @@ namespace nppColdFusionNS
         bool unregisterLexer(unsigned int const& lexID, unsigned int const& docID);
 
     protected:
-        nppCFShared() {}
+        nppCFShared() : coldfusionNS(nullptr), htmlNS(nullptr), sqlNS(nullptr), javascriptNS(nullptr), cssNS(nullptr) {
+            // Initialize namespace objects
+            coldfusionNS = new CFNamespace();
+            htmlNS = new HTMLNamespace();
+            sqlNS = new SQLNamespace();
+            javascriptNS = new JSNamespace();
+            cssNS = new CSSNamespace();
+            nppReady = false;
+            currentdoc = nullptr;
+            isFingerTextInstalled = false;
+            integrateWithFingerText = false;
+            alwaysCompleteReqAttributes = false;
+            completeCFsqltype = false;
+            // Initialize string arrays to nullptr
+            for (int i = 0; i < 10; ++i) {
+                originallists[i] = nullptr;
+                loweredlists[i] = nullptr;
+            }
+        }
+        ~nppCFShared() {
+            delete coldfusionNS;
+            delete htmlNS;
+            delete sqlNS;
+            delete javascriptNS;
+            delete cssNS;
+            // Clean up originallists and loweredlists
+            for (int i = 0; i < 10; ++i) {
+                delete[] originallists[i];
+                delete[] loweredlists[i];
+            }
+        }
         nppCFShared(const nppCFShared&);
         nppCFShared& operator= (const nppCFShared&);
     };
