@@ -34,31 +34,26 @@
    - `nppColdFusion-x64.dll` → `nppColdFusion.dll` (для x64)
    - `nppColdFusion-x86.dll` → `nppColdFusion.dll` (для x86)
 
-3. **Скопируйте обе DLL и XML в папку плагина** (создайте её при необходимости):
+3. **Скопируйте DLL в папку плагина** (создайте её при необходимости):
    ```
    %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll
-   %ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.xml
    ```
 
-4. **XML файл ОБЯЗАТЕЛЕН для Notepad++** — он должен иметь то же имя, что и DLL (`nppColdFusion.xml` для `nppColdFusion.dll`). Оба файла должны лежать в одной папке с DLL.
+4. **Скопируйте XML в папку Config в AppData** (это ЕДИНСТВЕННЫЙ рабочий путь для установленного Notepad++):
+   ```
+   %APPDATA%\Notepad++\plugins\config\nppColdFusion.xml
+   ```
 
-> ⚠️ **Важно: XML файл ОБЯЗАТЕЛЕН для lexer-плагинов Notepad++**
+> ⚠️ **Важно: расположение XML файла**
 >
-> Согласно [документации по разработке плагинов Notepad++](https://npp-user-manual.org/docs/plugins#lexer-plugin), при загрузке lexer-плагина Notepad++ **ожидает наличия соответствующего XML файла стилей** в папке конфигурации плагина. XML файл должен иметь то же имя, что и DLL (например, `nppColdFusion.xml` для `nppColdFusion.dll`).
+> Notepad++ ищет XML лексера в **`plugins\Config\`** при загрузке — **не** рядом с DLL.
 >
-> Если XML отсутствует, Notepad++ покажет ошибку: "`nppColdFusion.xml is missing`" и **отключит плагин**. Плагин не может работать без него.
+> - **DLL** → `%ProgramFiles%\Notepad++\plugins\nppColdFusion\nppColdFusion.dll`
+> - **XML** → `%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml`
 >
-> Встроенные цвета по умолчанию (через API `ILexer5::NamedStyles`) используются **только когда Notepad++ читает XML** — они служат запасными значениями для Style Configurator, а не заменой XML файлу.
-
-#### Альтернатива: положить XML в AppData (рекомендуется для установленного Notepad++)
-
-Если Notepad++ установлен в `Program Files` (нужны права админа для записи), положите XML в профиль пользователя — он сохранится при обновлениях плагина:
-
-```
-%APPDATA%\Notepad++\plugins\config\nppColdFusion.xml
-```
-
-Notepad++ сам проверит это место, если XML не найден рядом с DLL. Сама DLL всё равно должна быть в папке плагина.
+> Папка `plugins\Config\` в Program Files требует прав администратора для записи. AppData доступен для записи пользователем и работает без повышения прав. Это рекомендуемый и надежный путь.
+>
+> Для portable-версии Notepad++ положите оба файла в `<Notepad++>\plugins\nppColdFusion\`.
 
 #### Для Portable-версии Notepad++
 
@@ -74,7 +69,7 @@ Notepad++ сам проверит это место, если XML не найд�
 ### Проверка установки
 
 1. Перезапустите Notepad++
-2. Откройте **Plugins → nppColdFusion → About** — должна отображаться версия (например, `v0.9.4`)
+2. Откройте **Plugins → nppColdFusion → About** — должна отображаться версия (например, `v0.9.6`)
 3. Откройте файл `.cfm` или `.cfc` — синтаксическая подсветка должна включиться автоматически
 
 ### Проверка целостности (опционально)
