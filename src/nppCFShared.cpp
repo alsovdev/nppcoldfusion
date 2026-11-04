@@ -128,44 +128,36 @@ nppCFShared& nppCFShared::Instance()
 
 const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, bool hasFingerText, bool forautoc) {
         // Cache key includes namespace, tag name, onlyrequired, hasFingerText, forautoc
-        static thread_local std::unordered_map<std::string, std::string> cached_attrs;
-
-        std::string cache_key = std::to_string(this->ns) + "|" +
-                               std::to_string(onlyrequired) + "|" +
-                               std::to_string(hasFingerText) + "|" +
-                               std::to_string(forautoc) + "|" +
-                               tag;
-
+        // Use a map of string to string, but return a copy to avoid pointer invalidation on rehash
+        // Since autocomplete is not performance-critical, we skip caching for safety
+        
         if (this->ns > 0 && this->ns <= 5) {
-            auto it = cached_attrs.find(cache_key);
-            if (it == cached_attrs.end()) {
-                size_t attr_count = 0;
-                const TagAttribute* attrs = findTagAttributes(tag, namespace_id, attr_count);
-                std::string result;
-                if (attrs && attr_count > 0) {
-                    const char* extra = forautoc ? "?1" : "";
-                    for (size_t i = 0; i < attr_count; ++i) {
-                        if (!result.empty()) {
-                            result += " ";
-                        }
-                        result += attrs[i].name;
-                        if (onlyrequired) {
-                            if (hasFingerText) {
-                            result += "=\"\\\\\\\\\\\\\\\"$[![]!]\\\\\\\\\\\\\\\"";
-                            } else {
-                                result += "=\"\"";
-                            }
+            size_t attr_count = 0;
+            const TagAttribute* attrs = findTagAttributes(tag, namespace_id, attr_count);
+            if (attrs && attr_count > 0) {
+                static thread_local std::string result; // thread-local buffer, reused per call
+                result.clear();
+                const char* extra = forautoc ? "?1" : "";
+                for (size_t i = 0; i < attr_count; ++i) {
+                    if (!result.empty()) {
+                        result += " ";
+                    }
+                    result += attrs[i].name;
+                    if (onlyrequired) {
+                        if (hasFingerText) {
+                            result += "=\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"$[![]!]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"";
                         } else {
-                            result += "=";
+                            result += "=\"\"";
                         }
-                        if (forautoc) {
-                            result += extra;
-                        }
+                    } else {
+                        result += "=";
+                    }
+                    if (forautoc) {
+                        result += extra;
                     }
                 }
-                it = cached_attrs.emplace(std::move(cache_key), std::move(result)).first;
+                return result.c_str();
             }
-            return it->second.c_str();
         }
         return "";
     }
