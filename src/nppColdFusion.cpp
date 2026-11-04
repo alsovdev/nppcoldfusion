@@ -105,7 +105,23 @@ LexerColdFusion::~LexerColdFusion() {
 
 static inline bool IsAWordChar(const int ch)
 {
-	return (ch < 0x80) && (isalnum(static_cast<unsigned char>(ch)) || ch == '.' || ch == '_');
+	// Allow ASCII alphanum, underscore, dot + Unicode letters (including Cyrillic)
+	// ch >= 0x80 includes most non-ASCII scripts (Cyrillic starts at 0x0400)
+	if (ch < 0x80) {
+		return isalnum(static_cast<unsigned char>(ch)) || ch == '.' || ch == '_';
+	}
+	// For Unicode, treat as word char if it's a letter (simplified: allow all >= 0x80 except control chars)
+	// This allows Cyrillic, Greek, etc. to be part of identifiers
+	return ch >= 0x80 && ch != 0xFFFD; // exclude replacement char
+}
+
+static inline int SafeMakeLowerCase(int ch)
+{
+	// Lexilla::MakeLowerCase only handles ASCII; for Unicode return as-is
+	if (ch < 0x80) {
+		return Lexilla::MakeLowerCase(ch);
+	}
+	return ch; // pass through Unicode unchanged
 }
 
 
@@ -166,7 +182,7 @@ void SCI_METHOD LexerColdFusion::Lex(Sci_PositionU startPos, Sci_Position length
 					}
 					else {
 						if (IsAWordChar(ch)) {
-							s[wordlength] = Lexilla::MakeLowerCase(ch); ///
+							s[wordlength] = SafeMakeLowerCase(ch); ///
 							if (s[wordlength] == component[wordlength]) {
 								wordlength++;
 								if (wordlength >= 9) {
@@ -909,10 +925,10 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					max = (startPos - sc.currentPos) + length;
 				}
 				for (int a = 0; a < max; a++) {
-					int rel = sc.GetRelative(a);
-					if (rel != '.' && IsAWordChar(rel) || (inCSSBlock && rel == '-')) {
-						s[a] = Lexilla::MakeLowerCase(sc.GetRelative(a));
-					}
+							int rel = sc.GetRelative(a);
+							if (rel != '.' && IsAWordChar(rel) || (inCSSBlock && rel == '-')) {
+								s[a] = SafeMakeLowerCase(sc.GetRelative(a));
+							}
 					else {
 						s[a] = '\0';
 						bool handledkeyword = false;
@@ -1156,7 +1172,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = Lexilla::MakeLowerCase(ch);
+								s[i++] = SafeMakeLowerCase(ch);
 					paddedText[i] = s[i - 1];
 				}
 				else {
@@ -1254,7 +1270,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = Lexilla::MakeLowerCase(ch);
+								s[i++] = SafeMakeLowerCase(ch);
 				}
 				else {
 					//we're at a block
@@ -1286,7 +1302,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 			for (int a = 0; a < max; a++) {
 				int ch = sc.GetRelative(a + 1);
 				if (setTagContinue.Contains(ch)) {
-					s[i++] = Lexilla::MakeLowerCase(ch);
+								s[i++] = SafeMakeLowerCase(ch);
 				}
 				else {
 					//we're at a block
