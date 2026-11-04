@@ -65,6 +65,8 @@ enum class StyleId : int
     TAGEND            = 100,
     QUESTION          = 101,
     XCCOMMENT         = 102,
+    LOCAL_VARIABLE    = 103,  // Internal: was 18, now LOCALVARS=17 in XML
+    CSS_PROPERTY      = 104,  // Internal: was 25
     CF_TAGUNKNOWN     = 130,
     CF_NUMBER         = 133,
     CF_DOUBLESTRING   = 134,
@@ -132,12 +134,14 @@ const int CF_FUNCTION        = static_cast<int>(StyleId::CF_FUNCTION);
 const int CF_ATTRIBUTE       = static_cast<int>(StyleId::CF_ATTRIBUTE);
 const int CF_ATTRIBUTEBAD    = static_cast<int>(StyleId::CF_ATTRIBUTEBAD);
 const int LOCALVARS          = static_cast<int>(StyleId::LOCALVARS);
+const int LOCAL_VARIABLE     = static_cast<int>(StyleId::LOCAL_VARIABLE);
 const int _QUESTION          = static_cast<int>(StyleId::QUESTION);
 const int CFS_RESERVED       = static_cast<int>(StyleId::CFS_RESERVED);
 const int _XCCOMMENT         = static_cast<int>(StyleId::XCCOMMENT);
 const int SQL_KEYWORD        = static_cast<int>(StyleId::SQL_KEYWORD);
 const int JS_KEYWORD         = static_cast<int>(StyleId::JS_KEYWORD);
 const int CSS_KEYWORD        = static_cast<int>(StyleId::CSS_KEYWORD);
+const int CSS_PROPERTY       = static_cast<int>(StyleId::CSS_PROPERTY);
 
 const int J_START            = static_cast<int>(StyleId::J_START);
 const int J_DEFAULT          = static_cast<int>(StyleId::J_DEFAULT);
