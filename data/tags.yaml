@@ -1936,11 +1936,11 @@ cfdump:
 cfelse:
   attributes: []
   autoclosing: true
-  closing_required: true
+  closing_required: false
 cfelseif:
   attributes: []
   autoclosing: true
-  closing_required: true
+  closing_required: false
 cferror:
   attributes:
   - name: type
