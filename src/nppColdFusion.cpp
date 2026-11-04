@@ -212,11 +212,10 @@ void SCI_METHOD LexerColdFusion::Lex(Sci_PositionU startPos, Sci_Position length
 			astyler.StartAt(0);
 			return;
 		}
-		if (hasDeterminedType || inScriptComment || inScriptLineComment || closingcomment) {
-			Colourise_Doc(startPos, length, initStyle, astyler);
-			astyler.Flush();
-
-		}
+		// Always colourise if we have a valid document, not just when type is determined
+		// This ensures syntax highlighting works on startup with files already open
+		Colourise_Doc(startPos, length, initStyle, astyler);
+		astyler.Flush();
 	}
 	catch (...) {
 		// Should not throw into caller as may be compiled with different compiler or options
@@ -459,16 +458,18 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 	/*incfset.value	= getstoredbitvalue( linestate, incfset );
 	status.inCFSet			= incfset.value;
 	*/
-	// Safety check: on N++ startup with file already open, scintilla window may not be ready
+	// On N++ startup with file already open, scintilla window may not be ready
+	// We can still colourise - just skip the outsideeditingrange optimization
 	HWND scintillaWnd = cfs->m_nppMsgr.getCurrentScintillaWnd();
-	if (!scintillaWnd) {
-		return status;
-	}
-	CSciMessager sciMsgr(scintillaWnd);
-	unsigned int currenteditpos = sciMsgr.getCurrentPos();
-	bool outsideeditingrange = false;
-	if ((startPos < currenteditpos - min(currenteditpos, 100) || startPos > currenteditpos + 100)) {
-		outsideeditingrange = true;
+	unsigned int currenteditpos = 0;
+	bool outsideeditingrange = true; // Default to true if no window
+	if (scintillaWnd) {
+		CSciMessager sciMsgr(scintillaWnd);
+		currenteditpos = sciMsgr.getCurrentPos();
+		outsideeditingrange = false;
+		if ((startPos < currenteditpos - min(currenteditpos, 100) || startPos > currenteditpos + 100)) {
+			outsideeditingrange = true;
+		}
 	}
 	Lexilla::SparseState<std::string> cfTagsNew(startPos);
 	Lexilla::SparseState<std::string> htmlTagsNew(startPos);
