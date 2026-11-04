@@ -149,8 +149,8 @@ namespace nppColdFusionNS
         static nppCFShared& Instance();
 
         bool nppReady;
-        char* originallists[10];
-        char* loweredlists[10];
+        char* originallists[31];
+        char* loweredlists[31];
         TCHAR plugindir[MAX_PATH];
         std::vector<BlockType*> blocks;
         CNppMessager m_nppMsgr;
@@ -188,7 +188,7 @@ namespace nppColdFusionNS
             alwaysCompleteReqAttributes = false;
             completeCFsqltype = false;
             // Initialize string arrays to nullptr
-            for (int i = 0; i < 10; ++i) {
+            for (int i = 0; i < 31; ++i) {
                 originallists[i] = nullptr;
                 loweredlists[i] = nullptr;
             }
@@ -200,7 +200,7 @@ namespace nppColdFusionNS
             delete javascriptNS;
             delete cssNS;
             // Clean up originallists and loweredlists
-            for (int i = 0; i < 10; ++i) {
+            for (int i = 0; i < 31; ++i) {
                 delete[] originallists[i];
                 delete[] loweredlists[i];
             }
