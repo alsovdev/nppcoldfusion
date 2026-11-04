@@ -34,89 +34,89 @@ namespace Styles
 
 enum class StyleId : int
 {
-    // Base styles (match XML)
-    DEFAULT          = 0,
-    TAG              = 1,
-    CF_TAG           = 2,
-    ATTRIBUTE        = 3,
-    ATTRIBUTEUNKNOWN = 4,
-    NUMBER           = 5,
-    DOUBLESTRING     = 6,
-    SINGLESTRING     = 7,
-    OPERATOR         = 8,
-    COMMENT          = 9,
-    COMMENTBLOCK     = 10,
-    TAGEND           = 11,
-    CF_COMMENT       = 12,
-    CF_VALUE         = 13,
-    CF_FUNCTION      = 14,
-    CF_KEYWORD       = 15,
-    CF_ATTRIBUTE     = 16,
-    CF_ATTRIBUTEBAD  = 17,
-    LOCAL_VARIABLE   = 18,
-    QUESTION         = 19,
-    CFS_RESERVED     = 20,
-    XCCOMMENT        = 21,
-    
-    // Language-specific keywords (must be unique)
-    SQL_KEYWORD      = 22,
-    JS_KEYWORD       = 23,
-    CSS_KEYWORD      = 24,
-    CSS_PROPERTY     = 25,
-    
-    // JavaScript styles
-    J_START          = 40,
-    J_DEFAULT        = 41,
-    J_COMMENT        = 42,
-    J_COMMENTLINE    = 43,
-    J_COMMENTDOC     = 44,
-    J_NUMBER         = 45,
-    J_WORD           = 46,
-    J_KEYWORD        = 47,
-    J_DOUBLESTRING   = 48,
-    J_SINGLESTRING   = 49,
-    J_SYMBOLS        = 50,
-    J_STRINGEOL      = 51,
-    J_REGEX          = 52,
-    
-    // Java styles
-    JA_START         = 55,
-    JA_COMMENT       = 57,
-    JA_COMMENTLINE   = 58,
-    JA_COMMENTDOC    = 59,
-    JA_NUMBER        = 60,
-    JA_WORD          = 61,
-    JA_KEYWORD       = 62,
-    JA_DOUBLESTRING  = 63,
-    JA_SINGLESTRING  = 64,
-    JA_SYMBOLS       = 65,
-    JA_STRINGEOL     = 66,
-    JA_REGEX         = 67,
-    
-    // ColdFusion specific styles (extended range)
-    CF_TAGUNKNOWN    = 130,
-    CF_NUMBER        = 133,
-    CF_DOUBLESTRING  = 72,
-    CF_SINGLESTRING  = 135,
-    CF_OTHER         = 136,
-    CF_ENTITY        = 138,
-    CF_TAGEND        = 139,
-    CF_XMLSTART      = 140,
-    CF_XMLEND        = 141,
-    CF_SCRIPT        = 142,
-    CF_OUTPUT        = 143,
-    CF_QUERY         = 150,  // Was 24 (conflict with CSS_KEYWORD), moved to unique value
-    CF_CDATA         = 145,
-    CF_QUESTION      = 146,
-    
-    CF_XCCOMMENT     = 148,
+    // Base styles (MUST match nppColdFusion.xml styleID exactly)
+    DEFAULT           = 0,
+    TAG               = 1,
+    CF_TAG            = 2,
+    ATTRIBUTE         = 3,
+    ATTRIBUTEUNKNOWN  = 4,
+    NUMBER            = 5,
+    DOUBLESTRING      = 6,
+    SINGLESTRING      = 7,
+    OPERATOR          = 8,
+    COMMENT           = 9,
+    COMMENTBLOCK      = 10,
+    // 11 = gap (not in XML)
+    CF_COMMENT        = 12,
+    CF_VALUE          = 13,
+    CF_FUNCTION       = 14,
+    CF_ATTRIBUTE      = 15,   // XML: CFATTRIBUTE
+    CF_ATTRIBUTEBAD   = 16,   // XML: CFATTRIBUTEBAD
+    LOCALVARS         = 17,   // XML: LOCALVARS
+    // 18 = gap (not in XML)
+    CFS_RESERVED      = 19,   // XML: CFSRESERVED
+    // 20 = gap (not in XML)
+    SQL_KEYWORD       = 21,   // XML: SQLKEYWORDS
+    JS_KEYWORD        = 22,   // XML: JSKEYWORDS
+    CSS_KEYWORD       = 23,   // XML: CSSKEYWORDS
+    // 24 = gap (not in XML)
+
+    // Internal styles (not in XML, use extended range to avoid conflicts)
+    TAGEND            = 100,
+    QUESTION          = 101,
+    XCCOMMENT         = 102,
+    CF_TAGUNKNOWN     = 130,
+    CF_NUMBER         = 133,
+    CF_DOUBLESTRING   = 134,
+    CF_SINGLESTRING   = 135,
+    CF_OTHER          = 136,
+    CF_ENTITY         = 138,
+    CF_TAGEND         = 139,
+    CF_XMLSTART       = 140,
+    CF_XMLEND         = 141,
+    CF_SCRIPT         = 142,
+    CF_OUTPUT         = 143,
+    CF_QUERY          = 150,
+    CF_CDATA          = 145,
+    CF_QUESTION       = 146,
+    CF_XCCOMMENT      = 148,
+
+    // JavaScript styles (Scintilla default JS lexer styles)
+    J_START           = 40,
+    J_DEFAULT         = 41,
+    J_COMMENT         = 42,
+    J_COMMENTLINE     = 43,
+    J_COMMENTDOC      = 44,
+    J_NUMBER          = 45,
+    J_WORD            = 46,
+    J_KEYWORD         = 47,
+    J_DOUBLESTRING    = 48,
+    J_SINGLESTRING    = 49,
+    J_SYMBOLS         = 50,
+    J_STRINGEOL       = 51,
+    J_REGEX           = 52,
+
+    // Java styles (Scintilla default Java lexer styles)
+    JA_START          = 55,
+    JA_COMMENT        = 57,
+    JA_COMMENTLINE    = 58,
+    JA_COMMENTDOC     = 59,
+    JA_NUMBER         = 60,
+    JA_WORD           = 61,
+    JA_KEYWORD        = 62,
+    JA_DOUBLESTRING   = 63,
+    JA_SINGLESTRING   = 64,
+    JA_SYMBOLS        = 65,
+    JA_STRINGEOL      = 66,
+    JA_REGEX          = 67,
 };
 
 // Backward compatibility constants (deprecated - use StyleId enum)
+// These match the XML styleIDs exactly
 const int _DEFAULT           = static_cast<int>(StyleId::DEFAULT);
 const int _TAG               = static_cast<int>(StyleId::TAG);
 const int CF_TAG             = static_cast<int>(StyleId::CF_TAG);
-const int _TAGUNKNOWN        = static_cast<int>(StyleId::CF_TAGUNKNOWN);  // Was 22, now unique
+const int _TAGUNKNOWN        = static_cast<int>(StyleId::CF_TAGUNKNOWN);
 const int _ATTRIBUTE         = static_cast<int>(StyleId::ATTRIBUTE);
 const int _ATTRIBUTEUNKNOWN  = static_cast<int>(StyleId::ATTRIBUTEUNKNOWN);
 const int _NUMBER            = static_cast<int>(StyleId::NUMBER);
@@ -129,17 +129,15 @@ const int _TAGEND            = static_cast<int>(StyleId::TAGEND);
 const int CF_COMMENT         = static_cast<int>(StyleId::CF_COMMENT);
 const int CF_VALUE           = static_cast<int>(StyleId::CF_VALUE);
 const int CF_FUNCTION        = static_cast<int>(StyleId::CF_FUNCTION);
-const int CF_KEYWORD         = static_cast<int>(StyleId::CF_KEYWORD);
 const int CF_ATTRIBUTE       = static_cast<int>(StyleId::CF_ATTRIBUTE);
 const int CF_ATTRIBUTEBAD    = static_cast<int>(StyleId::CF_ATTRIBUTEBAD);
-const int LOCAL_VARIABLE     = static_cast<int>(StyleId::LOCAL_VARIABLE);
+const int LOCALVARS          = static_cast<int>(StyleId::LOCALVARS);
 const int _QUESTION          = static_cast<int>(StyleId::QUESTION);
 const int CFS_RESERVED       = static_cast<int>(StyleId::CFS_RESERVED);
 const int _XCCOMMENT         = static_cast<int>(StyleId::XCCOMMENT);
 const int SQL_KEYWORD        = static_cast<int>(StyleId::SQL_KEYWORD);
 const int JS_KEYWORD         = static_cast<int>(StyleId::JS_KEYWORD);
 const int CSS_KEYWORD        = static_cast<int>(StyleId::CSS_KEYWORD);
-const int CSS_PROPERTY       = static_cast<int>(StyleId::CSS_PROPERTY);
 
 const int J_START            = static_cast<int>(StyleId::J_START);
 const int J_DEFAULT          = static_cast<int>(StyleId::J_DEFAULT);

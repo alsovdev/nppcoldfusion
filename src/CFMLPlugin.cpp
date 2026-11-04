@@ -552,7 +552,7 @@ void CFMLPlugin::OnSciCharAdded(int ch)
 				previousword[j++] = '\0';
 
 				if (strcmp(previousword, "arguments") == 0) {
-					std::string arguments = func.getArgumentssSorted("?1");
+				std::string arguments = func.getArgumentsSorted("?1");
 					sciMsgr.SendSciMsg(SCI_AUTOCSETFILLUPS, (WPARAM)0, (LPARAM)"");
 					sciMsgr.autoCSetIgnoreCase(true);
 					sciMsgr.autoCSetSeparator(space);

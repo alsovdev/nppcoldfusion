@@ -229,7 +229,7 @@ TEST_CASE("Integration: Lexer works without XML config - default styles") {
 
     // Verify default styles are available via NamedStyles API
     int namedStyles = lexer->NamedStyles();
-    CHECK(namedStyles == 22);
+    CHECK(namedStyles == 24);
 
     const char* styleName = lexer->NameOfStyle(0);
     CHECK(styleName != nullptr);
@@ -239,11 +239,14 @@ TEST_CASE("Integration: Lexer works without XML config - default styles") {
     CHECK(styleDesc != nullptr);
     CHECK(strcmp(styleDesc, "Default text") == 0);
 
-    // Check all 22 styles have names
+    // Check all 24 styles have names (gaps return empty)
     for (int i = 0; i < namedStyles; ++i) {
         const char* name = lexer->NameOfStyle(i);
         CHECK(name != nullptr);
-        CHECK(strlen(name) > 0);
+        // Gaps (11, 18, 20) return empty string, others have names
+        if (i != 11 && i != 18 && i != 20) {
+            CHECK(strlen(name) > 0);
+        }
     }
 
     delete lexer;
@@ -261,13 +264,13 @@ TEST_CASE("Integration: Lexer handles missing XML gracefully") {
     static const char* expectedStyles[] = {
         "DEFAULT", "TAG", "CFTAG", "ATTRIBUTE", "ATTRIBUTEUNKNOWN",
         "NUMBER", "DOUBLESTRING", "SINGLESTRING", "OPERATOR", "COMMENT",
-        "COMMENTBLOCK", "CFCOMMENT", "CFVALUE", "CFFUNCTION",
-        "CFATTRIBUTE", "CFATTRIBUTEBAD", "LOCALVARS", "CFSRESERVED",
-        "SQLKEYWORDS", "JSKEYWORDS", "CSSKEYWORDS"
+        "COMMENTBLOCK", "", "CFCOMMENT", "CFVALUE", "CFFUNCTION",
+        "CFATTRIBUTE", "CFATTRIBUTEBAD", "LOCALVARS", "", "CFSRESERVED",
+        "", "SQLKEYWORDS", "JSKEYWORDS", "CSSKEYWORDS"
     };
 
     int namedStyles = lexer->NamedStyles();
-    CHECK(namedStyles == 22);
+    CHECK(namedStyles == 24);
 
     for (int i = 0; i < namedStyles; ++i) {
         const char* name = lexer->NameOfStyle(i);

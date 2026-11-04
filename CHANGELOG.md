@@ -21,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Default styles in plugin** (works without XML):
   - Implemented `NamedStyles()`, `NameOfStyle()`, `DescriptionOfStyle()`, `TagsOfStyle()` in lexer
-  - **22 styles** with names and descriptions matching nppColdFusion.xml
+  - **24 style IDs** (0-23) matching nppColdFusion.xml exactly (with gaps at 11, 18, 20)
+  - **22 styles** defined in XML with colors
   - If nppColdFusion.xml is missing, default colors from plugin are used
 
 - **XML config file in same folder as DLL**:
