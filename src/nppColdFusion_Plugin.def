@@ -6,6 +6,7 @@ EXPORTS
     getFuncsArray
     beNotified
     messageProc
+    getPluginVersion
     GetLexerCount
     GetLexerName
     GetLexerStatusText

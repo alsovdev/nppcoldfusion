@@ -72,9 +72,15 @@ extern "C" {
 		cfmlPlugin.nppBeNotified( notifyCode );
 
 	}
+	extern "C" __declspec( dllexport ) int getPluginVersion()
+	{
+	    // Extract version from PLUGIN_VERSION string (format: "0.9.6")
+	    return 906; // 0.9.6 -> 906
+	}
+
 	__declspec( dllexport ) LRESULT messageProc( UINT Message, WPARAM wParam, LPARAM lParam )
 	{
-		return cfmlPlugin.nppMessageProc( Message, wParam, lParam );
+	    return cfmlPlugin.nppMessageProc( Message, wParam, lParam );
 	}
 
 

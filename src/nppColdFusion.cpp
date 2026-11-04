@@ -1123,9 +1123,10 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					paddedText[i] = ' ';
 					paddedText[i + 1] = s[i - 1];
 					bool scriptcheck = (!inCFScript || (strcmp(s, "cfscript") == 0 && status.tagClosing));
-					bool jsscriptcheck = (!inJSBlock || (strcmp(s, "script") == 0 && status.tagClosing));
+							bool jsscriptcheck = (!inJSBlock || (strcmp(s, "script") == 0 && status.tagClosing));
 
-					if (scriptcheck && (styler.StyleAt(sc.currentPos) == sID::CF_TAG || cfs->coldfusionNS->isTag(paddedText))) {
+							// Use s (null-terminated) for tag lookup, not paddedText (which has trailing space)
+							if (scriptcheck && (styler.StyleAt(sc.currentPos) == sID::CF_TAG || cfs->coldfusionNS->isTag(s))) {
 						if (!status.tagClosing) {
 							cfTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)) + 1, s);
 						}
@@ -1167,7 +1168,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							inCFSetsNew.Set(sc.currentPos + strlen(s), true);
 						}
 					}
-					else if (jsscriptcheck && scriptcheck && cfs->htmlNS->isTag(paddedText) && !inCFQuery) {
+					else if (jsscriptcheck && scriptcheck && cfs->htmlNS->isTag(s) && !inCFQuery) {
 						if (!status.tagClosing) {
 							
 							htmlTagsNew.Set(sc.currentPos + strnlen_s(s, sizeof(s)), s);

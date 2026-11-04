@@ -1011,6 +1011,9 @@ void CFMLPlugin::EnsureXmlConfigExists(const TCHAR* pluginConfigDir)
 		return;
 	}
 
+	// Ensure the directory exists
+	CreateDirectory(pluginConfigDir, NULL);
+
 	TCHAR xmlPath[MAX_PATH];
 	_tcscpy_s(xmlPath, MAX_PATH, pluginConfigDir);
 	_tcscat_s(xmlPath, MAX_PATH, _T("\\nppColdFusion.xml"));
