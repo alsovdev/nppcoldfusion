@@ -203,6 +203,7 @@ namespace nppColdFusionNS
 		void SCI_METHOD Fold(Sci_PositionU startPos, Sci_Position length, int initStyle, Scintilla::IDocument* pAccess);
 		Status Colourise_Doc(Sci_PositionU startPos, Sci_Position length, int initStyle, Lexilla::LexAccessor& styler, bool dostyling = true);
 		Sci_Position SCI_METHOD WordListSet(int n, const char* wl);
+	const char* SCI_METHOD DescribeWordListSets();
 		static ILexer5* LexerFactory() {
 			try {
 				return new LexerColdFusion();

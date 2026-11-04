@@ -419,12 +419,67 @@ Sci_Position SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 		cfs->loweredlists[n] = new char[wllength];
 		strcpy_s(cfs->loweredlists[n], wllength, loweredwl);
 		strcpy_s(cfs->originallists[n], wllength, wl);
-		delete[]loweredwl;
+		delete[] loweredwl;
+
+		// Populate BlockType keywords from word lists
+		// Word list indices from XML config:
+		// 1 = CF tags, 6 = SQL keywords, 5 = JS keywords, 7 = CSS keywords
+		if (n == 6) { // SQL keywords for CFQueryBlock
+			Lexilla::WordList wl_obj;
+			wl_obj.Set(wl);
+			for (auto& block : cfs->blocks) {
+				if (dynamic_cast<CFQueryBlock*>(block.get())) {
+					block->updateWordList(wl_obj);
+				}
+			}
+		}
+		else if (n == 5) { // JS keywords for JSBlock
+			Lexilla::WordList wl_obj;
+			wl_obj.Set(wl);
+			for (auto& block : cfs->blocks) {
+				if (dynamic_cast<JSBlock*>(block.get())) {
+					block->updateWordList(wl_obj);
+				}
+			}
+		}
+		else if (n == 7) { // CSS keywords for CSSBlock
+			Lexilla::WordList wl_obj;
+			wl_obj.Set(wl);
+			for (auto& block : cfs->blocks) {
+				if (dynamic_cast<CSSBlock*>(block.get())) {
+					block->updateWordList(wl_obj);
+				}
+			}
+		}
+		else if (n == 1) { // CF tags for CFScriptBlock (reserved words)
+			Lexilla::WordList wl_obj;
+			wl_obj.Set(wl);
+			for (auto& block : cfs->blocks) {
+				if (dynamic_cast<CFScriptBlock*>(block.get())) {
+					block->updateWordList(wl_obj);
+				}
+			}
+		}
+
 		return 0;
 	}
 
 	return -1;
 
+}
+
+const char* SCI_METHOD LexerColdFusion::DescribeWordListSets()
+{
+	// Word list sets for Notepad++ XML config:
+	// 0 = (unused)
+	// 1 = CF tags/functions
+	// 2 = (unused)
+	// 3 = (unused)
+	// 4 = CSS pseudo-classes
+	// 5 = JavaScript keywords
+	// 6 = SQL keywords
+	// 7 = CSS keywords/properties
+	return "CF Tags;CSS Pseudo-classes;JavaScript Keywords;SQL Keywords;CSS Keywords";
 }
 
 
@@ -947,42 +1002,47 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									break;
 								}
 								else 	if (thisblock->hasOperator(s)) {
-									int statebefore = sc.state;
-									if (dostyling) {
-										sc.SetState(sID::_OPERATOR);
-									}
-									sc.Forward(a - 1);
+												int statebefore = sc.state;
+												if (dostyling) {
+													sc.SetState(sID::_OPERATOR);
+												}
+												if (a > 0) {
+													sc.Forward(a - 1);
+												}
 
-									if (dostyling) {
-										sc.ForwardSetState(statebefore);
-									}
-									handledkeyword = true;
-									break;
+												if (dostyling) {
+													sc.ForwardSetState(statebefore);
+												}
+												handledkeyword = true;
+												break;
 								}
-								else if ((styler.StyleAt(sc.currentPos) == thisblock->getKeywordState() ||
-									thisblock->hasKeyword(s))) {
-									int statebefore = sc.state;
-									if (dostyling) {
-										sc.SetState(thisblock->getKeywordState());
-									}
-									sc.Forward(a - 1);
-									if (dostyling) {
-										sc.ForwardSetState(statebefore);
-									}
-									handledkeyword = true;
-									break;
+								else if (thisblock->hasKeyword(s))) {
+													int statebefore = sc.state;
+													if (dostyling) {
+														sc.SetState(thisblock->getKeywordState());
+													}
+													if (a > 0) {
+														sc.Forward(a - 1);
+													}
+													if (dostyling) {
+														sc.ForwardSetState(statebefore);
+													}
+													handledkeyword = true;
+													break;
 								}
 								else if (currentCFFunction.pos > 0 && (inCFScript || inCFSet) && currentCFFunction.hasLocalVar(s)) {
-									int statebefore = sc.state;
-									if (dostyling) {
-										sc.SetState(sID::LOCAL_VARIABLE);
-									}
-									sc.Forward(a - 1);
-									if (dostyling) {
-										sc.ForwardSetState(statebefore);
-									}
-									handledkeyword = true;
-									break;
+												int statebefore = sc.state;
+												if (dostyling) {
+													sc.SetState(sID::LOCAL_VARIABLE);
+												}
+												if (a > 0) {
+													sc.Forward(a - 1);
+												}
+												if (dostyling) {
+													sc.ForwardSetState(statebefore);
+												}
+												handledkeyword = true;
+												break;
 								}
 							}
 						}
@@ -990,14 +1050,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							blocks[static_cast<size_t>(BlockId::CFScript)]->validateforkeyword(sc)) {
 
 							if (strcmp(s, "var") == 0) {
-								int statebefore = sc.state;
-								if (dostyling) {
-									sc.SetState(sID::CFS_RESERVED);
-								}
+											int statebefore = sc.state;
+											if (dostyling) {
+												sc.SetState(sID::CFS_RESERVED);
+											}
+											if (a > 0) {
+												sc.Forward(a - 1);
+											}
 
-								sc.Forward(a - 1);
-
-								if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0)) {
+											if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0)) {
 									/* Read Ahead to get name */
 									bool inName = false;
 									int j = 0;
@@ -1032,41 +1093,46 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 								break;
 							}
 							else if (blocks[static_cast<size_t>(BlockId::CFScript)]->hasOperator(s)) {
-								int statebefore = sc.state;
-								if (dostyling) {
-									sc.SetState(sID::_OPERATOR);
-								}
-								handledkeyword = true;
-								sc.Forward(a - 1);
-								if (dostyling) {
-									sc.ForwardSetState(statebefore);
-								}
-								break;
+										int statebefore = sc.state;
+										if (dostyling) {
+											sc.SetState(sID::_OPERATOR);
+										}
+										if (a > 0) {
+											sc.Forward(a - 1);
+										}
+										handledkeyword = true;
+										if (dostyling) {
+											sc.ForwardSetState(statebefore);
+										}
+										break;
 							}
-							else if ((styler.StyleAt(sc.currentPos) == blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState() ||
-								(blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)))) {
-								int statebefore = sc.state;
-								if (dostyling) {
-									sc.SetState(blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState());
-								}
-								handledkeyword = true;
-								sc.Forward(a - 1);
-								if (dostyling) {
-									sc.ForwardSetState(statebefore);
-								}
-								break;
+							else if ((blocks[static_cast<size_t>(BlockId::CFScript)]->hasKeyword(s)))) {
+										int statebefore = sc.state;
+										if (dostyling) {
+											sc.SetState(blocks[static_cast<size_t>(BlockId::CFScript)]->getKeywordState());
+										}
+										if (a > 0) {
+											sc.Forward(a - 1);
+										}
+										handledkeyword = true;
+										if (dostyling) {
+											sc.ForwardSetState(statebefore);
+										}
+										break;
 							}
 							else if (currentCFFunction.pos > 0 && (inCFScript || inCFSet) && currentCFFunction.hasLocalVar(s)) {
-								int statebefore = sc.state;
-								if (dostyling) {
-									sc.SetState(sID::LOCAL_VARIABLE);
-								}
-								sc.Forward(a - 1);
-								if (dostyling) {
-									sc.ForwardSetState(statebefore);
-								}
-								handledkeyword = true;
-								break;
+											int statebefore = sc.state;
+											if (dostyling) {
+												sc.SetState(sID::LOCAL_VARIABLE);
+											}
+											if (a > 0) {
+												sc.Forward(a - 1);
+											}
+											if (dostyling) {
+												sc.ForwardSetState(statebefore);
+											}
+											handledkeyword = true;
+											break;
 							}
 						}
 						if (handledkeyword) {

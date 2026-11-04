@@ -277,7 +277,7 @@ const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, b
 
     // CFQueryBlock
     bool CFQueryBlock::validateforkeyword(Lexilla::StyleContext& sc) {
-        return sc.state == Styles::SQL_KEYWORD;
+        return inBlock && (sc.state == Styles::SQL_KEYWORD || sc.state == Styles::_DEFAULT);
     }
     bool CFQueryBlock::hasKeyword(const char* keyword) {
         return keywords->InList(keyword);
