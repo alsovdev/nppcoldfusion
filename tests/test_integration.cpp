@@ -288,7 +288,8 @@ TEST_CASE("Integration: Lexer produces valid style IDs for all fixtures") {
     std::vector<std::string> allFiles = {
         "taffy_Application.cfc",
         "taffy_artistMember.cfc",
-        "lucee_docs_build.cfm"
+        "lucee_docs_build.cfm",
+        "cloud_capacity.cfm"
     };
 
     for (const auto& filename : allFiles) {
