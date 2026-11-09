@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <NotepadPlus>
     <Languages>
-        <Language name="ColdFusion" ext="cfm cfc cfml" commentStart="<!---" commentEnd="--->">
+        <Language name="ColdFusion" ext="cfm cfc cfml" commentStart="<!--" commentEnd="-->">
             <Keywords name="0"></Keywords>
             <Keywords name="1"></Keywords>
             <Keywords name="2"></Keywords>
