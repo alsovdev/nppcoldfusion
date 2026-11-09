@@ -941,12 +941,14 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							if (thisblock->inBlock &&
 								thisblock->validateforkeyword(sc, inCFSet)) {
 								if (thisblock->hasReservedWord(s)) {
-									int statebefore = sc.state;
-									if (dostyling) {
-										sc.SetState(sID::CFS_RESERVED);
-									}
+								                int statebefore = sc.state;
+								                if (dostyling) {
+								                    sc.SetState(sID::CFS_RESERVED);
+								                }
 
-									sc.Forward(a - 1);
+								                if (a > 0) {
+								                    sc.Forward(a - 1);
+								                }
 									
 									if ((strcmp(s, "var") == 0 && currentCFFunction.pos > 0) || strcmp(s, "function") == 0) {
 										

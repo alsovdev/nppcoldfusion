@@ -16,6 +16,8 @@
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "nppCFShared.h"
+#include <vector>
+#include <algorithm>
 
 namespace nppColdFusionNS
 {
@@ -138,14 +140,26 @@ const char* DBNamespace::listTagAttributes(const char* tag, bool onlyrequired, b
                 static thread_local std::string result; // thread-local buffer, reused per call
                 result.clear();
                 const char* extra = forautoc ? "?1" : "";
+                
+                // Collect attribute names and sort them alphabetically for proper autocomplete prefix matching
+                std::vector<std::string> attr_names;
+                attr_names.reserve(attr_count);
                 for (size_t i = 0; i < attr_count; ++i) {
+                    attr_names.push_back(attrs[i].name);
+                }
+                std::sort(attr_names.begin(), attr_names.end(), 
+                    [](const std::string& a, const std::string& b) {
+                        return _stricmp(a.c_str(), b.c_str()) < 0; // case-insensitive sort
+                    });
+                
+                for (size_t i = 0; i < attr_names.size(); ++i) {
                     if (!result.empty()) {
                         result += " ";
                     }
-                    result += attrs[i].name;
+                    result += attr_names[i];
                     if (onlyrequired) {
                         if (hasFingerText) {
-                            result += "=\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"$[![]!]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"";
+                            result += "=\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"$[![]!]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"";
                         } else {
                             result += "=\"\"";
                         }

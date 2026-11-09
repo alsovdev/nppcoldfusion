@@ -1033,7 +1033,7 @@ void CFMLPlugin::EnsureXmlConfigExists(const TCHAR* pluginConfigDir)
 	fprintf(file, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 	fprintf(file, "<NotepadPlus>\n");
 	fprintf(file, "    <Languages>\n");
-	fprintf(file, "        <Language name=\"ColdFusion\" ext=\"cfm cfc cfml\" commentStart=\"<!--\" commentEnd=\"-->\">\n");
+	fprintf(file, "        <Language name=\"ColdFusion\" ext=\"cfm cfc cfml\" commentStart=\"<!---" commentEnd="--->\">\n");
 	fprintf(file, "            <Keywords name=\"0\"></Keywords>\n");
 	fprintf(file, "            <Keywords name=\"1\"></Keywords>\n");
 	fprintf(file, "            <Keywords name=\"2\"></Keywords>\n");
