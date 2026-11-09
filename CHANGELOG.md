@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.8] - 2026-11-09
+
+### Fixed
+
+- **Autocomplete attribute sorting** — `listTagAttributes()` now returns attributes sorted alphabetically (case-insensitive) for proper prefix matching in Notepad++ autocomplete; fixes `cfloop` `collection` attribute not appearing
+- **Bounds checks** — added `a > 0` guard for `sc.Forward(a-1)` in `hasReservedWord` branch (line 949) to prevent crashes on single-character input
+- **Comment toggle** — XML config uses HTML comment style (`<!-- -->`) for Notepad++ toggle feature compatibility; lexer still highlights both HTML (`<!-- -->`, style 9) and CFML (`<!--- --->`, style 12) comments with different colors
+
+### Changed
+
+- **Plugin version** — 0.9.7 → 0.9.8 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION)
+- **Dependencies** — added `<vector>` and `<algorithm>` includes to `nppCFShared.cpp` for attribute sorting
+
 ## [0.9.7] - 2026-11-04
 
 ### Fixed
