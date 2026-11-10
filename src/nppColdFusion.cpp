@@ -430,7 +430,10 @@ Sci_Position SCI_METHOD LexerColdFusion::WordListSet(int n, const char* wl)
 		auto wllength = strnlen_s(wl, 20480) + 1;
 		char* loweredwl = new char[wllength];
 		strcpy_s(loweredwl, wllength, wl);
-		loweredwl = CharLowerA(loweredwl);
+		// Use SafeMakeLowerCase for Unicode safety (CharLowerA only handles ASCII)
+		for (size_t i = 0; i < wllength - 1; ++i) {
+			loweredwl[i] = static_cast<char>(SafeMakeLowerCase(static_cast<unsigned char>(loweredwl[i])));
+		}
 		cfs->originallists[n] = new char[wllength];
 		cfs->loweredlists[n] = new char[wllength];
 		strcpy_s(cfs->loweredlists[n], wllength, loweredwl);
