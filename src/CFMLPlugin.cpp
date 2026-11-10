@@ -1035,13 +1035,13 @@ void CFMLPlugin::EnsureXmlConfigExists(const TCHAR* pluginConfigDir)
 	fprintf(file, "    <Languages>\n");
 	fprintf(file, "        <Language name=\"ColdFusion\" ext=\"cfm cfc cfml\" commentStart=\"<!--\" commentEnd=\"-->\">\n");
 	fprintf(file, "            <Keywords name=\"0\"></Keywords>\n");
-	fprintf(file, "            <Keywords name=\"1\""></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"1\"></Keywords>\n");
 	fprintf(file, "            <Keywords name=\"2\"></Keywords>\n");
 	fprintf(file, "            <Keywords name=\"3\"></Keywords>\n");
 	fprintf(file, "            <Keywords name=\"4\">active after before first first-child first-letter first-line focus hover lang left link right visited</Keywords>\n");
-	fprintf(file, "            <Keywords name=\"5\""></Keywords>\n");
-	fprintf(file, "            <Keywords name=\"6\""></Keywords>\n");
-	fprintf(file, "            <Keywords name=\"7\""></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"5\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"6\"></Keywords>\n");
+	fprintf(file, "            <Keywords name=\"7\"></Keywords>\n");
 	fprintf(file, "        </Language>\n");
 	fprintf(file, "    </Languages>\n");
 	fprintf(file, "    <LexerStyles>\n");
