@@ -8,6 +8,30 @@
 **In English: [CHANGELOG.md](CHANGELOG.md)**
 
 ---
+
+## [0.9.10] - 2026-11-15
+
+### Исправлено
+
+- **Подсветка SQL-ключевых слов внутри `<cfquery>`** — полный список ключевых слов (571) синхронизирован из `data/keywords.yaml`; включает CTE (`WITH`/`VALUES`), функции (`UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `COALESCE`, `CASE`), приведения типов (`CAST`, `::text`), оконные функции (`ROW_NUMBER() OVER`), соединения (`INNER`, `LEFT`, `RIGHT`, `FULL`), операции с множествами (`UNION`, `UNION ALL`)
+- **Списки ключевых слов соответствуют исходным данным** — все 4 индекса ключевых слов обновлены из `data/keywords.yaml` и `data/tags.yaml`:
+  - Индекс 1: 151 CF-тегов (из `tags.yaml`)
+  - Индекс 5: 59 JS-ключевых слов
+  - Индекс 6: 571 SQL-ключевых слов
+  - Индекс 7: 122 CSS-ключевых слов
+
+### Добавлено
+
+- **Тесты подсветки SQL** (3 новых интеграционных теста):
+  - Базовый SQL в cfquery: `WITH`, `VALUES`, `SELECT`, `UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `ORDER BY`, `DESC`
+  - SQL-функции и PostgreSQL-приведения: `CAST`, `::text`, `COALESCE`, `CASE`, `BETWEEN`, `GROUP BY`, `HAVING`
+  - CTE и продвинутый SQL: оконные функции (`ROW_NUMBER() OVER`), типы `JOIN`, `UNION ALL`
+
+### Изменено
+
+- **Версия плагина** — 0.9.9 → 0.9.10 в `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,10,0)
+- **Количество тестов** — 27 → 30 проходящих тестов (7 lexer + 4 functions + 4 autocomplete + 15 integration)
+
 ## [0.9.8] - 2026-11-09
 
 ### Исправлено

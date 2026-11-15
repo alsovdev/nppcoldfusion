@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.10] - 2026-11-15
+
+### Fixed
+
+- **SQL keyword highlighting in `<cfquery>`** — complete keyword list (571 keywords) synced from `data/keywords.yaml`; includes CTE (`WITH`/`VALUES`), functions (`UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `COALESCE`, `CASE`), casts (`CAST`, `::text`), window functions (`ROW_NUMBER() OVER`), joins (`INNER`, `LEFT`, `RIGHT`, `FULL`), set operations (`UNION`, `UNION ALL`)
+- **Keyword lists now match source data** — all 4 keyword indices updated from `data/keywords.yaml` and `data/tags.yaml`:
+  - Index 1: 151 CF tags (from `tags.yaml`)
+  - Index 5: 59 JS keywords
+  - Index 6: 571 SQL keywords
+  - Index 7: 122 CSS keywords
+
+### Added
+
+- **SQL highlighting tests** (3 new integration tests):
+  - Basic SQL in cfquery: `WITH`, `VALUES`, `SELECT`, `UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `ORDER BY`, `DESC`
+  - SQL functions and PostgreSQL casts: `CAST`, `::text`, `COALESCE`, `CASE`, `BETWEEN`, `GROUP BY`, `HAVING`
+  - CTE and advanced SQL: window functions (`ROW_NUMBER() OVER`), `JOIN` types, `UNION ALL`
+
+### Changed
+
+- **Plugin version** — 0.9.9 → 0.9.10 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,10,0)
+- **Test count** — 27 → 30 tests passing (7 lexer + 4 functions + 4 autocomplete + 15 integration)
+
 ## [0.9.8] - 2026-11-09
 
 ### Fixed
