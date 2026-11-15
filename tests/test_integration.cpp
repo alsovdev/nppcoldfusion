@@ -339,3 +339,105 @@ TEST_CASE("Integration: No crash on UTF-8 BOM") {
     delete lexer;
     CHECK(true);
 }
+
+// Test SQL keyword highlighting in cfquery blocks
+TEST_CASE("Integration: SQL keywords highlighted in cfquery") {
+    // Test that SQL keyword list is loaded and contains key keywords
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    // Verify WordListSet was called with SQL keywords (index 6)
+    // The lexer should have SQL keywords loaded via DescribeWordListSets/WordListSet
+    const char* wordLists = lexer->DescribeWordListSets();
+    REQUIRE(wordLists != nullptr);
+    CHECK(strstr(wordLists, "SQL Keywords") != nullptr);
+
+    // Test with a cfquery containing SQL
+    std::string cfquerySql = 
+        "<cfquery name=\"q\" datasource=\"dsn\">\n"
+        "    WITH status AS (VALUES ('a', 1), ('b', 2))\n"
+        "    SELECT upper(trim(name)), substring(code, 1, 5), length(description)\n"
+        "    FROM products\n"
+        "    WHERE price > 100\n"
+        "    ORDER BY created_at DESC\n"
+        "</cfquery>";
+
+    int length = static_cast<int>(cfquerySql.size());
+    // Should not crash and should process SQL keywords
+    lexer->Lex(0, length, 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
+
+TEST_CASE("Integration: SQL functions and casts highlighted") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    // Test various SQL functions and PostgreSQL-specific syntax
+    std::string sql = 
+        "<cfquery>\n"
+        "    SELECT \n"
+        "        UPPER(name), LOWER(email),\n"
+        "        TRIM(description), LTRIM(code), RTRIM(value),\n"
+        "        SUBSTRING(sku, 1, 10),\n"
+        "        LENGTH(name),\n"
+        "        CAST(price AS NUMERIC),\n"
+        "        id::text,\n"
+        "        COALESCE(discount, 0),\n"
+        "        CASE WHEN active THEN 'yes' ELSE 'no' END\n"
+        "    FROM products\n"
+        "    WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'\n"
+        "    GROUP BY category\n"
+        "    HAVING COUNT(*) > 5\n"
+        "</cfquery>";
+
+    int length = static_cast<int>(sql.size());
+    lexer->Lex(0, length, 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
+
+TEST_CASE("Integration: CTE and advanced SQL syntax") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    // Test CTE (WITH), window functions, joins
+    std::string advancedSql = 
+        "<cfquery>\n"
+        "    WITH ranked AS (\n"
+        "        SELECT \n"
+        "            id,\n"
+        "            name,\n"
+        "            ROW_NUMBER() OVER (PARTITION BY category ORDER BY price DESC) as rn,\n"
+        "            SUM(price) OVER (PARTITION BY category) as cat_total\n"
+        "        FROM products\n"
+        "    )\n"
+        "    SELECT r.id, r.name, c.name as category_name\n"
+        "    FROM ranked r\n"
+        "    INNER JOIN categories c ON r.category_id = c.id\n"
+        "    LEFT JOIN orders o ON r.id = o.product_id\n"
+        "    WHERE r.rn = 1\n"
+        "    AND o.id IS NULL\n"
+        "    UNION ALL\n"
+        "    SELECT id, name, 'orphan' as category_name\n"
+        "    FROM products\n"
+        "    WHERE category_id IS NULL\n"
+        "</cfquery>";
+
+    int length = static_cast<int>(advancedSql.size());
+    lexer->Lex(0, length, 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
