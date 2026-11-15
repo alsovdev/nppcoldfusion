@@ -32,6 +32,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Plugin version** — 0.9.9 → 0.9.10 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,10,0)
 - **Test count** — 27 → 30 tests passing (7 lexer + 4 functions + 4 autocomplete + 15 integration)
 
+## [0.9.9] - 2026-11-10 (Internal rebuild)
+
+### Fixed
+
+- **SQL keyword highlighting in `<cfquery>`** — initial implementation of complete keyword list (571 keywords) from `data/keywords.yaml`; includes CTE (`WITH`/`VALUES`), functions (`UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`), casts (`CAST`, `::text`)
+- **Unicode-safe `WordListSet`** — replaced `CharLowerA` (ASCII-only) with `SafeMakeLowerCase` loop; fixes Cyrillic/Latin single-character crashes
+- **Keyword lists populated from source data** — all 4 keyword indices synced from `data/keywords.yaml` and `data/tags.yaml`:
+  - Index 1: 151 CF tags (from `tags.yaml`)
+  - Index 5: 59 JS keywords
+  - Index 6: 571 SQL keywords
+  - Index 7: 122 CSS keywords
+
+### Known Issues (Fixed in 0.9.10)
+
+- Auto-generated XML in `CFMLPlugin.cpp` exceeded MSVC string literal limit — reverted to empty keywords (static `nppColdFusion.xml` used instead)
+
 ## [0.9.8] - 2026-11-09
 
 ### Fixed
