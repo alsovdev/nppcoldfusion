@@ -762,7 +762,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					}
 				}
 			}
-			if (Lexilla::isoperator(sc.ch) && sc.state == sID::_DEFAULT && !((inCFSet || inCFQuery) && (sc.ch == '<' || sc.ch == '>')) && !(sc.ch == '<' && sc.chNext == '/') && !(sc.Match("<cf"))) {
+			if (sc.ch == ':' && sc.chNext == ':' && inCFQuery && sc.state == sID::_DEFAULT) {
+			// PostgreSQL :: cast operator
+			if (dostyling) {
+				sc.SetState(sID::_OPERATOR);
+			}
+			sc.Forward(2);
+			continue;
+		}
+		if (Lexilla::isoperator(sc.ch) && sc.state == sID::_DEFAULT && !((inCFSet || inCFQuery) && (sc.ch == '<' || sc.ch == '>')) && !(sc.ch == '<' && sc.chNext == '/') && !(sc.Match("<cf"))) {
 				if (dostyling) {
 					sc.SetState(sID::_OPERATOR);
 				}
