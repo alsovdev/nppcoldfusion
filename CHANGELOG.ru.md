@@ -37,10 +37,25 @@
 ### Исправлено
 
 - **Поддержка оператора приведения типов `::cast` PostgreSQL в `<cfquery>`** — добавлено распознавание синтаксиса `::type` (например, `::text`, `::integer`, `::timestamp`) внутри блоков cfquery; подсвечивается как оператор
+- **Обработка неизвестных тегов внутри `<cfquery>`** — пользовательские теги (например, `<m:field_set>`, `<m:field>`) теперь трактуются как SQL-текст; лексер пропускает имя тега и сохраняет состояние `_DEFAULT`/`SQL_KEYWORD` для корректной SQL-подсветки
+- **Списки ключевых слов соответствуют исходным данным** — все 4 индекса ключевых слов обновлены из `data/keywords.yaml` и `data/tags.yaml`:
+  - Индекс 1: 151 CF-тегов (из `tags.yaml`)
+  - Индекс 5: 59 JS-ключевых слов
+  - Индекс 6: 571 SQL-ключевых слов
+  - Индекс 7: 122 CSS-ключевых слов
+
+### Добавлено
+
+- **Тесты подсветки SQL** (4 новых интеграционных теста):
+  - Базовый SQL в cfquery: `WITH`, `VALUES`, `SELECT`, `UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `ORDER BY`, `DESC`
+  - SQL-функции и PostgreSQL-приведения: `CAST`, `::text`, `COALESCE`, `CASE`, `BETWEEN`, `GROUP BY`, `HAVING`
+  - CTE и продвинутый SQL: оконные функции (`ROW_NUMBER() OVER`), типы `JOIN`, `UNION ALL`
+  - Пользовательский пример: пользовательские теги `<m:field_set>`, `<m:field>`, `::text`, `to_char`, `extract`, `coalesce`, `CURRENT_TIMESTAMP`, `<cfqueryparam>`, CFML-комментарии
 
 ### Изменено
 
 - **Версия плагина** — 0.9.10 → 0.9.11 в `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,11,0)
+- **Количество тестов** — 27 → 31 проходящий тест (7 lexer + 4 functions + 4 autocomplete + 16 integration)
 
 ## [0.9.10] - 2026-11-15
 

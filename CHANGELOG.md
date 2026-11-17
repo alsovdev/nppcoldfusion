@@ -37,10 +37,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **PostgreSQL `::cast` operator support in `<cfquery>`** — added recognition of `::type` cast syntax (e.g., `::text`, `::integer`, `::timestamp`) inside cfquery blocks; highlights as operator
+- **Unknown tag handling inside `<cfquery>`** — custom tags (e.g., `<m:field_set>`, `<m:field>`) now treated as SQL text; lexer skips tag name and keeps `_DEFAULT`/`SQL_KEYWORD` state for proper SQL highlighting
+- **Keyword lists now match source data** — all 4 keyword indices updated from `data/keywords.yaml` and `data/tags.yaml`:
+  - Index 1: 151 CF tags (from `tags.yaml`)
+  - Index 5: 59 JS keywords
+  - Index 6: 571 SQL keywords
+  - Index 7: 122 CSS keywords
+
+### Added
+
+- **SQL highlighting tests** (4 new integration tests):
+  - Basic SQL in cfquery: `WITH`, `VALUES`, `SELECT`, `UPPER`, `TRIM`, `SUBSTRING`, `LENGTH`, `ORDER BY`, `DESC`
+  - SQL functions and PostgreSQL casts: `CAST`, `::text`, `COALESCE`, `CASE`, `BETWEEN`, `GROUP BY`, `HAVING`
+  - CTE and advanced SQL: window functions (`ROW_NUMBER() OVER`), `JOIN` types, `UNION ALL`
+  - User example: custom tags `<m:field_set>`, `<m:field>`, `::text`, `to_char`, `extract`, `coalesce`, `CURRENT_TIMESTAMP`, `<cfqueryparam>`, CFML comments
 
 ### Changed
 
 - **Plugin version** — 0.9.10 → 0.9.11 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,11,0)
+- **Test count** — 27 → 31 tests passing (7 lexer + 4 functions + 4 autocomplete + 16 integration)
 
 ## [0.9.10] - 2026-11-15
 
