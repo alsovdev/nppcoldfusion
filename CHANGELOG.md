@@ -32,7 +32,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Plugin version** — 0.9.9 → 0.9.10 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,10,0)
 - **Test count** — 27 → 30 tests passing (7 lexer + 4 functions + 4 autocomplete + 15 integration)
 
-## [0.9.8] - 2026-11-09
+## [0.9.11] - 2026-11-17
+
+### Fixed
+
+- **PostgreSQL `::cast` operator support in `<cfquery>`** — added recognition of `::type` cast syntax (e.g., `::text`, `::integer`, `::timestamp`) inside cfquery blocks; highlights as operator
+
+### Changed
+
+- **Plugin version** — 0.9.10 → 0.9.11 in `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,11,0)
+
+## [0.9.10] - 2026-11-15
 
 ### Fixed
 

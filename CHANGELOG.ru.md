@@ -32,7 +32,17 @@
 - **Версия плагина** — 0.9.9 → 0.9.10 в `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,10,0)
 - **Количество тестов** — 27 → 30 проходящих тестов (7 lexer + 4 functions + 4 autocomplete + 15 integration)
 
-## [0.9.8] - 2026-11-09
+## [0.9.11] - 2026-11-17
+
+### Исправлено
+
+- **Поддержка оператора приведения типов `::cast` PostgreSQL в `<cfquery>`** — добавлено распознавание синтаксиса `::type` (например, `::text`, `::integer`, `::timestamp`) внутри блоков cfquery; подсвечивается как оператор
+
+### Изменено
+
+- **Версия плагина** — 0.9.10 → 0.9.11 в `nppColdFusion.h`, `nppColdFusion.rc` (FILEVERSION/PRODUCTVERSION 0,9,11,0)
+
+## [0.9.10] - 2026-11-15
 
 ### Исправлено
 
