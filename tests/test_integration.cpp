@@ -405,6 +405,69 @@ TEST_CASE("Integration: SQL functions and casts highlighted") {
     CHECK(true);
 }
 
+TEST_CASE("Integration: User example with custom tags, PG casts, cfqueryparam") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    // User's exact example: custom tags <m:field_set>, <m:field>, PG ::text cast,
+    // to_char, extract, coalesce, CURRENT_TIMESTAMP, <cfqueryparam>, CFML comments
+    std::string userExample = 
+        "<cfquery name=\"local.qInstanceOperation\" result=\"local.result\">\n"
+        "      select \n"
+        "      <m:field_set titleMapOut=\"local.titleMap\" lengthOut=\"local.fieldCount\">\n"
+        "        <m:field>o.instance_operation_uid::text as instance_operation_uid</m:field>\n"
+        "        <m:field>o.operation</m:field>\n"
+        "<!---         <m:field>o.resource_realm_id</m:field>\n"
+        "        <m:field>r.resource_realm</m:field> --->\n"
+        "        <m:field>o.instance_uid::text as instance_uid</m:field>\n"
+        "        <m:field>to_char(o.dt_submit, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3TZHTZM') as dt_submit</m:field>\n"
+        "        <m:field>o.submit_result</m:field>\n"
+        "        <m:field>o.error_log</m:field>\n"
+        "        <m:field>o.note</m:field>\n"
+        "        <m:field>to_char(o.dt_start, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3TZHTZM') as dt_start</m:field>\n"
+        "        <m:field>to_char(o.dt_finish, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3TZHTZM') as dt_finish</m:field>\n"
+        "        <m:field title=\"Длит. сек\">extract('epoch' from coalesce(o.dt_finish,CURRENT_TIMESTAMP)- o.dt_start) as duration</m:field>\n"
+        "        <m:field formatter=#request.castToBool#>o.is_successful</m:field>\n"
+        "        <m:field>e.display_name</m:field>\n"
+        "        <m:field>e.service_id</m:field>\n"
+        "        <m:field>e.specification_item_id</m:field>\n"
+        "        <m:field>to_char(o.dt_created, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3TZHTZM') as dt_created</m:field>  \n"
+        "        <m:field>to_char(o.dt_updated, 'YYYY-MM-DD\"T\"HH24:MI:SS.FF3TZHTZM') as dt_updated</m:field>  \n"
+        "        <m:field>o.updater_id</m:field>\n"
+        "        <m:field>u.login as updater_login</m:field>\n"
+        "        <m:field>u.shortname as updater_shortname</m:field>\n"
+        "        <m:field>v.svc</m:field>\n"
+        "        <m:field>so.man</m:field>\n"
+        "        <m:field>so.svc_operation_id</m:field>\n"
+        "        <m:field formatter=#request.castToBool#>coalesce((o.dt_start IS NOT NULL AND o.dt_finish IS NULL AND o.submit_result='201'),false) as is_in_progress</m:field>\n"
+        "        <m:field formatter=#request.castToBool#>coalesce((o.dt_start IS NULL AND o.submit_result='201'),false) as is_pending</m:field>\n"
+        "      </m:field_set>  \n"
+        "      from instance_operation o\n"
+        "      join instance e on (o.instance_uid=e.instance_uid)\n"
+        "      join specification_item i on (e.specification_item_id=i.specification_item_id)    \n"
+        "      join specification s on (i.specification_id=s.specification_id)    \n"
+        "      join contract d on (s.contract_id=d.contract_id)    \n"
+        "      join contragent k on (d.contragent_id=k.contragent_id)\n"
+        "      join svc v on (e.service_id=v.svc_id)\n"
+        "      join svc_operation so on (v.svc_id=so.svc_id AND o.operation=so.operation)\n"
+        "      <!--- left outer join resource_realm r on (o.resource_realm_id=r.resource_realm_id) --->  \n"
+        "      left outer join usr u on (o.updater_id=u.usr_id)\n"
+        "      where <!--- u.usr_id=<cfqueryparam cfsqltype=\"cf_sql_integer\" value=#arguments.usrId#/> AND--->\n"
+        "       o.instance_operation_uid=<cfqueryparam cfsqltype=\"cf_sql_other\" value=\"#arguments.instanceOperationUid#\" null=#!isValid('guid',arguments.instanceOperationUid)#/>\n"
+        "      AND s.specification_id=<cfqueryparam cfsqltype=\"cf_sql_integer\" value=#arguments.specificationId#/>\n"
+        "    </cfquery>";
+
+    int length = static_cast<int>(userExample.size());
+    // Should not crash and should process all SQL keywords, :: casts, etc.
+    lexer->Lex(0, length, 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
+
 TEST_CASE("Integration: CTE and advanced SQL syntax") {
     Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
     REQUIRE(lexer != nullptr);
