@@ -36,6 +36,14 @@ static fs::path GetFixturesDir() {
     return "tests/fixtures"; // fallback
 }
 
+// Helper to find a fixture file
+static std::string findFixture(const std::string& filename) {
+    fs::path fixturesDir = GetFixturesDir();
+    fs::path filepath = fixturesDir / filename;
+    if (fs::exists(filepath)) return filepath.string();
+    return "";
+}
+
 // Test that lexer can tokenize real CFM files without crashing
 TEST_CASE("Integration: Lexer tokenizes Taffy Application.cfc") {
     fs::path fixturesDir = GetFixturesDir();
@@ -500,6 +508,34 @@ TEST_CASE("Integration: CTE and advanced SQL syntax") {
 
     int length = static_cast<int>(advancedSql.size());
     lexer->Lex(0, length, 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}
+
+TEST_CASE("Integration: User fixtures from bug reports") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    std::vector<std::string> fixtures = {
+        "user_example_1.cfm",
+        "user_example_2.cfc", 
+        "user_example_3.cfc"
+    };
+
+    for (const auto& filename : fixtures) {
+        std::string filepath = findFixture(filename);
+        REQUIRE(!filepath.empty());
+        
+        std::ifstream file(filepath);
+        REQUIRE(file.is_open());
+        std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        
+        // Should not crash and should process all SQL keywords, :: casts, custom tags, etc.
+        lexer->Lex(0, static_cast<int>(content.size()), 0, nullptr);
+    }
 
     delete lexer;
     CHECK(true);
