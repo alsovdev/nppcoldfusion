@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.13] - 2026-11-20
+
+### Fixed
+
+- **cfreturn/cfset/cfif expression parsing** — skip attribute parsing for tags with expressions (`inCFSet`); prevents lexer from skipping over string literals in tag content
+- **Crash protection** — added bounds checking to `stateHistory` stack (max 32 entries) for all push/pop operations
+
+### Added
+
+- **Integration test coverage** — existing string literal tests now pass with fixed attribute parsing
+
 ## [0.9.12] - 2026-11-19
 
 ### Fixed
