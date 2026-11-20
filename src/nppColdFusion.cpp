@@ -605,7 +605,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					cfCommentDepth++;
 
 					if (sc.state != sID::CF_COMMENT) {
-						status.stateHistory[++status.lastState] = sc.state;
+						if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+						    status.stateHistory[++status.lastState] = sc.state;
+						}
 					}
 					styler.SetLineState(currentLine, linestate);
 					sc.SetState(sID::CF_COMMENT);
@@ -626,7 +628,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					currentLine = styler.GetLine(sc.currentPos);
 					cfCommentDepthsNew.Set(sc.currentPos, cfCommentDepth);
 					if (cfCommentDepth == 0) {
-						sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						if (status.lastState >= 0) {
+						    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						}
 						// Back round we go just incase someone does ---><!---
 						continue;
 					}
@@ -664,7 +668,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 		}
 		if (sc.Match('/', '*') && (inCFQuery || inCFScript || inJSBlock || inCSSBlock) && sc.state != sID::_SINGLESTRING && sc.state != sID::_DOUBLESTRING && sc.state != sID::_COMMENT) {
 			if (dostyling && sc.state != sID::_COMMENTBLOCK) {
-				status.stateHistory[++status.lastState] = sc.state;
+				if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+				    status.stateHistory[++status.lastState] = sc.state;
+				}
 				sc.SetState(sID::_COMMENTBLOCK);
 			}
 			sc.Forward(2);
@@ -674,7 +680,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 		if (sc.state == sID::_COMMENTBLOCK && sc.Match('*', '/')) {
 			sc.Forward(2);
 			if (dostyling) {
-				sc.SetState(status.stateHistory[status.lastState--]);
+				if (status.lastState >= 0) {
+				    sc.SetState(status.stateHistory[status.lastState--]);
+				}
 			}
 			continue;
 		}
@@ -692,13 +700,17 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					//status.inCFVal = (sc.state == sID::CF_VALUE);
 					if (dostyling) {
 						if (!(sc.state == sID::CF_VALUE)) {
-							status.stateHistory[++status.lastState] = sc.state;
+							if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+							    status.stateHistory[++status.lastState] = sc.state;
+							}
 							sc.SetState(sID::CF_VALUE);
 							sc.Forward();
 						}
 						else {
 							sc.Forward();
-							sc.SetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.SetState(status.stateHistory[status.lastState--]);
+							}
 						}
 					}
 				}
@@ -716,11 +728,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 					if (dostyling) {
 						if (sc.state == sID::_SINGLESTRING) {
 							sc.Forward();
-							sc.SetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.SetState(status.stateHistory[status.lastState--]);
+							}
 							continue;
 						}
 						else {
-							status.stateHistory[++status.lastState] = sc.state;
+							if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+							    status.stateHistory[++status.lastState] = sc.state;
+							}
 							sc.SetState(sID::_SINGLESTRING);
 						}
 					}
@@ -737,11 +753,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				if (sc.chNext != '"') {
 					if (dostyling) {
 						if (sc.state != sID::_DOUBLESTRING) {
-							status.stateHistory[++status.lastState] = sc.state;
+							if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+							    status.stateHistory[++status.lastState] = sc.state;
+							}
 							sc.SetState(sID::_DOUBLESTRING);
 						}
 						else {
-							sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							}
 							continue;
 						}
 					}
@@ -1237,7 +1257,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						}
 
 						if (dostyling) {
-							status.stateHistory[++status.lastState] = sc.state;
+							if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+							    status.stateHistory[++status.lastState] = sc.state;
+							}
 							sc.SetState(sID::CF_TAG);
 						}
 						if ((strcmp(s, "cfset") == 0 || strcmp(s, "cfelseif") == 0 || strcmp(s, "cfreturn") == 0 || (strcmp(s, "cfif") == 0 && !status.tagClosing))) {
@@ -1253,7 +1275,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						strcpy_s(status.currentHTMLTag.data(), status.currentHTMLTag.size(), s);
 						if (dostyling) {
 							if (!inJSBlock) {
-								status.stateHistory[++status.lastState] = sc.state;
+								if (status.lastState + 1 < (int)Constants::MAX_STATE_HISTORY) {
+								    status.stateHistory[++status.lastState] = sc.state;
+								}
 							}
 							sc.SetState(sID::_TAG);
 						}
@@ -1322,7 +1346,7 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 				}
 			}
 		}
-		if (sc.state == sID::CF_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentCFTag[0] != '\0' && (sc.Match(' ') || sc.Match('\t'))) {
+		if (sc.state == sID::CF_TAG && !sc.Match('>') && dostyling && status.tagOpening && status.currentCFTag[0] != '\0' && (sc.Match(' ') || sc.Match('\t')) && !inCFSet) {
 			char s[100];
 			int i = 0;
 			int max = 100;
@@ -1457,7 +1481,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						else if (status.tagClosing && inCFQuery) {
 							inCFQuery = false;
 							cfQueryBlocksNew.Set(sc.currentPos, false);
-																												sc.ForwardSetState(status.stateHistory[status.lastState--]);
+																												if (status.lastState >= 0) {
+																												    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+																												}
 						}
 					}
 					else if ((strcmp(status.currentCFTag.data(), "cfoutput") == 0)) {
@@ -1470,7 +1496,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							cfOutputDepthsNew.Set(sc.currentPos, cfOutputDepth);
 
 						}
-						sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						if (status.lastState >= 0) {
+						    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						}
 					}
 					else if ((strcmp(status.currentCFTag.data(), "cfscript") == 0)) {
 						if (status.tagOpening) {
@@ -1481,11 +1509,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						else if (status.tagClosing && inCFScript) {
 							inCFScript = false;
 							scriptBlocksNew.Set(sc.currentPos + 1, false);
-							sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							}
 						}
 					}
 					else {
-						sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						if (status.lastState >= 0) {
+						    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						}
 					}
 				}
 				if (status.tagClosing) {
@@ -1537,7 +1569,9 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 							inJSBlock = false;
 							jsBlocksNew.Set(sc.currentPos, false);
 
-							sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							}
 						}
 					}
 					else 	if ((strcmp(status.currentHTMLTag.data(), "style") == 0)) {
@@ -1549,11 +1583,15 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						else if (status.tagClosing && blocks[static_cast<size_t>(BlockId::CSS)]->inBlock) {
 							inCSSBlock = false;
 							cssBlocksNew.Set(sc.currentPos, false);
-							sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							if (status.lastState >= 0) {
+							    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+							}
 						}
 					}
 					else {
-						sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						if (status.lastState >= 0) {
+						    sc.ForwardSetState(status.stateHistory[status.lastState--]);
+						}
 					}
 				}
 				if (status.tagOpening && !status.tagClosing) {
