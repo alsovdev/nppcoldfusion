@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.12] - 2026-11-19
+
+### Fixed
+
+- **CFML string literal handling** — fixed string state management in `cfreturn`, `cfset`, `cfif`, `cfelseif` tags; lexer now correctly maintains `CF_TAG` state after tag name, allowing proper entry/exit of `_SINGLESTRING`/`_DOUBLESTRING` states
+- **Highlighting stops after quoted strings** — both single (`'`) and double (`"`) quotes inside CFML expressions no longer break subsequent syntax highlighting
+
+### Added
+
+- **Integration test for CFML string literals** — covers `cfreturn`, `cfset`, `cfif`, `cfelseif` with single and double quoted strings
+
 ## [0.9.11] - 2026-11-17
 
 ### Fixed
