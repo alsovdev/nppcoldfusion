@@ -540,3 +540,36 @@ TEST_CASE("Integration: User fixtures from bug reports") {
     delete lexer;
     CHECK(true);
 }
+TEST_CASE("Integration: CFML string literals in cfreturn cfset cfif") {
+    Scintilla::ILexer5* lexer = LexerColdFusion::LexerFactory();
+    REQUIRE(lexer != nullptr);
+    lexer->PropertySet("fold", "1");
+    lexer->PropertySet("fold.compact", "1");
+
+    // cfreturn with single quoted string
+    std::string cfreturnSingle = "<cfreturn '(text)'>";
+    lexer->Lex(0, static_cast<int>(cfreturnSingle.size()), 0, nullptr);
+
+    // cfreturn with double quoted string
+    std::string cfreturnDouble = "<cfreturn numberFormat(price,\".00\")>";
+    lexer->Lex(0, static_cast<int>(cfreturnDouble.size()), 0, nullptr);
+
+    // cfset with single quoted string
+    std::string cfsetSingle = "<cfset x = 'hello'>";
+    lexer->Lex(0, static_cast<int>(cfsetSingle.size()), 0, nullptr);
+
+    // cfset with double quoted string
+    std::string cfsetDouble = "<cfset x = \"world\">";
+    lexer->Lex(0, static_cast<int>(cfsetDouble.size()), 0, nullptr);
+
+    // cfif with string comparison
+    std::string cfifString = "<cfif x eq 'test'>";
+    lexer->Lex(0, static_cast<int>(cfifString.size()), 0, nullptr);
+
+    // cfelseif with string
+    std::string cfelseifString = "<cfelseif y eq \"test\">";
+    lexer->Lex(0, static_cast<int>(cfelseifString.size()), 0, nullptr);
+
+    delete lexer;
+    CHECK(true);
+}

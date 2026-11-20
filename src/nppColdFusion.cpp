@@ -1277,13 +1277,13 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 
 
 					sc.Forward(strnlen_s(s, sizeof(s)) + 1);
-					if (!status.tagClosing) {
-						if (inCFSet) {
-							if (dostyling) {
-								sc.SetState(sID::_DEFAULT);
+							if (!status.tagClosing) {
+								if (inCFSet) {
+									if (dostyling) {
+										sc.SetState(sID::CF_TAG);
+									}
+								}
 							}
-						}
-					}
 
 					break;
 				}
