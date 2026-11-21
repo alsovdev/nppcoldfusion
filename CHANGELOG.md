@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.9.14] - 2026-11-21
+
+### Fixed
+
+- **Crash on HTML comments in cfquery** — unknown tag skipping inside `<cfquery>` now properly handles HTML comment end (`-->`) to prevent infinite loop when `<!-- ... -->` appears in SQL
+- **HTML comment consumption** — fixed `-->` consumption (3 chars) vs `>` (1 char) in cfquery tag skipping
+
+### Added
+
+- **Test coverage** — existing integration tests verify cfquery highlighting with custom tags
+
 ## [0.9.13] - 2026-11-20
 
 ### Fixed
