@@ -1293,9 +1293,10 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 									while (!sc.Match('>') && !sc.Match("-->") && !sc.atLineEnd) {
 										sc.Forward();
 									}
-									if (sc.Match('>') || sc.Match("-->")) {
-										sc.Forward();
-										if (sc.Match("-->")) sc.Forward(2); // consume --> if matched >
+									if (sc.Match("-->")) {
+										sc.Forward(3); // consume -->
+									} else if (sc.Match('>')) {
+										sc.Forward(); // consume >
 									}
 									continue;
 								}
