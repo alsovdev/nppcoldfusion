@@ -1283,20 +1283,22 @@ Status LexerColdFusion::Colourise_Doc(Sci_PositionU startPos, Sci_Position lengt
 						}
 					}
 					else if (inCFQuery && scriptcheck) {
-						// Inside cfquery: unknown tags (not CFML, not HTML) treated as SQL text
-						// Skip entire tag (name + attributes + '>'), keep current state for SQL highlighting
-						if (dostyling) {
-							// Keep _DEFAULT or SQL_KEYWORD state for SQL highlighting
-						}
-						// Advance through the entire tag
-						while (!sc.Match('>') && !sc.atLineEnd) {
-							sc.Forward();
-						}
-						if (sc.Match('>')) {
-							sc.Forward();
-						}
-						continue;
-					}
+									// Inside cfquery: unknown tags (not CFML, not HTML) treated as SQL text
+									// Skip entire tag (name + attributes + '>'), keep current state for SQL highlighting
+									if (dostyling) {
+										// Keep _DEFAULT or SQL_KEYWORD state for SQL highlighting
+									}
+									// Advance through the entire tag
+									// Also handle HTML comment end (-->) inside cfquery
+									while (!sc.Match('>') && !sc.Match("-->") && !sc.atLineEnd) {
+										sc.Forward();
+									}
+									if (sc.Match('>') || sc.Match("-->")) {
+										sc.Forward();
+										if (sc.Match("-->")) sc.Forward(2); // consume --> if matched >
+									}
+									continue;
+								}
 
 
 
